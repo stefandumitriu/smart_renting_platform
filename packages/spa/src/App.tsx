@@ -1,8 +1,12 @@
 import LandingPage from "./components/landingPage/LandingPage";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme";
 
 function App() {
     return(
-        <LandingPage />
+        <ThemeProvider theme={theme}>
+            <LandingPage />
+        </ThemeProvider>
     );
 }
 
