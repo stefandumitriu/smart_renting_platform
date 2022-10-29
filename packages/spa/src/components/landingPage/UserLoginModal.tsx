@@ -1,5 +1,7 @@
 import {Fade, Grid, Modal, Paper, Tab, Tabs, Typography, useTheme} from "@mui/material";
 import React, {useState} from "react";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
 
 interface UserLoginModal {
     open: boolean;
@@ -66,8 +68,8 @@ const UserLoginModal = (props: UserLoginModal) => {
                             </Tabs>
                         </Grid>
                         <Grid item mt={2} ml={2}>
-                            <TabPanel index={0} value={tabValue} child={<Typography>Inside Log In Panel</Typography>} />
-                            <TabPanel index={1} value={tabValue} child={<Typography>Inside Sign Up Panel</Typography>} />
+                            <TabPanel index={0} value={tabValue} child={<LoginForm />} />
+                            <TabPanel index={1} value={tabValue} child={<SignupForm />} />
                         </Grid>
                     </Grid>
                 </Paper>
