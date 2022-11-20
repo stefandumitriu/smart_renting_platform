@@ -1,10 +1,11 @@
 {
-  "name": "db",
+  "name": "@packages/db",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "license": "MIT",
   "dependencies": {
     "knex": "^2.3.0",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "ts-node": "^10.9.1"
   }
 }

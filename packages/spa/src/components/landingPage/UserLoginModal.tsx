@@ -1,9 +1,9 @@
-import {Fade, Grid, Modal, Paper, Tab, Tabs, Typography, useTheme} from "@mui/material";
+import {Fade, Grid, Modal, Paper, Tab, Tabs, useTheme} from "@mui/material";
 import React, {useState} from "react";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 
-interface UserLoginModal {
+interface UserLoginModalProps {
     open: boolean;
     handleClose: () => void;
 }
@@ -26,7 +26,7 @@ const TabPanel = (props: TabPanelProps) => {
     )
 }
 
-const UserLoginModal = (props: UserLoginModal) => {
+const UserLoginModal = (props: UserLoginModalProps) => {
     const theme = useTheme();
     const [tabValue, setTabValue] = useState(0);
 

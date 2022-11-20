@@ -1,8 +1,8 @@
 import {
     AppBarProps as MuiAppBarProps,
-    Box,
     Divider,
     Drawer,
+    Grid,
     IconButton,
     List,
     ListItem,
@@ -11,6 +11,7 @@ import {
     ListItemText,
     styled,
     Toolbar,
+    Tooltip,
     Typography,
     useTheme
 } from "@mui/material";
@@ -23,7 +24,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import { useCallback, useState } from "react";
+import {useCallback, useState} from "react";
 import UserLoginModal from "./UserLoginModal";
 
 interface AppBarProps extends MuiAppBarProps {
@@ -136,12 +137,12 @@ export default function LandingPage() {
     ];
 
     return (
-        <div>
-            <Box sx={{ display: 'flex' }}>
+        <Grid container flexDirection="column" spacing={1}>
+            <Grid item>
                 <AppBar
                     position="fixed"
                     open={openDrawer}
-                    sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary }}>
+                    sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary, height: '7vh' }}>
                     <Toolbar>
                         <IconButton
                             color="inherit"
@@ -152,12 +153,14 @@ export default function LandingPage() {
                         <Typography variant="h6" noWrap>
                             Smart Renting Platform
                         </Typography>
-                        <IconButton
-                            color="inherit"
-                            onClick={handleLoginOpen}
-                            sx={{ ml: 'auto' }}>
-                            <AccountCircleOutlinedIcon />
-                        </IconButton>
+                        <Tooltip title="Log In">
+                            <IconButton
+                                color="inherit"
+                                onClick={handleLoginOpen}
+                                sx={{ ml: 'auto' }}>
+                                <AccountCircleOutlinedIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Toolbar>
                 </AppBar>
                 <Drawer
@@ -185,8 +188,8 @@ export default function LandingPage() {
                     </List>
                     <Divider />
                 </Drawer>
-            </Box>
+            </Grid>
             <UserLoginModal open={openLogin} handleClose={handleLoginClose} />
-        </div>
+        </Grid>
     )
 }
