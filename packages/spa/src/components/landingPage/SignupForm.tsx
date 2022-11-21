@@ -1,10 +1,11 @@
 import * as Yup from "yup";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {Form, Formik} from "formik";
 import {Button, Grid, IconButton, InputAdornment, styled, TextField} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import UserSignupRequest from "../../requests/UserSIgnupRequest";
 
-interface SignupFormValues {
+export interface SignupFormValues {
     email: string;
     firstName: string;
     lastName: string;
@@ -29,6 +30,11 @@ const StyledTextField = styled(TextField)(() => ({
 const SignupForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const handleToggleShowPassword = () => setShowPassword(!showPassword);
+    const handleSubmit = useCallback(
+        (values: SignupFormValues) => {
+            UserSignupRequest(values);
+        }, []
+    );
     return (
         <Formik
             initialValues={{
@@ -38,7 +44,7 @@ const SignupForm = () => {
                 password: '',
                 repeatPassword: ''
             }}
-            onSubmit={(values: SignupFormValues) => console.log(values)}
+            onSubmit={handleSubmit}
             validationSchema={SignupSchema}>
             {({ values, handleChange, errors, touched }) => {
                 return (

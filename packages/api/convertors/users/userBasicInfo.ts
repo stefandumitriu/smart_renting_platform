@@ -1,5 +1,5 @@
-import {UserSignUpInfo} from "../../models";
-import {DbUserBasicInfo} from "@packages/db";
+import { UserSignUpInfo } from "../../models";
+import { DbUserBasicInfo } from "@packages/db";
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 
