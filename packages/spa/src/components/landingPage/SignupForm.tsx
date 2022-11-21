@@ -3,7 +3,7 @@ import {useCallback, useState} from "react";
 import {Form, Formik} from "formik";
 import {Button, Grid, IconButton, InputAdornment, styled, TextField} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import UserSignupRequest from "../../requests/UserSIgnupRequest";
+import {UserSignupRequest} from "../../requests/UserSIgnupRequest";
 
 export interface SignupFormValues {
     email: string;

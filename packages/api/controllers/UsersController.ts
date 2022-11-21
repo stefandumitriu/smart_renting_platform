@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {createNewUser} from "../services/users/userBasicInfoService";
+import {createNewUser, getUser} from "../services/users/userBasicInfoService";
 
 export const signUpUser = async (req: Request, res: Response) => {
     try {
@@ -9,3 +9,15 @@ export const signUpUser = async (req: Request, res: Response) => {
         console.log(err);
     }
 };
+
+export const loginUser = async (req: Request, res: Response) => {
+    try {
+        const userInfo = await getUser({
+            email: req.query['email'] as string,
+            password: req.query['password'] as string
+        });
+        res.send(userInfo);
+    } catch (err) {
+        console.log(err);
+    }
+}
