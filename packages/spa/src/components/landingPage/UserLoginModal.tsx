@@ -68,8 +68,8 @@ const UserLoginModal = (props: UserLoginModalProps) => {
                             </Tabs>
                         </Grid>
                         <Grid item mt={2} ml={2}>
-                            <TabPanel index={0} value={tabValue} child={<LoginForm />} />
-                            <TabPanel index={1} value={tabValue} child={<SignupForm />} />
+                            <TabPanel index={0} value={tabValue} child={<LoginForm handleClose={props.handleClose} />} />
+                            <TabPanel index={1} value={tabValue} child={<SignupForm handleClose={props.handleClose} />} />
                         </Grid>
                     </Grid>
                 </Paper>

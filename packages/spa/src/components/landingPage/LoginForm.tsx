@@ -3,7 +3,11 @@ import {Button, Grid, IconButton, InputAdornment, styled, TextField} from "@mui/
 import * as Yup from 'yup';
 import {useState} from "react";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import { UserLoginRequest } from "../../requests/UserSIgnupRequest";
+import { UserLoginRequest } from "../../requests/UserSignupRequest";
+
+interface LoginFormProps {
+    handleClose: () => void;
+}
 
 export interface LoginFormValues {
     email: string;
@@ -22,11 +26,12 @@ const StyledTextField = styled(TextField)(() => ({
 }));
 
 
-const LoginForm = () => {
+const LoginForm = (props: LoginFormProps) => {
     const [showPassword, setShowPassword] = useState(false);
     const handleToggleShowPassword = () => setShowPassword(!showPassword);
     const handleSubmit = (values: LoginFormValues) => {
         UserLoginRequest(values);
+        props.handleClose();
     };
     return (
         <Formik

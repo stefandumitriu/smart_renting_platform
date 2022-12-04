@@ -6,7 +6,14 @@
   "author": "Stefan Dumitriu",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "dev": "yarn workspaces foreach -p -v -i run start"
+  },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "concurrently": "^7.6.0",
+    "typescript": "^4.9.3"
+  }
 }

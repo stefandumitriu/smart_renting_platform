@@ -3,7 +3,11 @@ import {useCallback, useState} from "react";
 import {Form, Formik} from "formik";
 import {Button, Grid, IconButton, InputAdornment, styled, TextField} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {UserSignupRequest} from "../../requests/UserSIgnupRequest";
+import {UserSignupRequest} from "../../requests/UserSignupRequest";
+
+interface SignupFormProps {
+    handleClose: () => void;
+}
 
 export interface SignupFormValues {
     email: string;
@@ -27,12 +31,13 @@ const StyledTextField = styled(TextField)(() => ({
     }
 }));
 
-const SignupForm = () => {
+const SignupForm = (props: SignupFormProps) => {
     const [showPassword, setShowPassword] = useState(false);
     const handleToggleShowPassword = () => setShowPassword(!showPassword);
     const handleSubmit = useCallback(
         (values: SignupFormValues) => {
             UserSignupRequest(values);
+            props.handleClose();
         }, []
     );
     return (
