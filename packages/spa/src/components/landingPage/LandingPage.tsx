@@ -1,195 +1,185 @@
 import {
-    AppBarProps as MuiAppBarProps,
-    Divider,
-    Drawer,
-    Grid,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    styled,
-    Toolbar,
-    Tooltip,
-    Typography,
-    useTheme
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Grid,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  Typography,
+  useTheme,
 } from "@mui/material";
-import MuiAppBar from '@mui/material/AppBar'
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
-import HouseOutlinedIcon from '@mui/icons-material/HouseOutlined';
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
-import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import {useCallback, useState} from "react";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { useCallback, useState } from "react";
 import UserLoginModal from "./UserLoginModal";
-
-interface AppBarProps extends MuiAppBarProps {
-    open?: boolean;
-}
-
-interface DrawerItem {
-    itemName: string;
-    itemIcon: JSX.Element;
-    iconColor: string;
-    textColor: string;
-}
-
-function buildListItem(item: DrawerItem): JSX.Element {
-    return (
-        <ListItem key={item.itemName}>
-            <ListItemButton>
-                <ListItemIcon sx={{ color: item.iconColor}}>
-                    {item.itemIcon}
-                </ListItemIcon>
-                <ListItemText sx={{ color: item.textColor }} primary={item.itemName} />
-            </ListItemButton>
-        </ListItem>
-    );
-}
+import SearchIcon from "@mui/icons-material/Search";
+import { Link } from "react-router-dom";
 
 export default function LandingPage() {
-    const [openDrawer, setOpenDrawer] = useState(false);
-    const [openLogin, setOpenLogin] = useState(false);
-    const theme = useTheme();
+  const [openLogin, setOpenLogin] = useState(false);
+  const theme = useTheme();
 
-    const handleLoginOpen = useCallback(() => {
-        setOpenLogin(true);
-    }, [setOpenLogin]);
+  const handleLoginOpen = useCallback(() => {
+    setOpenLogin(true);
+  }, [setOpenLogin]);
 
-    const handleLoginClose = useCallback(() => {
-        setOpenLogin(false);
-    }, [setOpenLogin]);
+  const handleLoginClose = useCallback(() => {
+    setOpenLogin(false);
+  }, [setOpenLogin]);
 
-    const handleDrawerOpen = useCallback(() => {
-        setOpenDrawer(true);
-    }, [setOpenDrawer]);
-
-    const handleDrawerClose = useCallback(() => {
-        setOpenDrawer(false);
-    }, [setOpenDrawer]);
-
-    const drawerWidth = 240;
-
-    const DrawerHeader = styled("div")(({ theme }) => ({
-        display: "flex",
-        alignItems: "center",
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-        justifyContent: "flex-end"
-    }));
-
-    const AppBar = styled(MuiAppBar, {
-        shouldForwardProp: (prop) => prop !== "open"
-    })<AppBarProps>(({ theme, open }) => ({
-        transition: theme.transitions.create(["margin", "width"], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen
-        }),
-        ...(open && {
-            width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: `${drawerWidth}px`,
-            transition: theme.transitions.create(["margin", "width"], {
-                easing: theme.transitions.easing.easeOut,
-                duration: theme.transitions.duration.enteringScreen
-            })
-        })
-    }));
-
-    const menuItems: DrawerItem[] = [
-        {
-            itemName: 'Apartment Rentals',
-            itemIcon: <ApartmentOutlinedIcon />,
-            iconColor: theme.palette.secondary.main,
-            textColor: theme.palette.text.primary
-        },
-        {
-            itemName: 'House Rentals',
-            itemIcon: <HouseOutlinedIcon />,
-            iconColor: theme.palette.secondary.main,
-            textColor: theme.palette.text.primary
-        }
-    ];
-
-    const menuItemsManagement: DrawerItem [] = [
-        {
-            itemName: 'List Rental',
-            itemIcon: <PlaylistAddOutlinedIcon />,
-            iconColor: theme.palette.secondary.main,
-            textColor: theme.palette.text.primary
-        },
-        {
-            itemName: 'My Listings',
-            itemIcon: <SummarizeOutlinedIcon />,
-            iconColor: theme.palette.secondary.main,
-            textColor: theme.palette.text.primary
-        },
-        {
-            itemName: 'Messages',
-            itemIcon: <ChatBubbleOutlineOutlinedIcon />,
-            iconColor: theme.palette.secondary.main,
-            textColor: theme.palette.text.primary
-        }
-    ];
-
-    return (
-        <Grid container flexDirection="column" spacing={1}>
-            <Grid item>
-                <AppBar
-                    position="fixed"
-                    open={openDrawer}
-                    sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary, height: '7vh' }}>
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            onClick={handleDrawerOpen}
-                            sx={{ mr: 2, ...(openDrawer && { display: 'none'}) }}>
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" noWrap>
-                            Smart Renting Platform
-                        </Typography>
-                        <Tooltip title="Log In">
-                            <IconButton
-                                color="inherit"
-                                onClick={handleLoginOpen}
-                                sx={{ ml: 'auto' }}>
-                                <AccountCircleOutlinedIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    variant="persistent"
-                    open={openDrawer}
-                    onClose={handleDrawerClose}
-                    anchor="left"
-                    sx={{
-                        width: drawerWidth,
-                        flexShrink: 0,
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                    }}>
-                    <DrawerHeader>
-                        <IconButton onClick={handleDrawerClose}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </DrawerHeader>
-                    <Divider />
-                    <List>
-                        {menuItems.map(buildListItem)}
-                    </List>
-                    <Divider />
-                    <List>
-                        {menuItemsManagement.map(buildListItem)}
-                    </List>
-                    <Divider />
-                </Drawer>
-            </Grid>
-            <UserLoginModal open={openLogin} handleClose={handleLoginClose} />
+  return (
+    <Grid
+      container
+      flexDirection="column"
+      spacing={1}
+      sx={{ backgroundColor: theme.palette.primary.main }}
+    >
+      <Grid
+        item
+        container
+        justifyContent="space-between"
+        xs={8}
+        alignSelf="center"
+        position="fixed"
+        zIndex={100}
+        mt={1}
+      >
+        <Grid item my="auto">
+          <img
+            src="https://s.zillowstatic.com/pfs/static/z-logo-default.svg"
+            alt="logo-app"
+          />
         </Grid>
-    )
+        <Grid item my="auto">
+          <Typography color={theme.palette.secondary.main} fontWeight="bolder">
+            Search properties
+          </Typography>
+        </Grid>
+        <Grid item my="auto">
+          <Typography color={theme.palette.secondary.main} fontWeight="bolder">
+            List a property
+          </Typography>
+        </Grid>
+        <Grid item my="auto">
+          <Link to={"/map"} style={{ textDecoration: "none" }}>
+            <Button
+              onClick={() => {}}
+              variant="text"
+              sx={{ textTransform: "none" }}
+            >
+              <Typography
+                color={theme.palette.secondary.main}
+                fontWeight="bolder"
+              >
+                Show map
+              </Typography>
+            </Button>
+          </Link>
+        </Grid>
+        <Grid item>
+          <IconButton color="secondary" onClick={handleLoginOpen}>
+            <AccountCircleOutlinedIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
+      <UserLoginModal open={openLogin} handleClose={handleLoginClose} />
+      <Grid item>
+        <Grid
+          item
+          container
+          sx={{
+            height: "60vh",
+            width: "100%",
+            color: theme.palette.primary.main,
+          }}
+          justifyContent="space-around"
+        >
+          <Grid item alignSelf="center" width="60%">
+            <OutlinedInput
+              color="secondary"
+              placeholder="Search for a city or neighbourhood"
+              fullWidth
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => console.log("clicked")}
+                    color="secondary"
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid
+        item
+        container
+        justifyContent="space-around"
+        alignContent="center"
+        sx={{ height: "40vh" }}
+      >
+        <Grid item xs={3}>
+          <Card>
+            <CardContent>
+              <Typography align="center">
+                Looking for a rent? Browse through our large properties database
+                and find the perfect match for you!
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="outlined"
+                color="secondary"
+                sx={{ marginX: "auto" }}
+              >
+                Search properties
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={3}>
+          <Card>
+            <CardContent>
+              <Typography align="center">
+                Want to rent your property fast and keep track of all
+                applicants? Use our intuitive and secure platform to keep it
+                clean!
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="outlined"
+                color="secondary"
+                sx={{ marginX: "auto" }}
+              >
+                List a property
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={3}>
+          <Card>
+            <CardContent>
+              <Typography align="center">
+                Not sure about the price/area ratio you're ok with? Visualize it
+                using our map and check every apartment surroundings
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="outlined"
+                color="secondary"
+                sx={{ marginX: "auto" }}
+              >
+                Show map
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
 }
