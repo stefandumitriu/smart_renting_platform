@@ -10,80 +10,13 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { useCallback, useState } from "react";
-import UserLoginModal from "./UserLoginModal";
 import SearchIcon from "@mui/icons-material/Search";
-import { Link } from "react-router-dom";
+import Layout from "../Layout";
 
 export default function LandingPage() {
-  const [openLogin, setOpenLogin] = useState(false);
   const theme = useTheme();
-
-  const handleLoginOpen = useCallback(() => {
-    setOpenLogin(true);
-  }, [setOpenLogin]);
-
-  const handleLoginClose = useCallback(() => {
-    setOpenLogin(false);
-  }, [setOpenLogin]);
-
   return (
-    <Grid
-      container
-      flexDirection="column"
-      spacing={1}
-      sx={{ backgroundColor: theme.palette.primary.main }}
-    >
-      <Grid
-        item
-        container
-        justifyContent="space-between"
-        xs={8}
-        alignSelf="center"
-        position="fixed"
-        zIndex={100}
-        mt={1}
-      >
-        <Grid item my="auto">
-          <img
-            src="https://s.zillowstatic.com/pfs/static/z-logo-default.svg"
-            alt="logo-app"
-          />
-        </Grid>
-        <Grid item my="auto">
-          <Typography color={theme.palette.secondary.main} fontWeight="bolder">
-            Search properties
-          </Typography>
-        </Grid>
-        <Grid item my="auto">
-          <Typography color={theme.palette.secondary.main} fontWeight="bolder">
-            List a property
-          </Typography>
-        </Grid>
-        <Grid item my="auto">
-          <Link to={"/map"} style={{ textDecoration: "none" }}>
-            <Button
-              onClick={() => {}}
-              variant="text"
-              sx={{ textTransform: "none" }}
-            >
-              <Typography
-                color={theme.palette.secondary.main}
-                fontWeight="bolder"
-              >
-                Show map
-              </Typography>
-            </Button>
-          </Link>
-        </Grid>
-        <Grid item>
-          <IconButton color="secondary" onClick={handleLoginOpen}>
-            <AccountCircleOutlinedIcon />
-          </IconButton>
-        </Grid>
-      </Grid>
-      <UserLoginModal open={openLogin} handleClose={handleLoginClose} />
+    <Layout>
       <Grid item>
         <Grid
           item
@@ -180,6 +113,6 @@ export default function LandingPage() {
           </Card>
         </Grid>
       </Grid>
-    </Grid>
+    </Layout>
   );
 }
