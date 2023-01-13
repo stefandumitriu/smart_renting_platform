@@ -18,7 +18,9 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "start": "tsc --build && nodemon app.js"
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "start": "nodemon app.js"
   },
   "type": "commonjs"
 }

@@ -47,9 +47,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </Link>
         </Grid>
         <Grid item my="auto">
-          <Typography color={theme.palette.secondary.main} fontWeight="bolder">
-            Search properties
-          </Typography>
+          <Link to={"/properties"} style={{ textDecoration: "none" }}>
+            <Typography
+              color={theme.palette.secondary.main}
+              fontWeight="bolder"
+            >
+              Search properties
+            </Typography>
+          </Link>
         </Grid>
         <Grid item my="auto">
           <Typography color={theme.palette.secondary.main} fontWeight="bolder">

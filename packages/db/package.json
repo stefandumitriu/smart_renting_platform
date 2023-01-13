@@ -4,7 +4,9 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "tsc --build"
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "start": ""
   },
   "dependencies": {
     "knex": "^2.3.0",

@@ -1,0 +1,17 @@
+{
+  "name": "scraper",
+  "packageManager": "yarn@3.3.0",
+  "dependencies": {
+    "@types/node": "^18.11.18",
+    "puppeteer": "^19.5.2",
+    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  },
+  "scripts": {
+    "clean": "yarn tsc --build --clean",
+    "build": "yarn tsc",
+    "start": "node ./bin/scraper.js"
+  }
+}

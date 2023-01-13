@@ -3,6 +3,7 @@ import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MapPage from "./components/mapPage/MapPage";
+import ListingsPage from "./components/propertiesPage/ListingsPage";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
   {
     path: "/map",
     element: <MapPage />,
+  },
+  {
+    path: "/properties",
+    element: <ListingsPage />,
   },
 ]);
 function App() {
