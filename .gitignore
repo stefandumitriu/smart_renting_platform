@@ -109,3 +109,5 @@ dist
 packages/**/*.js
 
 .yarn/
+
+scrapedData.json

@@ -2664,6 +2664,7 @@ __metadata:
     knex: ^2.3.0
     pg: ^8.8.0
     ts-node: ^10.9.1
+    uuid: ^9.0.0
   languageName: unknown
   linkType: soft
 

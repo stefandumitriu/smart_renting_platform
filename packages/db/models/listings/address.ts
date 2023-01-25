@@ -1,4 +1,4 @@
-export const ADDRESS_TABLE_NAME = "addresses";
+export const ADDRESS_TABLE_NAME = "address";
 
 export interface DbAddress {
   id: string;

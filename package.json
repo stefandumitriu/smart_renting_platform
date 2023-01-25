@@ -8,7 +8,8 @@
   "private": true,
   "scripts": {
     "build": "yarn workspaces foreach -p -v -i run build",
-    "dev": "yarn workspaces foreach -p -v -i run start"
+    "dev": "yarn workspaces foreach -p -v -i run start",
+    "seed": "cd packages/db && tsc index.ts && node index.js"
   },
   "workspaces": [
     "packages/*"

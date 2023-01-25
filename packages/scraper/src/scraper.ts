@@ -1,4 +1,5 @@
 import puppeteer from "puppeteer";
+import * as fs from "fs";
 
 interface Listing {
   title: string;
@@ -67,6 +68,6 @@ interface Listing {
     listings.push(...currentPageListings);
   }
 
-  console.log(listings);
+  fs.writeFileSync("../../scrapedData.json", JSON.stringify(listings), "utf-8");
   await browser.close();
 })();
