@@ -14,7 +14,7 @@ exports.up = (knex: Knex) => {
       .references("id")
       .inTable("address")
       .onDelete("CASCADE");
-    table.uuid("ownerId").unique().notNullable();
+    table.uuid("ownerId").notNullable();
     table
       .foreign("ownerId")
       .references("id")

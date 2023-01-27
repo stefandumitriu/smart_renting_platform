@@ -14,9 +14,9 @@ export interface DbApartment {
   buildingType: BuildingTypeEnum;
   cooling?: boolean;
   heating?: HeatingTypeEnum;
-  utilities?: string[];
-  appliances?: string[];
-  finishes?: string[];
+  utilities?: Record<string, boolean>;
+  appliances?: Record<string, boolean>;
+  finishes?: Record<string, boolean>;
   areaInfo?: string;
 }
 

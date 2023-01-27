@@ -13,10 +13,10 @@ const Map: React.FC<{}> = () => {
       setMap(
         new google.maps.Map(ref.current, {
           center: {
-            lat: 45.973118475875594,
-            lng: 24.959025390901253,
+            lat: 44.432358355775,
+            lng: 26.09869194439505,
           },
-          zoom: 7,
+          zoom: 13,
         })
       );
     }
@@ -24,7 +24,7 @@ const Map: React.FC<{}> = () => {
 
   return (
     <Grid container item sx={{ height: "100vh", width: "100%" }} mt={2}>
-      <Grid item ref={ref} sx={{ height: "70%", width: "70%" }} />
+      <Grid item ref={ref} sx={{ height: "100%", width: "60%" }} />
       <Grid item container flexDirection="column" xs ml={2}>
         <Grid item xs="auto">
           <Typography

@@ -20,7 +20,6 @@ export function generateAddresses(): DbAddress[] {
 
   const listings = JSON.parse(scrapedListingsFileContent);
   return listings.map((listing: any) => {
-    console.log(listing);
     const streetTypeSeed =
       Math.floor(Math.random() * 100) % Object.values(StreetTypeEnum).length;
     const streetNameSeed =
