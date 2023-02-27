@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as fs from "fs";
 import { DbAddress } from "../models/listings/address";
 
-const OWNER_ID = "faf2a551-b57a-4880-b703-ec054ed4245d";
+const OWNER_ID = "83813324-038d-4367-bc27-b79c4ea24020";
 const areaInfo =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non velit vitae augue tristique euismod. Aenean a nulla ipsum. Etiam pharetra id metus luctus dapibus. Sed lobortis varius urna a.";
 
@@ -46,7 +46,7 @@ export function generateApartments(addresses: DbAddress[]): DbApartment[] {
   });
 
   const listings = JSON.parse(scrapedListingsFileContent);
-  return listings.map((listing, index) => {
+  return listings.map((listing: any, index: number) => {
     const noOfRoomsString = (listing.noOfRooms as string).trim()[0];
     let noOfRooms;
     if (noOfRoomsString === "o") {
@@ -54,6 +54,9 @@ export function generateApartments(addresses: DbAddress[]): DbApartment[] {
     } else {
       noOfRooms = parseInt(noOfRoomsString);
     }
+    const surface = Math.floor(
+      Number.parseFloat((listing.surface as string).trim().split(" ")[0])
+    );
     const noOfBathrooms = Math.round(noOfRooms / 2);
     const noOfBalconies = Math.floor(noOfRooms / 2);
     const subdivisionType = (listing.subdivision as string)?.trim() || "Dec.";
@@ -90,6 +93,7 @@ export function generateApartments(addresses: DbAddress[]): DbApartment[] {
       id: uuidv4(),
       addressId: addresses[index].id,
       ownerId: OWNER_ID,
+      surface,
       noOfRooms,
       noOfBathrooms,
       noOfBalconies,

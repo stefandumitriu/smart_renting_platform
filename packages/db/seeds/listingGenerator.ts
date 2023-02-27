@@ -17,7 +17,7 @@ export function generateListings(apartments: DbApartment[]): DbListing[] {
   });
 
   const listings = JSON.parse(scrapedListingsFileContent);
-  return listings.map((listing, index) => {
+  return listings.map((listing: any, index: number) => {
     const rentalPeriodSeed = Math.floor(Math.random() * 4);
     const availabilitySeed = Math.floor(Math.random() * 4);
     const priceString =

@@ -4,6 +4,8 @@ import {
   HeatingTypeEnum,
   SubdivisonTypeEnum,
 } from "../models/listings/apartment";
+import { USER_PROFILE_TABLE_NAME } from "../models/users/userProfile";
+import { ADDRESS_TABLE_NAME } from "../models/listings/address";
 
 exports.up = (knex: Knex) => {
   return knex.schema.createTable("apartment", (table) => {
@@ -12,14 +14,15 @@ exports.up = (knex: Knex) => {
     table
       .foreign("addressId")
       .references("id")
-      .inTable("address")
+      .inTable(ADDRESS_TABLE_NAME)
       .onDelete("CASCADE");
     table.uuid("ownerId").notNullable();
     table
       .foreign("ownerId")
       .references("id")
-      .inTable("user_basic_info")
+      .inTable(USER_PROFILE_TABLE_NAME)
       .onDelete("CASCADE");
+    table.integer("surface").notNullable();
     table.integer("noOfRooms").notNullable();
     table.integer("noOfBathrooms").notNullable();
     table.integer("noOfBalconies").notNullable();

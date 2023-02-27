@@ -1,1 +1,2 @@
-export * from './userBasicInfo';
+export * from "./userCredentials";
+export * from "./userProfile";
