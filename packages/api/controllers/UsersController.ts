@@ -22,12 +22,13 @@ export const loginUser = async (req: Request, res: Response) => {
       res.sendStatus(400);
       return;
     }
-    const getUserId = getUserIdFromAccessToken(userAccessToken);
-    const userInfo = getUserProfileByCredentialsId(getUserId);
+    const userId = getUserIdFromAccessToken(userAccessToken);
+    const userInfo = await getUserProfileByCredentialsId(userId);
     if (!userInfo) {
       res.sendStatus(400);
       return;
     }
+    console.log(userInfo);
     res.send(userInfo);
   } catch (err) {
     console.log(err);

@@ -13,7 +13,7 @@ export async function getUserCredentialsByUsername(
 ): Promise<DbUserCredentials | undefined> {
   return knex<DbUserCredentials>(USER_CREDENTIALS_TABLE_NAME)
     .select()
-    .where("email", username)
+    .where("username", username)
     .first();
 }
 

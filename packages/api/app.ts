@@ -30,9 +30,7 @@ const runSeeds = async () => {
   await Promise.all(listingSeed.map((listing) => storeListing(listing)));
 };
 
-(async () => runSeeds())().then(() => {
-  process.exit();
-});
+(async () => runSeeds())();
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
