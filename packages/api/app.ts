@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import { usersRouter } from "./routers";
+import { listingsRouter, usersRouter } from "./routers";
 import cors from "cors";
 import knex from "@packages/db/knex";
 import { APARTMENTS_TABLE_NAME } from "@packages/db/models/listings/apartment";
@@ -43,3 +43,4 @@ app.use(
 );
 app.use(express.json());
 app.use("/users", usersRouter);
+app.use("/listings", listingsRouter);

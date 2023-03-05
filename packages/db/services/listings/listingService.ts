@@ -5,6 +5,10 @@ export async function storeListing(listing: DbListing): Promise<DbListing> {
   return knex(LISTINGS_TABLE_NAME).insert(listing);
 }
 
+export async function getListings(): Promise<DbListing[]> {
+  return knex(LISTINGS_TABLE_NAME).select();
+}
+
 export async function getListingById(
   id: string
 ): Promise<DbListing | undefined> {

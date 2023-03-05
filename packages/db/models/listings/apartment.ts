@@ -1,5 +1,5 @@
 import { DbAddress } from "./address";
-import { DbUserProfile } from "../users/userProfile";
+import { DbUserProfile } from "../users";
 
 export const APARTMENTS_TABLE_NAME = "apartment";
 
@@ -37,7 +37,7 @@ export enum HeatingTypeEnum {
   Termoficare = "Termoficare",
 }
 
-interface DbApartmentRelations {
+export interface DbApartmentRelations {
   address: DbAddress;
   owner: DbUserProfile;
 }

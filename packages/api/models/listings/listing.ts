@@ -1,3 +1,6 @@
-import { DbListing } from "@packages/db/models/listings/listing";
+import {
+  DbListing,
+  DbListingRelations,
+} from "@packages/db/models/listings/listing";
 
-export type Listing = DbListing;
+export type Listing = DbListing & DbListingRelations;

@@ -13,6 +13,6 @@ export interface DbListing {
   availability?: string;
 }
 
-interface DbListingRelations {
+export interface DbListingRelations {
   apartment: DbApartment;
 }

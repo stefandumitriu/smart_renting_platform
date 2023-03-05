@@ -1,3 +1,6 @@
-import { DbApartment } from "@packages/db/models/listings/apartment";
+import {
+  DbApartment,
+  DbApartmentRelations,
+} from "@packages/db/models/listings/apartment";
 
-export type Apartment = DbApartment;
+export type Apartment = DbApartment & DbApartmentRelations;
