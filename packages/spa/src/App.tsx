@@ -4,6 +4,9 @@ import theme from "./theme";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MapPage from "./components/mapPage/MapPage";
 import ListingsPage from "./components/propertiesPage/ListingsPage";
+import PropertyPage from "./components/propertiesPage/PropertyPage";
+import listingsPageLoader from "./loaders/ListingsPageLoader";
+import propertyPageLoader from "./loaders/PropertyPageLoader";
 
 const router = createBrowserRouter([
   {
@@ -11,12 +14,23 @@ const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-    path: "/map",
+    path: "map",
     element: <MapPage />,
   },
   {
-    path: "/properties",
-    element: <ListingsPage />,
+    path: "properties",
+    children: [
+      {
+        index: true,
+        element: <ListingsPage />,
+        loader: listingsPageLoader,
+      },
+      {
+        path: ":id",
+        element: <PropertyPage />,
+        loader: propertyPageLoader,
+      },
+    ],
   },
 ]);
 function App() {

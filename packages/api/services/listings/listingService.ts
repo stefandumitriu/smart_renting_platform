@@ -2,6 +2,7 @@ import { Listing } from "../../models/listings/listing";
 import {
   getAddressById,
   getApartmentById,
+  getListingById,
   getListings,
   getUserProfileById,
 } from "@packages/db/services";
@@ -34,4 +35,32 @@ export async function getAllListings(): Promise<Listing[]> {
       };
     })
   );
+}
+
+export async function getListing(id: string): Promise<Listing> {
+  const dbListing = await getListingById(id);
+  if (!dbListing) {
+    throw new Error(`Listing ${id} not found`);
+  }
+  const dbApartment = await getApartmentById(dbListing.apartmentId);
+  if (!dbApartment) {
+    throw new Error(`${dbListing.id}: Apartment not found`);
+  }
+  const address = await getAddressById(dbApartment.addressId);
+  const owner = await getUserProfileById(dbApartment.ownerId);
+  if (!address) {
+    throw new Error(`${dbListing.id}: Address not found`);
+  }
+  if (!owner) {
+    throw new Error(`${dbListing.id}: Owner not found`);
+  }
+  const apartment: Apartment = {
+    ...dbApartment,
+    address,
+    owner,
+  };
+  return {
+    ...dbListing,
+    apartment,
+  };
 }

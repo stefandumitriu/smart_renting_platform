@@ -8,12 +8,12 @@ import {
   Pagination,
   Typography,
 } from "@mui/material";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Listing } from "@packages/api/models/listings/listing";
-import { GetListingsRequest } from "../../requests/ListingsRequests";
+import { Link, useLoaderData } from "react-router-dom";
 
 const ListingsPage: React.FC<{}> = () => {
-  const [listings, setListings] = useState<Listing[]>([]);
+  const listings = useLoaderData() as Listing[];
   const [page, setPage] = useState<number>(1);
 
   const displayedListings = useMemo(() => {
@@ -32,14 +32,6 @@ const ListingsPage: React.FC<{}> = () => {
     [setPage]
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      return GetListingsRequest();
-    };
-
-    fetchData().then((data) => setListings(data));
-  }, []);
-
   return (
     <Layout>
       <Grid item>
@@ -53,7 +45,10 @@ const ListingsPage: React.FC<{}> = () => {
                       borderRadius: "12px",
                     }}
                   >
-                    <CardActionArea>
+                    <CardActionArea
+                      component={Link}
+                      to={`${listing.id}`.toString()}
+                    >
                       <Grid container spacing={2}>
                         <Grid item xs={4}>
                           <CardMedia
