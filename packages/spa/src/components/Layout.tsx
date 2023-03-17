@@ -37,6 +37,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         zIndex={100}
         mt={1}
         sx={{ backgroundColor: theme.palette.primary.main }}
+        paddingY={2}
+        borderBottom={2}
+        borderColor={theme.palette.secondary.main}
       >
         <Grid item my="auto">
           <Link to={"/"}>

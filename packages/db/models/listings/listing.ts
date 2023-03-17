@@ -1,5 +1,3 @@
-import { DbApartment } from "./apartment";
-
 export const LISTINGS_TABLE_NAME = "listing";
 
 export interface DbListing {
@@ -11,8 +9,4 @@ export interface DbListing {
   price: number;
   rentalPeriod?: string;
   availability?: string;
-}
-
-export interface DbListingRelations {
-  apartment: DbApartment;
 }

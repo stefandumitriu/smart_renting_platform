@@ -35,7 +35,7 @@ const router = createBrowserRouter([
 ]);
 function App() {
   return (
-    <div style={{ height: "100vh" }}>
+    <div>
       <ThemeProvider theme={theme}>
         <RouterProvider router={router} />
       </ThemeProvider>

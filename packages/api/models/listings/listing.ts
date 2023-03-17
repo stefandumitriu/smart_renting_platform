@@ -1,6 +1,8 @@
-import {
-  DbListing,
-  DbListingRelations,
-} from "@packages/db/models/listings/listing";
+import { DbListing } from "@packages/db/models/listings/listing";
+import { Apartment } from "./apartment";
 
-export type Listing = DbListing & DbListingRelations;
+export interface ListingRelations {
+  apartment: Apartment;
+}
+
+export type Listing = DbListing & ListingRelations;
