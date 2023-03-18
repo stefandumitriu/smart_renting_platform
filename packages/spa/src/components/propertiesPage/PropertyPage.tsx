@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Layout from "../Layout";
 import {
   Avatar,
@@ -6,21 +6,37 @@ import {
   Button,
   Divider,
   Grid,
+  IconButton,
   MobileStepper,
   Paper,
+  Rating,
+  styled,
   Typography,
   useTheme,
 } from "@mui/material";
 import { useLoaderData } from "react-router-dom";
 import { Listing } from "@packages/api/models/listings/listing";
 import SwipeableViews from "react-swipeable-views";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import {
+  FavoriteBorderOutlined,
+  FavoriteOutlined,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+} from "@mui/icons-material";
 import { deepOrange } from "@mui/material/colors";
-import StarOutlineIcon from "@mui/icons-material/StarOutline";
 
 const PropertyPage: React.FC<{}> = () => {
   const params = useLoaderData() as Listing;
   const theme = useTheme();
+  const StyledRating = styled(Rating)({
+    "& .MuiRating-iconFilled": {
+      color: `${theme.palette.secondary.main}`,
+    },
+    "& .MuiRating-iconHover": {
+      color: `${theme.palette.secondary.main}`,
+    },
+  });
+
   const { address } = params.apartment;
   const ownerName = useMemo(() => {
     return `${params.apartment.owner.firstName} ${params.apartment.owner.lastName}`;
@@ -33,7 +49,12 @@ const PropertyPage: React.FC<{}> = () => {
     "https://riceandroman.azureedge.net/prop-1464/1464-1.jpg",
   ];
   const [activeImage, setActiveImage] = useState(0);
+  const [isFavourite, setIsFavourite] = useState(false);
   const noOfImages = images.length;
+
+  const handleFavouriteButtonChange = useCallback(() => {
+    setIsFavourite(!isFavourite);
+  }, [isFavourite]);
 
   const handleNext = () => {
     setActiveImage(activeImage + 1);
@@ -51,8 +72,28 @@ const PropertyPage: React.FC<{}> = () => {
     <Layout>
       <Grid item sx={{ width: "100%" }}>
         <Grid item container xs={8} marginX="auto">
-          <Grid item xs={12} marginTop={2}>
-            <Typography variant="h5">{params.title}</Typography>
+          <Grid
+            item
+            container
+            xs={12}
+            marginTop={2}
+            justifyContent="space-between"
+          >
+            <Grid item xs={10}>
+              <Typography variant="h5">{params.title}</Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <IconButton
+                color="secondary"
+                onClick={handleFavouriteButtonChange}
+              >
+                {isFavourite ? (
+                  <FavoriteOutlined />
+                ) : (
+                  <FavoriteBorderOutlined />
+                )}
+              </IconButton>
+            </Grid>
           </Grid>
           <Grid item xs={12} marginTop={2}>
             <Typography
@@ -169,16 +210,22 @@ const PropertyPage: React.FC<{}> = () => {
                       justifyContent="center"
                       spacing={1}
                     >
-                      <Grid item>
+                      <Grid item xs={12}>
                         <Typography
                           fontWeight="bolder"
                           color={theme.palette.secondary.main}
+                          textAlign="center"
                         >
-                          0.0 / 5.0
+                          Rating
                         </Typography>
                       </Grid>
-                      <Grid item>
-                        <StarOutlineIcon color="secondary" />
+                      <Grid item xs={12}>
+                        <StyledRating
+                          defaultValue={2.5}
+                          precision={0.5}
+                          size="small"
+                          readOnly
+                        />
                       </Grid>
                     </Grid>
                   </Grid>
@@ -364,7 +411,7 @@ const PropertyPage: React.FC<{}> = () => {
                 </Grid>
                 <Grid item container xs={12} justifyContent="space-between">
                   <Grid item xs={4}>
-                    <Typography>Aer conditionat</Typography>
+                    <Typography>A.C.</Typography>
                   </Grid>
                   <Grid item container xs={4} justifyContent="end">
                     <Typography fontWeight="bold">
@@ -399,7 +446,7 @@ const PropertyPage: React.FC<{}> = () => {
                 </Grid>
                 <Grid item container xs={12} justifyContent="space-between">
                   <Grid item xs={4}>
-                    <Typography>Tip proprietate</Typography>
+                    <Typography>Cladire</Typography>
                   </Grid>
                   <Grid item container xs={8} justifyContent="end">
                     <Typography fontWeight="bold">
