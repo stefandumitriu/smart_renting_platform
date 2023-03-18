@@ -7,6 +7,9 @@ import ListingsPage from "./components/propertiesPage/ListingsPage";
 import PropertyPage from "./components/propertiesPage/PropertyPage";
 import listingsPageLoader from "./loaders/ListingsPageLoader";
 import propertyPageLoader from "./loaders/PropertyPageLoader";
+import { AuthContext } from "./contexts/AuthContext";
+import { useState } from "react";
+import { UserProfile } from "@packages/api/models/users/userProfile";
 
 const router = createBrowserRouter([
   {
@@ -34,12 +37,17 @@ const router = createBrowserRouter([
   },
 ]);
 function App() {
+  const [currentUser, setCurrentUser] = useState<UserProfile | undefined>(
+    undefined
+  );
+
+  const authContextValue = { currentUser, setCurrentUser };
   return (
-    <div>
+    <AuthContext.Provider value={authContextValue}>
       <ThemeProvider theme={theme}>
         <RouterProvider router={router} />
       </ThemeProvider>
-    </div>
+    </AuthContext.Provider>
   );
 }
 

@@ -1,8 +1,9 @@
-import React, { ReactNode, useCallback, useState } from "react";
+import React, { ReactNode, useCallback, useContext, useState } from "react";
 import { Button, Grid, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import UserLoginModal from "./landingPage/UserLoginModal";
+import { AuthContext } from "../contexts/AuthContext";
 
 interface LayoutProps {
   children?: ReactNode;
@@ -11,6 +12,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const theme = useTheme();
   const [openLogin, setOpenLogin] = useState(false);
+  const { currentUser } = useContext(AuthContext);
 
   const handleLoginOpen = useCallback(() => {
     setOpenLogin(true);
@@ -83,6 +85,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Grid item>
           <IconButton color="secondary" onClick={handleLoginOpen}>
             <AccountCircleOutlinedIcon />
+            {currentUser && `${currentUser.firstName} ${currentUser.lastName}`}
           </IconButton>
         </Grid>
       </Grid>
