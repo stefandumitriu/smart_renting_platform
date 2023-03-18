@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Layout from "../Layout";
 import {
   Avatar,
@@ -51,6 +51,10 @@ const PropertyPage: React.FC<{}> = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [isFavourite, setIsFavourite] = useState(false);
   const noOfImages = images.length;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleFavouriteButtonChange = useCallback(() => {
     setIsFavourite(!isFavourite);

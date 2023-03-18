@@ -15,7 +15,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Listing } from "@packages/api/models/listings/listing";
 import { Link, useLoaderData } from "react-router-dom";
 import { Clear } from "@mui/icons-material";
@@ -31,6 +31,10 @@ const ListingsPage: React.FC<{}> = () => {
   const [minSurface, setMinSurface] = useState(0);
   const [maxSurface, setMaxSurface] = useState(0);
   const [subdivisionType, setSubdivisionType] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleNoOfRoomsFilterChange = useCallback(
     (event: SelectChangeEvent<number>) => {

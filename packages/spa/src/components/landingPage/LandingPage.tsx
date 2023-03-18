@@ -1,17 +1,17 @@
 import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
   Grid,
   IconButton,
   InputAdornment,
   OutlinedInput,
+  Paper,
+  Stack,
   Typography,
   useTheme,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Layout from "../Layout";
+import { ListAlt, Map } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 export default function LandingPage() {
   const theme = useTheme();
@@ -22,7 +22,7 @@ export default function LandingPage() {
           item
           container
           sx={{
-            height: "60vh",
+            height: "40vh",
             width: "100%",
             color: theme.palette.primary.main,
           }}
@@ -52,65 +52,60 @@ export default function LandingPage() {
         container
         justifyContent="space-around"
         alignContent="center"
-        sx={{ height: "40vh" }}
+        sx={{ height: "60vh" }}
       >
-        <Grid item xs={3}>
-          <Card>
-            <CardContent>
-              <Typography align="center">
-                Looking for a rent? Browse through our large properties database
-                and find the perfect match for you!
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                variant="outlined"
-                color="secondary"
-                sx={{ marginX: "auto" }}
+        <Grid item xs={5} sx={{ height: "80%" }}>
+          <Link to={"/properties"} style={{ textDecoration: "none" }}>
+            <Paper
+              elevation={5}
+              sx={{
+                height: "100%",
+                ":hover": {
+                  boxShadow: 20,
+                },
+              }}
+            >
+              <Stack
+                spacing={2}
+                alignItems="center"
+                sx={{ height: "100%" }}
+                justifyContent="center"
               >
-                Search properties
-              </Button>
-            </CardActions>
-          </Card>
+                <ListAlt
+                  color="secondary"
+                  sx={{ height: "50%", width: "50%" }}
+                />
+                <Typography color={theme.palette.secondary.main} variant="h5">
+                  Search Properties
+                </Typography>
+              </Stack>
+            </Paper>
+          </Link>
         </Grid>
-        <Grid item xs={3}>
-          <Card>
-            <CardContent>
-              <Typography align="center">
-                Want to rent your property fast and keep track of all
-                applicants? Use our intuitive and secure platform to keep it
-                clean!
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                variant="outlined"
-                color="secondary"
-                sx={{ marginX: "auto" }}
+        <Grid item xs={5} sx={{ height: "80%" }}>
+          <Link to={"/map"} style={{ textDecoration: "none" }}>
+            <Paper
+              elevation={5}
+              sx={{
+                height: "100%",
+                ":hover": {
+                  boxShadow: 20,
+                },
+              }}
+            >
+              <Stack
+                spacing={2}
+                alignItems="center"
+                sx={{ height: "100%" }}
+                justifyContent="center"
               >
-                List a property
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
-        <Grid item xs={3}>
-          <Card>
-            <CardContent>
-              <Typography align="center">
-                Not sure about the price/area ratio you're ok with? Visualize it
-                using our map and check every apartment surroundings
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                variant="outlined"
-                color="secondary"
-                sx={{ marginX: "auto" }}
-              >
-                Show map
-              </Button>
-            </CardActions>
-          </Card>
+                <Map color="secondary" sx={{ height: "50%", width: "50%" }} />
+                <Typography color={theme.palette.secondary.main} variant="h5">
+                  Show Map
+                </Typography>
+              </Stack>
+            </Paper>
+          </Link>
         </Grid>
       </Grid>
     </Layout>
