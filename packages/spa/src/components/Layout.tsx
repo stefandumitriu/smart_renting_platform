@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useContext, useState } from "react";
 import { Button, Grid, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import UserLoginModal from "./landingPage/UserLoginModal";
 import { AuthContext } from "../contexts/AuthContext";
@@ -13,6 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const theme = useTheme();
   const [openLogin, setOpenLogin] = useState(false);
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLoginOpen = useCallback(() => {
     setOpenLogin(true);
@@ -54,7 +55,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Grid item marginRight={10}>
           <Button
             color="secondary"
-            onClick={handleLoginOpen}
+            onClick={
+              currentUser
+                ? () => {
+                    navigate("/user/dashboard");
+                  }
+                : handleLoginOpen
+            }
             startIcon={<AccountCircleOutlinedIcon />}
           >
             {currentUser && `${currentUser.firstName} ${currentUser.lastName}`}
