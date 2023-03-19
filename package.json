@@ -10,7 +10,7 @@
     "build": "yarn workspaces foreach -p -v -i run build",
     "clean": "yarn workspaces foreach -p -v -i run clean",
     "dev": "yarn workspaces foreach -p -v -i run start",
-    "seed": "cd packages/db && tsc index.ts && node index.js"
+    "seed": "cd packages/api && yarn seed"
   },
   "workspaces": [
     "packages/*"

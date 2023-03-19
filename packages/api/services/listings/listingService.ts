@@ -7,6 +7,7 @@ import {
   getUserProfileById,
 } from "@packages/db/services";
 import { Apartment } from "../../models/listings/apartment";
+import { convertDbUserProfileToAPIUserProfile } from "../../convertors/users/userProfile";
 
 export async function getAllListings(): Promise<Listing[]> {
   const dbListings = await getListings();
@@ -27,7 +28,7 @@ export async function getAllListings(): Promise<Listing[]> {
       const apartment: Apartment = {
         ...dbApartment,
         address,
-        owner,
+        owner: convertDbUserProfileToAPIUserProfile(owner),
       };
       return {
         ...listing,
@@ -57,7 +58,7 @@ export async function getListing(id: string): Promise<Listing> {
   const apartment: Apartment = {
     ...dbApartment,
     address,
-    owner,
+    owner: convertDbUserProfileToAPIUserProfile(owner),
   };
   return {
     ...dbListing,

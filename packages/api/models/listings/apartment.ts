@@ -1,10 +1,10 @@
 import { DbApartment } from "@packages/db/models/listings/apartment";
-import { DbAddress } from "@packages/db/models/listings/address";
-import { DbUserProfile } from "@packages/db/models/users/userProfile";
+import { UserProfile } from "../users/userProfile";
+import { Address } from "./address";
 
 export interface ApartmentRelations {
-  address: DbAddress;
-  owner: DbUserProfile;
+  address: Address;
+  owner: UserProfile;
 }
 
 export type Apartment = DbApartment & ApartmentRelations;
