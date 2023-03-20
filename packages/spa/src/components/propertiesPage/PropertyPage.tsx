@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Layout from "../Layout";
 import {
   Avatar,
@@ -24,9 +30,16 @@ import {
   KeyboardArrowRight,
 } from "@mui/icons-material";
 import { deepOrange } from "@mui/material/colors";
+import { AuthContext } from "../../contexts/AuthContext";
+import {
+  CreateFavouriteListingRequest,
+  DeleteFavouriteListingRequest,
+} from "../../requests/ListingsRequests";
+import { FavouriteListing } from "@packages/api/models/listings/favouriteListing";
 
 const PropertyPage: React.FC<{}> = () => {
   const params = useLoaderData() as Listing;
+  const { currentUser } = useContext(AuthContext);
   const theme = useTheme();
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
@@ -50,15 +63,32 @@ const PropertyPage: React.FC<{}> = () => {
   ];
   const [activeImage, setActiveImage] = useState(0);
   const [isFavourite, setIsFavourite] = useState(false);
+  const [favouriteListing, setFavouriteListing] = useState<
+    FavouriteListing | undefined
+  >(undefined);
   const noOfImages = images.length;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleFavouriteButtonChange = useCallback(() => {
+  const handleFavouriteButtonChange = useCallback(async () => {
+    if (!isFavourite) {
+      if (currentUser) {
+        const apiFavouriteListing = await CreateFavouriteListingRequest(
+          params.id,
+          currentUser.id
+        );
+        setFavouriteListing(apiFavouriteListing);
+      }
+    } else {
+      if (favouriteListing) {
+        const status = await DeleteFavouriteListingRequest(favouriteListing.id);
+        console.log(status);
+      }
+    }
     setIsFavourite(!isFavourite);
-  }, [isFavourite]);
+  }, [isFavourite, favouriteListing, params, currentUser]);
 
   const handleNext = () => {
     setActiveImage(activeImage + 1);
