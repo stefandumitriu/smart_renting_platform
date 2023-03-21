@@ -7,6 +7,7 @@ import {
   Favorite,
   FormatListBulleted,
 } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const UserTenantDashboard: React.FC<{}> = () => {
   const theme = useTheme();
@@ -21,30 +22,35 @@ const UserTenantDashboard: React.FC<{}> = () => {
       >
         <Grid item container xs={12} justifyContent="space-evenly">
           <Grid item xs={4}>
-            <Paper
-              elevation={5}
-              sx={{
-                height: "100%",
-                ":hover": {
-                  boxShadow: 20,
-                },
-              }}
+            <Link
+              to={"/user/dashboard/tenant/favourite-listings"}
+              style={{ textDecoration: "none" }}
             >
-              <Stack
-                spacing={2}
-                alignItems="center"
-                sx={{ height: "100%" }}
-                justifyContent="center"
+              <Paper
+                elevation={5}
+                sx={{
+                  height: "100%",
+                  ":hover": {
+                    boxShadow: 20,
+                  },
+                }}
               >
-                <Favorite
-                  color="secondary"
-                  sx={{ height: "50%", width: "50%" }}
-                />
-                <Typography color={theme.palette.secondary.main} variant="h5">
-                  Anunturi favorite
-                </Typography>
-              </Stack>
-            </Paper>
+                <Stack
+                  spacing={2}
+                  alignItems="center"
+                  sx={{ height: "100%" }}
+                  justifyContent="center"
+                >
+                  <Favorite
+                    color="secondary"
+                    sx={{ height: "50%", width: "50%" }}
+                  />
+                  <Typography color={theme.palette.secondary.main} variant="h5">
+                    Anunturi favorite
+                  </Typography>
+                </Stack>
+              </Paper>
+            </Link>
           </Grid>
           <Grid item xs={4}>
             <Paper

@@ -17,6 +17,13 @@ export const GetListingByIdRequest = async (id: string) => {
   return axiosResponse.data as Listing;
 };
 
+export const GetUserFavouriteListingsRequest = async (userId: string) => {
+  const axiosResponse = await axiosBaseInstance.get(
+    `${FAVOURITE_LISTINGS_PATH}?userId=${userId}`
+  );
+  return axiosResponse.data as FavouriteListing[];
+};
+
 export const CreateFavouriteListingRequest = async (
   listingId: string,
   userId: string

@@ -34,6 +34,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import {
   CreateFavouriteListingRequest,
   DeleteFavouriteListingRequest,
+  GetUserFavouriteListingsRequest,
 } from "../../requests/ListingsRequests";
 import { FavouriteListing } from "@packages/api/models/listings/favouriteListing";
 
@@ -41,6 +42,26 @@ const PropertyPage: React.FC<{}> = () => {
   const params = useLoaderData() as Listing;
   const { currentUser } = useContext(AuthContext);
   const theme = useTheme();
+  const [initialFavouriteListing, setInitialFavouriteListing] = useState<
+    FavouriteListing | undefined
+  >(undefined);
+  const fetchFn = useCallback(async () => {
+    if (!currentUser) {
+      return undefined;
+    }
+    const userFavouriteListings = await GetUserFavouriteListingsRequest(
+      currentUser.id
+    );
+    return userFavouriteListings.find((e) => e.listingId === params.id);
+  }, [currentUser, params]);
+  useEffect(() => {
+    fetchFn().then((data) => setInitialFavouriteListing(data));
+  }, [fetchFn]);
+  useEffect(() => {
+    setIsFavourite(!!initialFavouriteListing);
+    setFavouriteListing(initialFavouriteListing);
+  }, [initialFavouriteListing]);
+
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
       color: `${theme.palette.secondary.main}`,
@@ -61,6 +82,7 @@ const PropertyPage: React.FC<{}> = () => {
     "https://www.franklinsapartments.com/img/Apt6c.jpg",
     "https://riceandroman.azureedge.net/prop-1464/1464-1.jpg",
   ];
+
   const [activeImage, setActiveImage] = useState(0);
   const [isFavourite, setIsFavourite] = useState(false);
   const [favouriteListing, setFavouriteListing] = useState<
@@ -83,8 +105,7 @@ const PropertyPage: React.FC<{}> = () => {
       }
     } else {
       if (favouriteListing) {
-        const status = await DeleteFavouriteListingRequest(favouriteListing.id);
-        console.log(status);
+        await DeleteFavouriteListingRequest(favouriteListing.id);
       }
     }
     setIsFavourite(!isFavourite);

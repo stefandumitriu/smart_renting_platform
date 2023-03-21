@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { UserProfile } from "@packages/api/models/users/userProfile";
 import UserHomeDashboard from "./components/userSpace/UserHomeDashboard";
 import UserTenantDashboard from "./components/userSpace/UserTenantDashboard";
+import UserFavouriteListings from "./components/userSpace/UserFavouriteListings";
 
 const router = createBrowserRouter([
   {
@@ -49,7 +50,16 @@ const router = createBrowserRouter([
           },
           {
             path: "tenant",
-            element: <UserTenantDashboard />,
+            children: [
+              {
+                index: true,
+                element: <UserTenantDashboard />,
+              },
+              {
+                path: "favourite-listings",
+                element: <UserFavouriteListings />,
+              },
+            ],
           },
         ],
       },
