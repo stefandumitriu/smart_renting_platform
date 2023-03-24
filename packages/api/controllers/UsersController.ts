@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { createNewUser, getUserToken } from "../services/users/userService";
 import { getUserIdFromAccessToken } from "../authentication/tokenAuthentication";
-import { getUserProfileByCredentialsId } from "@packages/db/services";
+import {
+  getUserCredentialsById,
+  getUserProfileByCredentialsId,
+} from "@packages/db/services";
 
 export const signUpUser = async (req: Request, res: Response) => {
   try {
@@ -32,5 +35,20 @@ export const loginUser = async (req: Request, res: Response) => {
     res.send(userInfo);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const getUserEmailById = async (req: Request, res: Response) => {
+  try {
+    const userCredentials = await getUserCredentialsById(
+      req.params.id as string
+    );
+    if (!userCredentials) {
+      res.sendStatus(404);
+      return;
+    }
+    res.send(userCredentials.username);
+  } catch (e) {
+    console.log(e);
   }
 };

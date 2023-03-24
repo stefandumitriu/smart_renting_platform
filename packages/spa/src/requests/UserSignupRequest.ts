@@ -5,6 +5,7 @@ import { UserProfile } from "@packages/api/models/users/userProfile";
 
 const USER_SIGNUP_PATH = "/users/signup";
 const USER_LOGIN_PATH = "/users/login";
+const USERS_PATH = "/users";
 
 export const UserSignupRequest = (values: SignupFormValues) => {
   axiosBaseInstance
@@ -23,4 +24,12 @@ export const UserLoginRequest: (
       },
     })
     .then((res) => Promise.resolve(res.data));
+};
+
+export const GetUserEmailRequest: (
+  userCredentialsId: string
+) => Promise<string> = async (userCredentialsId: string) => {
+  return axiosBaseInstance
+    .get(`${USERS_PATH}/${userCredentialsId}`)
+    .then((res) => Promise.resolve(res.data as string));
 };

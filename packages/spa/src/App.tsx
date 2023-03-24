@@ -8,11 +8,13 @@ import PropertyPage from "./components/propertiesPage/PropertyPage";
 import listingsPageLoader from "./loaders/ListingsPageLoader";
 import propertyPageLoader from "./loaders/PropertyPageLoader";
 import { AuthContext } from "./contexts/AuthContext";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { UserProfile } from "@packages/api/models/users/userProfile";
 import UserHomeDashboard from "./components/userSpace/UserHomeDashboard";
 import UserTenantDashboard from "./components/userSpace/UserTenantDashboard";
 import UserFavouriteListings from "./components/userSpace/UserFavouriteListings";
+import { OnComponentInitContext } from "./contexts/OnComponentInitContext";
+import UserSettings from "./components/userSpace/UserSettings";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +63,10 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: "settings",
+            element: <UserSettings />,
+          },
         ],
       },
     ],
@@ -70,6 +76,10 @@ function App() {
   const [currentUser, setCurrentUser] = useState<UserProfile | undefined>(
     undefined
   );
+
+  const onInit = useCallback(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const cachedUser = localStorage["currentUser"];
@@ -88,7 +98,9 @@ function App() {
   return (
     <AuthContext.Provider value={authContextValue}>
       <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
+        <OnComponentInitContext.Provider value={onInit}>
+          <RouterProvider router={router} />
+        </OnComponentInitContext.Provider>
       </ThemeProvider>
     </AuthContext.Provider>
   );

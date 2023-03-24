@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 const UserTenantDashboard: React.FC<{}> = () => {
   const theme = useTheme();
   return (
-    <Layout>
+    <Layout pageTitle="Dashboard chirias">
       <Grid
         item
         container

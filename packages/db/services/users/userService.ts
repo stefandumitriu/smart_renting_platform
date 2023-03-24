@@ -17,6 +17,15 @@ export async function getUserCredentialsByUsername(
     .first();
 }
 
+export async function getUserCredentialsById(
+  id: string
+): Promise<DbUserCredentials | undefined> {
+  return knex<DbUserCredentials>(USER_CREDENTIALS_TABLE_NAME)
+    .select()
+    .where({ id })
+    .first();
+}
+
 export async function createUserProfile(
   userProfile: DbUserProfile
 ): Promise<string> {
