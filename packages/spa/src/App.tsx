@@ -15,6 +15,8 @@ import UserTenantDashboard from "./components/userSpace/UserTenantDashboard";
 import UserFavouriteListings from "./components/userSpace/UserFavouriteListings";
 import { OnComponentInitContext } from "./contexts/OnComponentInitContext";
 import UserSettings from "./components/userSpace/UserSettings";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 const router = createBrowserRouter([
   {
@@ -97,11 +99,13 @@ function App() {
   const authContextValue = { currentUser, setCurrentUser };
   return (
     <AuthContext.Provider value={authContextValue}>
-      <ThemeProvider theme={theme}>
-        <OnComponentInitContext.Provider value={onInit}>
-          <RouterProvider router={router} />
-        </OnComponentInitContext.Provider>
-      </ThemeProvider>
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <ThemeProvider theme={theme}>
+          <OnComponentInitContext.Provider value={onInit}>
+            <RouterProvider router={router} />
+          </OnComponentInitContext.Provider>
+        </ThemeProvider>
+      </LocalizationProvider>
     </AuthContext.Provider>
   );
 }

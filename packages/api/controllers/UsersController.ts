@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { createNewUser, getUserToken } from "../services/users/userService";
+import {
+  createNewUser,
+  getUserToken,
+  updateUser,
+} from "../services/users/userService";
 import { getUserIdFromAccessToken } from "../authentication/tokenAuthentication";
 import {
   getUserCredentialsById,
@@ -11,7 +15,7 @@ export const signUpUser = async (req: Request, res: Response) => {
     const newUserId = await createNewUser(req.body);
     res.send(newUserId);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -34,7 +38,7 @@ export const loginUser = async (req: Request, res: Response) => {
     console.log(userInfo);
     res.send(userInfo);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -49,6 +53,15 @@ export const getUserEmailById = async (req: Request, res: Response) => {
     }
     res.send(userCredentials.username);
   } catch (e) {
-    console.log(e);
+    console.error(e);
+  }
+};
+
+export const patchUserProfile = async (req: Request, res: Response) => {
+  try {
+    const updatedUserProfile = await updateUser(req.params.id, req.body);
+    res.send(updatedUserProfile);
+  } catch (e) {
+    console.error(e);
   }
 };

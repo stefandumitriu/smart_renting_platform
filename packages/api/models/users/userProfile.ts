@@ -1,6 +1,6 @@
 import { DbUserProfile } from "@packages/db/models/users/userProfile";
-import { Dayjs } from "dayjs";
+import { Moment } from "moment";
 
 export type UserProfile = Omit<DbUserProfile, "dateOfBirth"> & {
-  dateOfBirth?: Dayjs;
+  dateOfBirth?: Moment;
 };

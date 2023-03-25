@@ -3,11 +3,18 @@ import {
   createUserCredentials,
   createUserProfile,
   getUserCredentialsByUsername,
+  updateUserProfile,
 } from "@packages/db/services/users/userService";
 import bcrypt from "bcrypt";
 import { convertAPIUserSignupInfoToDbUserCredentials } from "../../convertors/users/userCredentials";
-import { convertAPIUserSignupInfoToDbUserProfile } from "../../convertors/users/userProfile";
+import {
+  convertAPIUserProfileToDbUserProfile,
+  convertAPIUserSignupInfoToDbUserProfile,
+  convertDbUserProfileToAPIUserProfile,
+} from "../../convertors/users/userProfile";
 import { generateAccessToken } from "../../authentication/tokenAuthentication";
+import { UserProfile } from "../../models/users/userProfile";
+import { DbUserProfile } from "@packages/db";
 
 export async function createNewUser(body: UserSignUpInfo): Promise<string> {
   const dbUserCredentials = await convertAPIUserSignupInfoToDbUserCredentials(
@@ -37,4 +44,18 @@ export async function getUserToken(
     return generateAccessToken(userCredentials.id);
   }
   return undefined;
+}
+
+export async function updateUser(
+  id: string,
+  userProfile: Omit<UserProfile, "id">
+): Promise<UserProfile> {
+  const updatedUserProfile = await updateUserProfile(
+    id,
+    convertAPIUserProfileToDbUserProfile(userProfile)
+  );
+  if (!updatedUserProfile) {
+    throw new Error("Error on db update");
+  }
+  return convertDbUserProfileToAPIUserProfile(updatedUserProfile);
 }

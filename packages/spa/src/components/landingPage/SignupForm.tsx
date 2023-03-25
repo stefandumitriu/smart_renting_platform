@@ -35,7 +35,7 @@ const SignupSchema = Yup.object().shape({
   ),
 });
 
-const StyledTextField = styled(TextField)(() => ({
+export const StyledTextField = styled(TextField)(() => ({
   "& fieldset": {
     borderRadius: "10px",
   },

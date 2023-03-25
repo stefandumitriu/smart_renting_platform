@@ -49,3 +49,16 @@ export async function getUserProfileByCredentialsId(
     .where("userId", userId)
     .first();
 }
+
+export async function updateUserProfile(
+  id: string,
+  userProfile: Partial<DbUserProfile>
+): Promise<DbUserProfile | undefined> {
+  await knex<DbUserProfile>(USER_PROFILE_TABLE_NAME)
+    .where({ id })
+    .update(userProfile);
+  return knex<DbUserProfile>(USER_PROFILE_TABLE_NAME)
+    .select()
+    .where({ id })
+    .first();
+}

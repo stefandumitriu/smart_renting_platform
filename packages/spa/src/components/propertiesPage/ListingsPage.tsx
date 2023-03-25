@@ -124,7 +124,7 @@ const ListingsPage: React.FC<{}> = () => {
 
   return (
     <Layout>
-      <Grid item container xs={12}>
+      <Grid item container xs={12} sx={{ minHeight: "100vh" }}>
         <Grid item container xs={12}>
           <Grid item container xs={8}>
             {displayedListings.map((listing) => {

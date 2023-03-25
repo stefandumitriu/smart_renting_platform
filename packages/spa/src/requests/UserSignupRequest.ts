@@ -33,3 +33,12 @@ export const GetUserEmailRequest: (
     .get(`${USERS_PATH}/${userCredentialsId}`)
     .then((res) => Promise.resolve(res.data as string));
 };
+
+export const UpdateUserProfileRequest: (
+  id: string,
+  userProfile: Partial<Omit<UserProfile, "id">>
+) => Promise<UserProfile> = async (id, userProfile) => {
+  return axiosBaseInstance
+    .patch(`${USERS_PATH}/profile/${id}`, userProfile)
+    .then((res) => Promise.resolve(res.data as UserProfile));
+};
