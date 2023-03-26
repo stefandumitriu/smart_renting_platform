@@ -54,30 +54,32 @@ const UserHomeDashboard: React.FC<{}> = () => {
             </Link>
           </Grid>
           <Grid item xs={3}>
-            <Paper
-              elevation={5}
-              sx={{
-                height: "100%",
-                ":hover": {
-                  boxShadow: 20,
-                },
-              }}
-            >
-              <Stack
-                spacing={2}
-                alignItems="center"
-                sx={{ height: "100%" }}
-                justifyContent="center"
+            <Link to={"landlord"} style={{ textDecoration: "none" }}>
+              <Paper
+                elevation={5}
+                sx={{
+                  height: "100%",
+                  ":hover": {
+                    boxShadow: 20,
+                  },
+                }}
               >
-                <Business
-                  color="secondary"
-                  sx={{ height: "50%", width: "50%" }}
-                />
-                <Typography color={theme.palette.secondary.main} variant="h5">
-                  Dashboard Proprietar
-                </Typography>
-              </Stack>
-            </Paper>
+                <Stack
+                  spacing={2}
+                  alignItems="center"
+                  sx={{ height: "100%" }}
+                  justifyContent="center"
+                >
+                  <Business
+                    color="secondary"
+                    sx={{ height: "50%", width: "50%" }}
+                  />
+                  <Typography color={theme.palette.secondary.main} variant="h5">
+                    Dashboard Proprietar
+                  </Typography>
+                </Stack>
+              </Paper>
+            </Link>
           </Grid>
           <Grid item xs={3}>
             <Link to={"settings"} style={{ textDecoration: "none" }}>
