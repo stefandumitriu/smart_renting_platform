@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  createApplication,
   createFavouriteListing,
   deleteFavouriteListingById,
   getFavouriteListingsForUser,
@@ -14,5 +15,6 @@ listingsRouter.get("/favourite-listing", getFavouriteListingsForUser);
 listingsRouter.get("/:id", getListingById);
 listingsRouter.post("/favourite-listing", createFavouriteListing);
 listingsRouter.delete("/favourite-listing/:id", deleteFavouriteListingById);
+listingsRouter.post("/applications", createApplication);
 
 export default listingsRouter;

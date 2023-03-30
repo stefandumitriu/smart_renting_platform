@@ -8,6 +8,8 @@ import {
   getUserFavouriteListing,
 } from "../services/listings/favouriteListingService";
 import { deleteFavouriteListing } from "@packages/db/services/listings/favouriteListingService";
+import { createNewApplication } from "../services/listings/applicationService";
+import { NewApplication } from "../models/listings/application";
 
 export const getListings = async (req: Request, res: Response) => {
   try {
@@ -64,6 +66,18 @@ export const deleteFavouriteListingById = async (
     }
     await deleteFavouriteListing(req.params.id as string);
     res.sendStatus(204);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(400);
+  }
+};
+
+export const createApplication = async (req: Request, res: Response) => {
+  try {
+    const storedApplication = await createNewApplication(
+      req.body as NewApplication
+    );
+    res.send(storedApplication).status(200);
   } catch (e) {
     console.log(e);
     res.sendStatus(400);

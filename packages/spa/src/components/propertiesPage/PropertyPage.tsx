@@ -35,6 +35,7 @@ import {
 import { deepOrange } from "@mui/material/colors";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
+  CreateApplicationRequest,
   CreateFavouriteListingRequest,
   DeleteFavouriteListingRequest,
   GetUserFavouriteListingsRequest,
@@ -132,6 +133,19 @@ const PropertyPage: React.FC<{}> = () => {
   const handleStepChange = (step: number) => {
     setActiveImage(step);
   };
+
+  const handleApplyForRent = useCallback(async () => {
+    if (!currentUser) {
+      console.log("Please log in");
+      return;
+    }
+    const createdApplication = await CreateApplicationRequest(
+      params.id,
+      currentUser.id,
+      params.apartment.owner.id
+    );
+    console.log(createdApplication);
+  }, [params, currentUser]);
 
   return (
     <Layout>
@@ -411,7 +425,7 @@ const PropertyPage: React.FC<{}> = () => {
             <Grid item container xs={12} justifyContent="center">
               <Grid item>
                 <Button
-                  onClick={() => console.log("Applied")}
+                  onClick={handleApplyForRent}
                   color="secondary"
                   variant="contained"
                 >
