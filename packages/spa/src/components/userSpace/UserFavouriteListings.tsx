@@ -119,7 +119,7 @@ const UserFavouriteListings: React.FC<{}> = () => {
               ))}
           </Grid>
         </Grid>
-        {pageCount > 0 && (
+        {pageCount > 1 && (
           <Grid item mx="auto" my={2}>
             <Pagination
               count={pageCount}

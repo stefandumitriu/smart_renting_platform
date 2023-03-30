@@ -10,6 +10,9 @@ import {
   Avatar,
   Box,
   Button,
+  Card,
+  CardActionArea,
+  CardContent,
   Divider,
   Grid,
   IconButton,
@@ -37,6 +40,7 @@ import {
   GetUserFavouriteListingsRequest,
 } from "../../requests/ListingsRequests";
 import { FavouriteListing } from "@packages/api/models/listings/favouriteListing";
+import OwnerProfileModal from "./OwnerProfileModal";
 
 const PropertyPage: React.FC<{}> = () => {
   const params = useLoaderData() as Listing;
@@ -45,6 +49,12 @@ const PropertyPage: React.FC<{}> = () => {
   const [initialFavouriteListing, setInitialFavouriteListing] = useState<
     FavouriteListing | undefined
   >(undefined);
+  const [ownerProfileOpen, setOwnerProfileOpen] = useState(false);
+
+  const handleOwnerProfileClose = useCallback(() => {
+    setOwnerProfileOpen(false);
+  }, []);
+
   const fetchFn = useCallback(async () => {
     if (!currentUser) {
       return undefined;
@@ -222,70 +232,126 @@ const PropertyPage: React.FC<{}> = () => {
             alignContent="start"
             rowSpacing={4}
           >
-            <Grid item xs={12} sx={{ height: "40%" }}>
-              <Paper sx={{ width: "100%", height: "100%" }} elevation={4}>
-                <Grid
-                  container
-                  justifyContent="center"
-                  alignContent="center"
+            <Grid item xs={12} sx={{ minHeight: "40%" }}>
+              <Card sx={{ width: "100%", height: "100%" }} elevation={4}>
+                <CardActionArea
+                  onClick={() => setOwnerProfileOpen(true)}
                   sx={{ height: "100%" }}
                 >
-                  <Grid item container xs={12} justifyContent="center">
-                    <Grid item xs={4}>
-                      <Avatar
-                        sx={{ bgcolor: deepOrange[500], marginX: "auto" }}
-                      >
-                        {ownerName.split(" ")[0][0]}
-                        {ownerName.split(" ")[1][0]}
-                      </Avatar>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    item
-                    container
-                    xs={12}
-                    justifyContent="center"
-                    marginTop={1}
-                  >
-                    <Grid item xs={4} textAlign="center">
-                      <Typography>{ownerName}</Typography>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    item
-                    container
-                    xs={12}
-                    justifyContent="center"
-                    marginTop={1}
-                  >
+                  <CardContent>
                     <Grid
-                      item
                       container
-                      xs={4}
                       justifyContent="center"
-                      spacing={1}
+                      alignContent="center"
+                      sx={{ height: "100%" }}
                     >
-                      <Grid item xs={12}>
-                        <Typography
-                          fontWeight="bolder"
-                          color={theme.palette.secondary.main}
-                          textAlign="center"
-                        >
-                          Rating
-                        </Typography>
+                      <Grid item container xs={12} justifyContent="center">
+                        <Grid item xs={4}>
+                          <Avatar
+                            sx={{ bgcolor: deepOrange[500], marginX: "auto" }}
+                          >
+                            {ownerName.split(" ")[0][0]}
+                            {ownerName.split(" ")[1][0]}
+                          </Avatar>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={12}>
-                        <StyledRating
-                          defaultValue={2.5}
-                          precision={0.5}
-                          size="small"
-                          readOnly
-                        />
+                      <Grid
+                        item
+                        container
+                        xs={12}
+                        justifyContent="center"
+                        marginTop={1}
+                      >
+                        <Grid item xs={4} textAlign="center">
+                          <Typography>{ownerName}</Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid
+                        item
+                        container
+                        xs={12}
+                        justifyContent="center"
+                        marginTop={1}
+                      >
+                        <Grid
+                          item
+                          container
+                          xs={4}
+                          justifyContent="center"
+                          spacing={1}
+                        >
+                          <Grid item xs={12}>
+                            <Typography
+                              fontWeight="bolder"
+                              color={theme.palette.secondary.main}
+                              textAlign="center"
+                            >
+                              Rating
+                            </Typography>
+                          </Grid>
+                          <Grid item container xs={12} justifyContent="center">
+                            <Grid item>
+                              <StyledRating
+                                defaultValue={2.5}
+                                precision={0.5}
+                                size="small"
+                                readOnly
+                              />
+                            </Grid>
+                          </Grid>
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                </Grid>
-              </Paper>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sx={{ minHeight: "20%" }}>
+              <Card sx={{ width: "100%", height: "100%" }} elevation={4}>
+                <CardActionArea
+                  onClick={() => setOwnerProfileOpen(true)}
+                  sx={{ height: "100%" }}
+                >
+                  <CardContent>
+                    <Grid
+                      container
+                      justifyContent="center"
+                      alignContent="center"
+                      sx={{ height: "100%" }}
+                    >
+                      <Grid item container xs={12} justifyContent="center">
+                        <Grid
+                          item
+                          container
+                          xs={6}
+                          justifyContent="center"
+                          spacing={1}
+                        >
+                          <Grid item xs={12}>
+                            <Typography
+                              fontWeight="bolder"
+                              color={theme.palette.secondary.main}
+                              textAlign="center"
+                            >
+                              Rating Apartament
+                            </Typography>
+                          </Grid>
+                          <Grid item container xs={12} justifyContent="center">
+                            <Grid item>
+                              <StyledRating
+                                defaultValue={2.5}
+                                precision={0.5}
+                                size="small"
+                                readOnly
+                              />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
             </Grid>
             <Grid item container xs={12} justifyContent="center">
               <Paper sx={{ width: "100%" }} elevation={4}>
@@ -579,6 +645,11 @@ const PropertyPage: React.FC<{}> = () => {
           </Grid>
         </Grid>
       </Grid>
+      <OwnerProfileModal
+        open={ownerProfileOpen}
+        handleClose={handleOwnerProfileClose}
+        owner={params.apartment.owner}
+      />
     </Layout>
   );
 };
