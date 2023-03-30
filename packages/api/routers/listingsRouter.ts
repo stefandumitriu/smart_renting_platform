@@ -3,6 +3,7 @@ import {
   createApplication,
   createFavouriteListing,
   deleteFavouriteListingById,
+  getApplicationsByTenantId,
   getFavouriteListingsForUser,
   getListingById,
   getListings,
@@ -16,5 +17,6 @@ listingsRouter.get("/:id", getListingById);
 listingsRouter.post("/favourite-listing", createFavouriteListing);
 listingsRouter.delete("/favourite-listing/:id", deleteFavouriteListingById);
 listingsRouter.post("/applications", createApplication);
+listingsRouter.get("/applications/tenant/:id", getApplicationsByTenantId);
 
 export default listingsRouter;

@@ -20,6 +20,7 @@ import {
   Paper,
   Rating,
   styled,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -35,13 +36,14 @@ import {
 import { deepOrange } from "@mui/material/colors";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
-  CreateApplicationRequest,
   CreateFavouriteListingRequest,
   DeleteFavouriteListingRequest,
+  GetTenantApplicationsRequest,
   GetUserFavouriteListingsRequest,
 } from "../../requests/ListingsRequests";
 import { FavouriteListing } from "@packages/api/models/listings/favouriteListing";
 import OwnerProfileModal from "./OwnerProfileModal";
+import RentApplyFormModal from "./RentApplyFormModal";
 
 const PropertyPage: React.FC<{}> = () => {
   const params = useLoaderData() as Listing;
@@ -51,12 +53,18 @@ const PropertyPage: React.FC<{}> = () => {
     FavouriteListing | undefined
   >(undefined);
   const [ownerProfileOpen, setOwnerProfileOpen] = useState(false);
+  const [rentApplyFormModalOpen, setRentApplyFormModalOpen] = useState(false);
+  const [hasAppliedForListing, setHasAppliedForListing] = useState(false);
+
+  const handleRentApplyFormClose = useCallback(() => {
+    setRentApplyFormModalOpen(false);
+  }, []);
 
   const handleOwnerProfileClose = useCallback(() => {
     setOwnerProfileOpen(false);
   }, []);
 
-  const fetchFn = useCallback(async () => {
+  const fetchFavouriteListingsFn = useCallback(async () => {
     if (!currentUser) {
       return undefined;
     }
@@ -65,9 +73,23 @@ const PropertyPage: React.FC<{}> = () => {
     );
     return userFavouriteListings.find((e) => e.listingId === params.id);
   }, [currentUser, params]);
+
+  const fetchTenantApplicationsFn = useCallback(async () => {
+    if (!currentUser) {
+      return false;
+    }
+    const applications = await GetTenantApplicationsRequest(currentUser.id);
+    return !!applications.find((a) => a.listingId === params.id);
+  }, [currentUser, params]);
+
   useEffect(() => {
-    fetchFn().then((data) => setInitialFavouriteListing(data));
-  }, [fetchFn]);
+    fetchFavouriteListingsFn().then((data) => setInitialFavouriteListing(data));
+  }, [fetchFavouriteListingsFn]);
+
+  useEffect(() => {
+    fetchTenantApplicationsFn().then((data) => setHasAppliedForListing(data));
+  }, [fetchTenantApplicationsFn]);
+
   useEffect(() => {
     setIsFavourite(!!initialFavouriteListing);
     setFavouriteListing(initialFavouriteListing);
@@ -133,19 +155,6 @@ const PropertyPage: React.FC<{}> = () => {
   const handleStepChange = (step: number) => {
     setActiveImage(step);
   };
-
-  const handleApplyForRent = useCallback(async () => {
-    if (!currentUser) {
-      console.log("Please log in");
-      return;
-    }
-    const createdApplication = await CreateApplicationRequest(
-      params.id,
-      currentUser.id,
-      params.apartment.owner.id
-    );
-    console.log(createdApplication);
-  }, [params, currentUser]);
 
   return (
     <Layout>
@@ -424,13 +433,23 @@ const PropertyPage: React.FC<{}> = () => {
             </Grid>
             <Grid item container xs={12} justifyContent="center">
               <Grid item>
-                <Button
-                  onClick={handleApplyForRent}
-                  color="secondary"
-                  variant="contained"
-                >
-                  Depune cerere de inchiriere
-                </Button>
+                {hasAppliedForListing ? (
+                  <Tooltip title="Deja ai aplicat pentru acest apartament">
+                    <span>
+                      <Button color="secondary" variant="contained" disabled>
+                        Depune cerere de inchiriere
+                      </Button>
+                    </span>
+                  </Tooltip>
+                ) : (
+                  <Button
+                    onClick={() => setRentApplyFormModalOpen(true)}
+                    color="secondary"
+                    variant="contained"
+                  >
+                    Depune cerere de inchiriere
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </Grid>
@@ -663,6 +682,11 @@ const PropertyPage: React.FC<{}> = () => {
         open={ownerProfileOpen}
         handleClose={handleOwnerProfileClose}
         owner={params.apartment.owner}
+      />
+      <RentApplyFormModal
+        open={rentApplyFormModalOpen}
+        listing={params}
+        handleClose={handleRentApplyFormClose}
       />
     </Layout>
   );

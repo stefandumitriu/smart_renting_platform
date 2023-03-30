@@ -1,6 +1,7 @@
 import { axiosBaseInstance } from "./AxiosBaseInstance";
 import { Listing } from "@packages/api/models/listings/listing";
 import { FavouriteListing } from "@packages/api/models/listings/favouriteListing";
+import { Application } from "@packages/api/models/listings/application";
 
 const GET_LISTINGS_PATH = "/listings";
 const FAVOURITE_LISTINGS_PATH = "/listings/favourite-listing";
@@ -46,12 +47,22 @@ export const DeleteFavouriteListingRequest = async (listingId: string) => {
 export const CreateApplicationRequest = async (
   listingId: string,
   tenantId: string,
-  landlordId: string
+  landlordId: string,
+  additionalInfo?: string
 ) => {
   const axiosResponse = await axiosBaseInstance.post(APPLICATIONS_PATH, {
     listingId,
     tenantId,
     landlordId,
+    additionalInfo,
   });
   return axiosResponse.data;
+};
+
+export const GetTenantApplicationsRequest = async (tenantId: string) => {
+  const axiosResponse = await axiosBaseInstance.get(
+    `${APPLICATIONS_PATH}/tenant/${tenantId}`
+  );
+
+  return axiosResponse.data as Application[];
 };
