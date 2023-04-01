@@ -2,7 +2,10 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import Layout from "../Layout";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Application } from "@packages/api/models/listings/application";
-import { GetTenantApplicationsRequest } from "../../requests/ListingsRequests";
+import {
+  DeleteApplicationRequest,
+  GetTenantApplicationsRequest,
+} from "../../requests/ListingsRequests";
 import {
   Avatar,
   Button,
@@ -10,11 +13,9 @@ import {
   CardActionArea,
   CardContent,
   Chip,
-  Divider,
   Grid,
   Paper,
   Rating,
-  Stack,
   styled,
   Typography,
   useTheme,
@@ -23,10 +24,12 @@ import OwnerProfileModal from "../propertiesPage/OwnerProfileModal";
 
 interface TenantRentApplicationCardProps {
   application: Application;
+  handleDelete: (id: string) => void;
 }
 
 const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
   application,
+  handleDelete,
 }) => {
   const theme = useTheme();
   const StyledRating = styled(Rating)({
@@ -188,7 +191,12 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
               </Button>
             </Grid>
             <Grid item>
-              <Button color="error" variant="contained" fullWidth>
+              <Button
+                color="error"
+                variant="contained"
+                fullWidth
+                onClick={() => handleDelete(application.id)}
+              >
                 Renunta
               </Button>
             </Grid>
@@ -219,19 +227,33 @@ const UserTenantRentApplications: React.FC<{}> = () => {
   useEffect(() => {
     fetchTenantApplicationsFn().then((data) => setRentApplications(data));
   }, [fetchTenantApplicationsFn]);
+
+  const handleDeleteApplicationButton = useCallback(
+    async (id: string) => {
+      const deleteStatus = await DeleteApplicationRequest(id);
+      if (deleteStatus === 204) {
+        setRentApplications(rentApplications?.filter((a) => a.id !== id));
+      }
+    },
+    [rentApplications, setRentApplications]
+  );
+
   return (
     <Layout pageTitle="Cereri de inchiriere">
       <Grid
         item
         container
         xs={12}
-        rowSpacing={2}
+        rowSpacing={4}
         sx={{ minHeight: "100vh" }}
-        marginTop={2}
+        alignContent="flex-start"
       >
         {rentApplications?.map((application) => (
           <Grid item xs={12} paddingX={2}>
-            <RentApplicationCard application={application} />
+            <RentApplicationCard
+              application={application}
+              handleDelete={handleDeleteApplicationButton}
+            />
           </Grid>
         ))}
       </Grid>

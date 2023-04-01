@@ -687,6 +687,7 @@ const PropertyPage: React.FC<{}> = () => {
         open={rentApplyFormModalOpen}
         listing={params}
         handleClose={handleRentApplyFormClose}
+        setHasAppliedForListing={() => setHasAppliedForListing(true)}
       />
     </Layout>
   );

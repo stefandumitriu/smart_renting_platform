@@ -12,6 +12,13 @@ export const GetListingsRequest = async () => {
   return axiosResponse.data as Listing[];
 };
 
+export const GetUserListingsRequest = async (ownerId: string) => {
+  const axiosResponse = await axiosBaseInstance.get(
+    `${GET_LISTINGS_PATH}/user/${ownerId}`
+  );
+  return axiosResponse.data as Listing[];
+};
+
 export const GetListingByIdRequest = async (id: string) => {
   const axiosResponse = await axiosBaseInstance.get(
     `${GET_LISTINGS_PATH}/${id}`
@@ -65,4 +72,12 @@ export const GetTenantApplicationsRequest = async (tenantId: string) => {
   );
 
   return axiosResponse.data as Application[];
+};
+
+export const DeleteApplicationRequest = async (id: string) => {
+  const axiosResponse = await axiosBaseInstance.delete(
+    `${APPLICATIONS_PATH}/${id}`
+  );
+
+  return axiosResponse.status;
 };

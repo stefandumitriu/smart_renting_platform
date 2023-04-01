@@ -3,11 +3,13 @@ import {
   getAddressById,
   getApartmentById,
   getListingById,
+  getListingByOwnerId,
   getListings,
   getUserProfileById,
 } from "@packages/db/services";
 import { Apartment } from "../../models/listings/apartment";
 import { convertDbUserProfileToAPIUserProfile } from "../../convertors/users/userProfile";
+import { convertDbListingToAPIListing } from "../../convertors/listings/listing";
 
 export async function getAllListings(): Promise<Listing[]> {
   const dbListings = await getListings();
@@ -43,25 +45,14 @@ export async function getListing(id: string): Promise<Listing> {
   if (!dbListing) {
     throw new Error(`Listing ${id} not found`);
   }
-  const dbApartment = await getApartmentById(dbListing.apartmentId);
-  if (!dbApartment) {
-    throw new Error(`${dbListing.id}: Apartment not found`);
-  }
-  const address = await getAddressById(dbApartment.addressId);
-  const owner = await getUserProfileById(dbApartment.ownerId);
-  if (!address) {
-    throw new Error(`${dbListing.id}: Address not found`);
-  }
-  if (!owner) {
-    throw new Error(`${dbListing.id}: Owner not found`);
-  }
-  const apartment: Apartment = {
-    ...dbApartment,
-    address,
-    owner: convertDbUserProfileToAPIUserProfile(owner),
-  };
-  return {
-    ...dbListing,
-    apartment,
-  };
+  return convertDbListingToAPIListing(dbListing);
+}
+
+export async function getUsersListings(ownerId: string) {
+  const dbListings = await getListingByOwnerId(ownerId);
+  return Promise.all(
+    dbListings.map(async (dbListing) => {
+      return convertDbListingToAPIListing(dbListing);
+    })
+  );
 }

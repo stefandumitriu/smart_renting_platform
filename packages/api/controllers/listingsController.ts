@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   getAllListings,
   getListing,
+  getUsersListings,
 } from "../services/listings/listingService";
 import {
   createNewFavouriteListing,
@@ -10,9 +11,12 @@ import {
 import { deleteFavouriteListing } from "@packages/db/services/listings/favouriteListingService";
 import { createNewApplication } from "../services/listings/applicationService";
 import { NewApplication } from "../models/listings/application";
-import { getTenantApplications } from "@packages/db/services/listings/applicationService";
-import { getUserProfileById } from "@packages/db/services/users/userService";
-import { convertDbUserProfileToAPIUserProfile } from "../convertors/users/userProfile";
+import {
+  deleteApplication,
+  getLandlordApplications,
+  getTenantApplications,
+} from "@packages/db/services/listings/applicationService";
+import { convertDbApplicationToAPIApplication } from "../convertors/listings/application";
 
 export const getListings = async (req: Request, res: Response) => {
   try {
@@ -31,6 +35,16 @@ export const getListingById = async (req: Request, res: Response) => {
   } catch (e) {
     console.log(e);
     res.sendStatus(404);
+  }
+};
+
+export const getUserListings = async (req: Request, res: Response) => {
+  try {
+    const listings = await getUsersListings(req.params.id as string);
+    res.send(listings).status(200);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
   }
 };
 
@@ -95,25 +109,42 @@ export const getApplicationsByTenantId = async (
     const dbApplications = await getTenantApplications(req.params.id as string);
     const applications = await Promise.all(
       dbApplications.map(async (application) => {
-        const tenant = await getUserProfileById(application.tenantId);
-        const landlord = await getUserProfileById(application.landlordId);
-        const listing = await getListing(application.listingId);
-
-        if (!tenant || !landlord || !listing) {
-          throw new Error("Resource not found");
-        }
-
-        return {
-          ...application,
-          tenant: convertDbUserProfileToAPIUserProfile(tenant),
-          landlord: convertDbUserProfileToAPIUserProfile(landlord),
-          listing,
-        };
+        return convertDbApplicationToAPIApplication(application);
       })
     );
     res.send(applications).status(200);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
+  }
+};
+
+export const getApplicationsByLandlordId = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const dbApplications = await getLandlordApplications(
+      req.params.id as string
+    );
+    const applications = await Promise.all(
+      dbApplications.map(async (application) => {
+        return convertDbApplicationToAPIApplication(application);
+      })
+    );
+    res.send(applications).status(200);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+};
+
+export const deleteApplicationById = async (req: Request, res: Response) => {
+  try {
+    await deleteApplication(req.params.id as string);
+    res.sendStatus(204);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(404);
   }
 };

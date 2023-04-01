@@ -35,3 +35,7 @@ export async function getApplicationsForListing(
     .where({ listingId })
     .select();
 }
+
+export async function deleteApplication(id: string): Promise<void> {
+  await knex(APPLICATIONS_TABLE_NAME).where({ id }).delete();
+}

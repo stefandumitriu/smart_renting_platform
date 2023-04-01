@@ -19,6 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import UserLandlordDashboard from "./components/userSpace/UserLandlordDashboard";
 import UserTenantRentApplications from "./components/userSpace/UserTenantRentApplications";
+import UserLandlordListingsPage from "./components/userSpace/UserLandlordListingsPage";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <UserLandlordDashboard />,
+              },
+              {
+                path: "listings",
+                element: <UserLandlordListingsPage />,
               },
             ],
           },

@@ -1,5 +1,6 @@
 import knex from "../../knex";
 import { DbListing, LISTINGS_TABLE_NAME } from "../../models/listings/listing";
+import { APARTMENTS_TABLE_NAME } from "../../models/listings/apartment";
 
 export async function storeListing(listing: DbListing): Promise<DbListing> {
   return knex(LISTINGS_TABLE_NAME).insert(listing);
@@ -15,6 +16,23 @@ export async function getListingById(
   return knex<DbListing>(LISTINGS_TABLE_NAME).where({ id }).select().first();
 }
 
+export async function getListingByOwnerId(
+  ownerId: string
+): Promise<DbListing[]> {
+  return knex
+    .select([
+      "listing.id",
+      "listing.apartmentId",
+      "listing.title",
+      "listing.price",
+      "listing.rentalPeriod",
+      "listing.availability",
+      "listing.photosUrl",
+    ])
+    .from(LISTINGS_TABLE_NAME)
+    .join(APARTMENTS_TABLE_NAME, { "apartment.id": "listing.apartmentId" })
+    .where({ "apartment.ownerId": ownerId });
+}
 export async function getListingByApartmentId(
   apartmentId: string
 ): Promise<DbListing | undefined> {

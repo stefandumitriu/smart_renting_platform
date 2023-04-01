@@ -18,12 +18,14 @@ interface RentApplyFormModalProps {
   open: boolean;
   listing: Listing;
   handleClose: () => void;
+  setHasAppliedForListing: () => void;
 }
 
 const RentApplyFormModal: React.FC<RentApplyFormModalProps> = ({
   open,
   listing,
   handleClose,
+  setHasAppliedForListing,
 }) => {
   const theme = useTheme();
   const { currentUser } = useContext(AuthContext);
@@ -41,6 +43,7 @@ const RentApplyFormModal: React.FC<RentApplyFormModalProps> = ({
         values.additionalInfo
       );
       console.log(createdApplication);
+      setHasAppliedForListing();
       handleClose();
     },
     [listing, currentUser, handleClose]
