@@ -1,12 +1,7 @@
 import { DbListing } from "@packages/db/models/listings/listing";
 import { Listing } from "../../models/listings/listing";
-import {
-  getAddressById,
-  getApartmentById,
-  getUserProfileById,
-} from "@packages/db/services";
-import { Apartment } from "../../models/listings/apartment";
-import { convertDbUserProfileToAPIUserProfile } from "../users/userProfile";
+import { getApartmentById } from "@packages/db/services";
+import { convertDbApartmentToApartment } from "./apartment";
 
 export async function convertDbListingToAPIListing(
   dbListing: DbListing
@@ -15,19 +10,7 @@ export async function convertDbListingToAPIListing(
   if (!dbApartment) {
     throw new Error(`${dbListing.id}: Apartment not found`);
   }
-  const address = await getAddressById(dbApartment.addressId);
-  const owner = await getUserProfileById(dbApartment.ownerId);
-  if (!address) {
-    throw new Error(`${dbListing.id}: Address not found`);
-  }
-  if (!owner) {
-    throw new Error(`${dbListing.id}: Owner not found`);
-  }
-  const apartment: Apartment = {
-    ...dbApartment,
-    address,
-    owner: convertDbUserProfileToAPIUserProfile(owner),
-  };
+  const apartment = await convertDbApartmentToApartment(dbApartment);
   return {
     ...dbListing,
     apartment,

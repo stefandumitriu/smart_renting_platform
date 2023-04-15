@@ -20,6 +20,8 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import UserLandlordDashboard from "./components/userSpace/UserLandlordDashboard";
 import UserTenantRentApplications from "./components/userSpace/UserTenantRentApplications";
 import UserLandlordListingsPage from "./components/userSpace/UserLandlordListingsPage";
+import UserLandlordApartmentInfoPage from "./components/userSpace/UserLandordApartmentInfoPage";
+import apartmentInfoPageLoader from "./loaders/ApartmentInfoPageLoader";
 
 const router = createBrowserRouter([
   {
@@ -90,6 +92,16 @@ const router = createBrowserRouter([
             element: <UserSettings />,
           },
         ],
+      },
+    ],
+  },
+  {
+    path: "apartments",
+    children: [
+      {
+        path: ":id",
+        element: <UserLandlordApartmentInfoPage />,
+        loader: apartmentInfoPageLoader,
       },
     ],
   },

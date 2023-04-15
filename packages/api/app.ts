@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import { listingsRouter, usersRouter } from "./routers";
+import { apartmentsRouter, listingsRouter, usersRouter } from "./routers";
 import cors from "cors";
 
 const app = express();
@@ -18,3 +18,4 @@ app.use(
 app.use(express.json());
 app.use("/users", usersRouter);
 app.use("/listings", listingsRouter);
+app.use("/apartments", apartmentsRouter);
