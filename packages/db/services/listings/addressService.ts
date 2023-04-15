@@ -10,3 +10,11 @@ export async function getAddressById(
 ): Promise<DbAddress | undefined> {
   return knex<DbAddress>(ADDRESS_TABLE_NAME).where({ id }).select().first();
 }
+
+export async function updateAddress(
+  id: string,
+  address: Partial<DbAddress>
+): Promise<DbAddress> {
+  await knex(ADDRESS_TABLE_NAME).where({ id }).update(address);
+  return (await getAddressById(id)) as DbAddress;
+}

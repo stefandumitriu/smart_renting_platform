@@ -9,3 +9,14 @@ export const GetApartmentByIdRequest = async (id: string) => {
   );
   return axiosResponse.data as Apartment;
 };
+
+export const PatchApartmentRequest = async (
+  id: string,
+  apartment: Apartment
+) => {
+  const axiosResponse = await axiosBaseInstance.patch(
+    `${GET_APARTMENTS_PATH}/${id}`,
+    apartment
+  );
+  return axiosResponse.data as Apartment;
+};

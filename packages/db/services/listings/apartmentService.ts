@@ -18,3 +18,11 @@ export async function getApartmentById(
     .select()
     .first();
 }
+
+export async function updateApartment(
+  id: string,
+  apartment: Partial<DbApartment>
+): Promise<DbApartment> {
+  await knex(APARTMENTS_TABLE_NAME).where({ id }).update(apartment);
+  return (await getApartmentById(id)) as DbApartment;
+}

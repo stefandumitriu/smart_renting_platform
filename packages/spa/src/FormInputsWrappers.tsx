@@ -23,6 +23,7 @@ export interface FormAutocompleteProps<T> {
   label: string;
   name: string;
   value?: T;
+  required?: boolean;
 }
 
 export function FormAutocomplete<T>(props: FormAutocompleteProps<T>) {
@@ -40,7 +41,11 @@ export function FormAutocomplete<T>(props: FormAutocompleteProps<T>) {
       {...field}
       onChange={onChange}
       renderInput={(params) => (
-        <StyledTextField {...params} label={props.label} />
+        <StyledTextField
+          {...params}
+          label={props.label}
+          required={props.required}
+        />
       )}
     />
   );
