@@ -16,6 +16,8 @@ export interface DbApartment {
   appliances?: Record<string, boolean>;
   finishes?: Record<string, boolean>;
   areaInfo?: string;
+  addressProof?: string;
+  status: ApartmentStatus;
 }
 
 export enum ApartmentStatus {

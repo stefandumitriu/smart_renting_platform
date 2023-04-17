@@ -26,7 +26,7 @@ const UserLandlordDashboard: React.FC<{}> = () => {
         <Grid item container xs={12} justifyContent="space-evenly">
           <Grid item xs={4}>
             <Link
-              to={"/user/dashboard/tenant/favourite-listings"}
+              to={"/apartments/create-apartment-wizard"}
               style={{ textDecoration: "none" }}
             >
               <Paper

@@ -1,4 +1,5 @@
 import {
+  ApartmentStatus,
   BuildingTypeEnum,
   DbApartment,
   HeatingTypeEnum,
@@ -105,6 +106,7 @@ export function generateApartments(addresses: DbAddress[]): DbApartment[] {
       appliances,
       finishes,
       areaInfo,
+      status: ApartmentStatus.Available,
     } as DbApartment;
   });
 }

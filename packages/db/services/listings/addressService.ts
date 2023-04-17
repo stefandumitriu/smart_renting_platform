@@ -2,7 +2,12 @@ import { ADDRESS_TABLE_NAME, DbAddress } from "../../models/listings/address";
 import knex from "../../knex";
 
 export async function storeAddress(address: DbAddress): Promise<DbAddress> {
-  return knex(ADDRESS_TABLE_NAME).insert(address);
+  await knex(ADDRESS_TABLE_NAME).insert(address);
+  const addedAddress = await getAddressById(address.id);
+  if (!addedAddress) {
+    throw new Error("Error on insert");
+  }
+  return addedAddress;
 }
 
 export async function getAddressById(

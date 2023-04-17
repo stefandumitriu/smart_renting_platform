@@ -1,6 +1,6 @@
 import { DbApartment } from "@packages/db/models/listings/apartment";
 import { UserProfile } from "../users/userProfile";
-import { Address } from "./address";
+import { Address, NewAddress } from "./address";
 
 export interface ApartmentRelations {
   address: Address;
@@ -8,3 +8,7 @@ export interface ApartmentRelations {
 }
 
 export type Apartment = DbApartment & ApartmentRelations;
+
+export type NewApartment = Omit<DbApartment, "id" | "addressId"> & {
+  address: NewAddress;
+};

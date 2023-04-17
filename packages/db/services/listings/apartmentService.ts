@@ -7,7 +7,12 @@ import {
 export async function storeApartment(
   apartment: DbApartment
 ): Promise<DbApartment> {
-  return knex(APARTMENTS_TABLE_NAME).insert(apartment);
+  await knex(APARTMENTS_TABLE_NAME).insert(apartment);
+  const addedApartment = await getApartmentById(apartment.id);
+  if (!addedApartment) {
+    throw new Error("Error on insert: Apartment");
+  }
+  return addedApartment;
 }
 
 export async function getApartmentById(
