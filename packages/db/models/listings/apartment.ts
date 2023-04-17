@@ -18,6 +18,13 @@ export interface DbApartment {
   areaInfo?: string;
 }
 
+export enum ApartmentStatus {
+  UnderReview = "Under Review",
+  Available = "Available",
+  Listed = "Listed",
+  Rented = "Rented",
+}
+
 export enum SubdivisonTypeEnum {
   Decomandat = "Decomandat",
   Semidecomandat = "Semidecomandat",
