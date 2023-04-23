@@ -50,9 +50,10 @@ export const addApartment = async (req: Request, res: Response) => {
       addressId: addedAddress.id,
       id: uuidv4(),
     });
-    res.send(convertDbApartmentToApartment(addedApartment));
+    const apartment = await convertDbApartmentToApartment(addedApartment);
+    res.send(apartment);
   } catch (e) {
-    res.send(e).sendStatus(500);
+    res.send(e);
     console.error(e);
   }
 };

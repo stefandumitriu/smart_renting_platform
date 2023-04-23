@@ -22,7 +22,7 @@ import UserTenantRentApplications from "./components/userSpace/UserTenantRentApp
 import UserLandlordListingsPage from "./components/userSpace/UserLandlordListingsPage";
 import UserLandlordApartmentInfoPage from "./components/userSpace/UserLandordApartmentInfoPage";
 import apartmentInfoPageLoader from "./loaders/ApartmentInfoPageLoader";
-import AddApartmentWizard from "./components/userSpace/AddApartmentWizard";
+import AddApartmentWizard from "./components/userSpace/CreateApartment/AddApartmentWizard";
 
 const router = createBrowserRouter([
   {
