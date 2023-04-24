@@ -1,8 +1,5 @@
 import { axiosBaseInstance } from "./AxiosBaseInstance";
-import {
-  Apartment,
-  NewApartment,
-} from "@packages/api/models/listings/apartment";
+import { Apartment } from "@packages/api/models/listings/apartment";
 
 const GET_APARTMENTS_PATH = "/apartments";
 
@@ -13,10 +10,11 @@ export const GetApartmentByIdRequest = async (id: string) => {
   return axiosResponse.data as Apartment;
 };
 
-export const PostApartmentRequest = async (newApartment: NewApartment) => {
+export const PostApartmentRequest = async (newApartment: FormData) => {
   const axiosResponse = await axiosBaseInstance.post(
     `${GET_APARTMENTS_PATH}`,
-    newApartment
+    newApartment,
+    { headers: { "Content-Type": "multipart/form-data" } }
   );
   return axiosResponse.data as Apartment;
 };

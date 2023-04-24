@@ -10,6 +10,9 @@ import { convertDbApartmentToApartment } from "../convertors/listings/apartment"
 import { Apartment, NewApartment } from "../models/listings/apartment";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
+import * as fs from "fs";
+
+const ADDRESS_PROOF_STORAGE_PATH = "../../local_storage/addressProof";
 
 export const getApartment = async (req: Request, res: Response) => {
   try {
@@ -44,10 +47,36 @@ export const patchApartment = async (req: Request, res: Response) => {
 export const addApartment = async (req: Request, res: Response) => {
   try {
     const body = req.body as NewApartment;
-    const addedAddress = await storeAddress({ ...body.address, id: uuidv4() });
+    const addedAddress = await storeAddress({
+      ...JSON.parse(body.address as unknown as string),
+      id: uuidv4(),
+    });
+    let addressProofUrl = undefined;
+    if (body.addressProof) {
+      const fileReadableStream = body.addressProof.stream();
+      const fileContents = await fileReadableStream
+        .getReader()
+        .read()
+        .then(({ done, value }) => {
+          if (done) {
+            return value;
+          }
+        });
+      if (!fileContents) {
+        res.send("READABLE_STREAM_READ_FAILED");
+        return;
+      }
+      const outFileName =
+        body.addressProof.name + (Math.random() % 1000).toString();
+      addressProofUrl = ADDRESS_PROOF_STORAGE_PATH + outFileName;
+      fs.writeFile(addressProofUrl, fileContents, null, (err) => {
+        res.send(err);
+      });
+    }
     const addedApartment = await storeApartment({
       ..._.omit(body, "address"),
       addressId: addedAddress.id,
+      addressProof: addressProofUrl,
       id: uuidv4(),
     });
     const apartment = await convertDbApartmentToApartment(addedApartment);

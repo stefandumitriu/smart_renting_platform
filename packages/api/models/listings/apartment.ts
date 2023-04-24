@@ -9,6 +9,10 @@ export interface ApartmentRelations {
 
 export type Apartment = DbApartment & ApartmentRelations;
 
-export type NewApartment = Omit<DbApartment, "id" | "addressId"> & {
+export type NewApartment = Omit<
+  DbApartment,
+  "id" | "addressId" | "addressProof"
+> & {
   address: NewAddress;
+  addressProof?: File;
 };

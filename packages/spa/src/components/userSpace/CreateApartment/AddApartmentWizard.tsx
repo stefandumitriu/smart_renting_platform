@@ -13,11 +13,12 @@ import {
   Stepper,
   useTheme,
 } from "@mui/material";
-import ApartmentInfoStep from "./ApartmentInfoStep";
 import AddressProofStep from "./AdressProofStep";
 import { Form, Formik, FormikHelpers } from "formik";
 import SwipeableViews from "react-swipeable-views";
 import { BuildingTypeEnum } from "@packages/db/models/listings/apartment";
+import ApartmentInfoStep from "./ApartmentInfoStep";
+import _ from "lodash";
 
 const AddApartmentWizard: React.FC<{}> = () => {
   const { currentUser } = useContext(AuthContext);
@@ -37,13 +38,23 @@ const AddApartmentWizard: React.FC<{}> = () => {
   const handleSubmit = useCallback(
     async (values: NewApartment, formikBag: FormikHelpers<NewApartment>) => {
       const { setSubmitting } = formikBag;
+      console.log(values);
       if (!isLastStep()) {
         setSubmitting(false);
         setActiveStep(activeStep + 1);
         return;
       }
       setSubmitting(true);
-      const addedApartment = await PostApartmentRequest(values);
+      const formData = new FormData();
+      formData.append("address", JSON.stringify(values.address));
+      formData.append("addressProof", values.addressProof || "");
+      Object.keys(_.omit(values, "address", "addressProof")).forEach((key) =>
+        formData.append(
+          key,
+          values[key as keyof NewApartment]?.toString() ?? ""
+        )
+      );
+      const addedApartment = await PostApartmentRequest(formData);
       console.log(addedApartment);
       navigate("/user/dashboard/landlord");
     },

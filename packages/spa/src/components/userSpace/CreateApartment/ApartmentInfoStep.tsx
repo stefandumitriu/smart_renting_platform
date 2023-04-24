@@ -1,23 +1,12 @@
 import React from "react";
 import * as Yup from "yup";
-import {
-  Divider,
-  FormControlLabel,
-  Grid,
-  Paper,
-  Switch,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import {
-  HeatingTypeEnum,
-  SubdivisonTypeEnum,
-} from "@packages/db/models/listings/apartment";
-import { StreetTypeEnum } from "@packages/db/models/listings/address";
-import { FormAutocomplete } from "../../../FormInputsWrappers";
-import { StyledTextField } from "../../landingPage/SignupForm";
-import { useFormikContext } from "formik";
-import { NewApartment } from "@packages/api/models/listings/apartment";
+import {Divider, FormControlLabel, Grid, Paper, Switch, Typography, useTheme,} from "@mui/material";
+import {HeatingTypeEnum, SubdivisonTypeEnum,} from "@packages/db/models/listings/apartment";
+import {StreetTypeEnum} from "@packages/db/models/listings/address";
+import {FormAutocomplete} from "../../../FormInputsWrappers";
+import {StyledTextField} from "../../landingPage/SignupForm";
+import {useFormikContext} from "formik";
+import {NewApartment} from "@packages/api/models/listings/apartment";
 
 const ApartmentInfoStepComponent: React.FC = () => {
   const theme = useTheme();
