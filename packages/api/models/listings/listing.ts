@@ -6,3 +6,7 @@ export interface ListingRelations {
 }
 
 export type Listing = DbListing & ListingRelations;
+
+export type NewListing = Omit<DbListing, "id" | "photosUrl"> & {
+  photos: File[];
+};

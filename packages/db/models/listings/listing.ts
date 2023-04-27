@@ -9,4 +9,5 @@ export interface DbListing {
   price: number;
   rentalPeriod?: string;
   availability?: string;
+  about?: string;
 }

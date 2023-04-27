@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as fs from "fs";
 import { DbAddress } from "../models/listings/address";
 
-const OWNER_ID = "0a1ee69b-8a35-47bf-8135-bebfec1f4e1f";
+const OWNER_ID = "83813324-038d-4367-bc27-b79c4ea24020";
 const areaInfo =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non velit vitae augue tristique euismod. Aenean a nulla ipsum. Etiam pharetra id metus luctus dapibus. Sed lobortis varius urna a.";
 

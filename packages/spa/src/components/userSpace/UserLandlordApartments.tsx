@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Layout from "../Layout";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
@@ -13,6 +19,7 @@ import {
   CardContent,
   Chip,
   Grid,
+  Pagination,
   Paper,
   Typography,
   useTheme,
@@ -59,8 +66,9 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
                     <Grid item>
                       <Typography>
                         {apartment.address.streetType}{" "}
-                        {apartment.address.streetName}{" "}
-                        {apartment.address.streetNumber}
+                        {apartment.address.streetName}
+                        {", "}
+                        Nr.{apartment.address.streetNumber}{" "}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -114,6 +122,15 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
 const UserLandlordApartments: React.FC<{}> = () => {
   const { currentUser } = useContext(AuthContext);
   const [apartments, setApartments] = useState<Apartment[]>([]);
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = useCallback(
+    (e: React.ChangeEvent<unknown>, p: number) => {
+      setPage(p);
+      window.scrollTo(0, 0);
+    },
+    [setPage]
+  );
 
   const fetchFn = useCallback(async () => {
     if (currentUser) {
@@ -136,18 +153,28 @@ const UserLandlordApartments: React.FC<{}> = () => {
     [apartments]
   );
 
+  const displayedApartments = useMemo(() => {
+    return apartments.slice((page - 1) * 10, page * 10);
+  }, [apartments, page]);
+
+  const pageCount = useMemo(() => {
+    return Math.ceil(apartments.length / 10);
+  }, [apartments]);
+
   return (
     <Layout pageTitle="Apartamentele mele">
       <Grid
         item
         container
         sx={{ minHeight: "100vh" }}
-        spacing={2}
+        spacing={4}
         xs={10}
         justifyContent="center"
+        alignContent="flex-start"
         marginX="auto"
+        my={1}
       >
-        {apartments.map((apartment) => (
+        {displayedApartments.map((apartment) => (
           <Grid item xs={12}>
             <ApartmentCard
               apartment={apartment}
@@ -156,6 +183,15 @@ const UserLandlordApartments: React.FC<{}> = () => {
           </Grid>
         ))}
       </Grid>
+      {pageCount > 1 && (
+        <Grid item mx="auto" my={2}>
+          <Pagination
+            count={pageCount}
+            page={page}
+            onChange={handlePageChange}
+          />
+        </Grid>
+      )}
     </Layout>
   );
 };

@@ -107,8 +107,9 @@ const LandlordListingCard: React.FC<LandlordListingCardProps> = ({
                     <Grid item>
                       <Typography>
                         {listing.apartment.address.streetType}{" "}
-                        {listing.apartment.address.streetName}{" "}
-                        {listing.apartment.address.streetNumber}
+                        {listing.apartment.address.streetName}
+                        {", "}
+                        Nr. {listing.apartment.address.streetNumber}
                       </Typography>
                     </Grid>
                   </Grid>

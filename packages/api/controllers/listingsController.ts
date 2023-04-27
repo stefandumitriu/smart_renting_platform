@@ -17,6 +17,29 @@ import {
   getTenantApplications,
 } from "@packages/db/services/listings/applicationService";
 import { convertDbApplicationToAPIApplication } from "../convertors/listings/application";
+import { storeListing } from "@packages/db/services";
+import { NewListing } from "../models/listings/listing";
+import { v4 as uuidv4 } from "uuid";
+import { convertDbListingToAPIListing } from "../convertors/listings/listing";
+import _ from "lodash";
+
+export const addListing = async (req: Request, res: Response) => {
+  try {
+    const filepaths = ((req.files || []) as Express.Multer.File[]).map(
+      (file: Express.Multer.File) => file.path
+    );
+    const dbListing = await storeListing({
+      ..._.omit(req.body as NewListing, "photos"),
+      photosUrl: filepaths,
+      id: uuidv4(),
+    });
+    const listing = await convertDbListingToAPIListing(dbListing);
+    res.send(listing);
+  } catch (e) {
+    res.sendStatus(500);
+    console.error(e);
+  }
+};
 
 export const getListings = async (req: Request, res: Response) => {
   try {

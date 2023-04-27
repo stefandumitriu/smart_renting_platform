@@ -56,30 +56,32 @@ const UserLandlordDashboard: React.FC<{}> = () => {
             </Link>
           </Grid>
           <Grid item xs={4}>
-            <Paper
-              elevation={5}
-              sx={{
-                height: "100%",
-                ":hover": {
-                  boxShadow: 20,
-                },
-              }}
-            >
-              <Stack
-                spacing={2}
-                alignItems="center"
-                sx={{ height: "100%" }}
-                justifyContent="center"
+            <Link to="listings/create" style={{ textDecoration: "none" }}>
+              <Paper
+                elevation={5}
+                sx={{
+                  height: "100%",
+                  ":hover": {
+                    boxShadow: 20,
+                  },
+                }}
               >
-                <PlaylistAdd
-                  color="secondary"
-                  sx={{ height: "50%", width: "50%" }}
-                />
-                <Typography color={theme.palette.secondary.main} variant="h5">
-                  Adauga anunt
-                </Typography>
-              </Stack>
-            </Paper>
+                <Stack
+                  spacing={2}
+                  alignItems="center"
+                  sx={{ height: "100%" }}
+                  justifyContent="center"
+                >
+                  <PlaylistAdd
+                    color="secondary"
+                    sx={{ height: "50%", width: "50%" }}
+                  />
+                  <Typography color={theme.palette.secondary.main} variant="h5">
+                    Adauga Anunt
+                  </Typography>
+                </Stack>
+              </Paper>
+            </Link>
           </Grid>
         </Grid>
         <Grid item container xs={12} justifyContent="space-evenly">

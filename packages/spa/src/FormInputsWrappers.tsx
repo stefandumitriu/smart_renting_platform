@@ -1,7 +1,7 @@
 import { useField } from "formik";
 import React, { useCallback } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, AutocompleteProps } from "@mui/material";
 import { StyledTextField } from "./components/landingPage/SignupForm";
 import { Moment } from "moment";
 
@@ -26,7 +26,10 @@ export interface FormAutocompleteProps<T> {
   required?: boolean;
 }
 
-export function FormAutocomplete<T>(props: FormAutocompleteProps<T>) {
+export function FormAutocomplete<T>(
+  props: FormAutocompleteProps<T> &
+    Partial<AutocompleteProps<T, boolean, undefined, undefined>>
+) {
   const [field, , { setValue }] = useField<T>(props.name);
   const onChange = useCallback(
     (event: React.SyntheticEvent, value: T | T[] | null) => {

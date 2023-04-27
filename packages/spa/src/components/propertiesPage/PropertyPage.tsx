@@ -109,12 +109,19 @@ const PropertyPage: React.FC<{}> = () => {
     return `${params.apartment.owner.firstName} ${params.apartment.owner.lastName}`;
   }, [params]);
 
-  const images: string[] = [
-    "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg",
-    "https://www.franklinsapartments.com/img/Apt5a.jpg",
-    "https://www.franklinsapartments.com/img/Apt6c.jpg",
-    "https://riceandroman.azureedge.net/prop-1464/1464-1.jpg",
-  ];
+  const images: string[] = useMemo(
+    () =>
+      params.photosUrl?.map(
+        (photoUrl) =>
+          "http://localhost:8080" + photoUrl.replaceAll("\\", "/").slice(5)
+      ) || [
+        "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg",
+        "https://www.franklinsapartments.com/img/Apt5a.jpg",
+        "https://www.franklinsapartments.com/img/Apt6c.jpg",
+        "https://riceandroman.azureedge.net/prop-1464/1464-1.jpg",
+      ],
+    [params]
+  );
 
   const [activeImage, setActiveImage] = useState(0);
   const [isFavourite, setIsFavourite] = useState(false);

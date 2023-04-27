@@ -7,6 +7,15 @@ const GET_LISTINGS_PATH = "/listings";
 const FAVOURITE_LISTINGS_PATH = "/listings/favourite-listing";
 const APPLICATIONS_PATH = "/listings/applications";
 
+export const CreateListingRequest = async (listing: FormData) => {
+  const axiosResponse = await axiosBaseInstance.post(
+    GET_LISTINGS_PATH,
+    listing,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+  return axiosResponse.data as Listing;
+};
+
 export const GetListingsRequest = async () => {
   const axiosResponse = await axiosBaseInstance.get(GET_LISTINGS_PATH);
   return axiosResponse.data as Listing[];

@@ -3,7 +3,12 @@ import { DbListing, LISTINGS_TABLE_NAME } from "../../models/listings/listing";
 import { APARTMENTS_TABLE_NAME } from "../../models/listings/apartment";
 
 export async function storeListing(listing: DbListing): Promise<DbListing> {
-  return knex(LISTINGS_TABLE_NAME).insert(listing);
+  await knex(LISTINGS_TABLE_NAME).insert(listing);
+  const addedListing = await getListingById(listing.id);
+  if (!addedListing) {
+    throw new Error("Store listing operation failed");
+  }
+  return addedListing;
 }
 
 export async function getListings(): Promise<DbListing[]> {
