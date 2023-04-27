@@ -24,10 +24,20 @@ export async function getApartmentById(
     .first();
 }
 
+export async function getApartmentsByOwnerId(
+  ownerId: string
+): Promise<DbApartment[]> {
+  return knex<DbApartment>(APARTMENTS_TABLE_NAME).where({ ownerId }).select();
+}
+
 export async function updateApartment(
   id: string,
   apartment: Partial<DbApartment>
 ): Promise<DbApartment> {
   await knex(APARTMENTS_TABLE_NAME).where({ id }).update(apartment);
   return (await getApartmentById(id)) as DbApartment;
+}
+
+export async function deleteApartment(id: string): Promise<void> {
+  await knex(APARTMENTS_TABLE_NAME).where({ id }).delete();
 }

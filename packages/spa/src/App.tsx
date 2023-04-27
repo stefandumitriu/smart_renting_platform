@@ -23,6 +23,7 @@ import UserLandlordListingsPage from "./components/userSpace/UserLandlordListing
 import UserLandlordApartmentInfoPage from "./components/userSpace/UserLandordApartmentInfoPage";
 import apartmentInfoPageLoader from "./loaders/ApartmentInfoPageLoader";
 import AddApartmentWizard from "./components/userSpace/CreateApartment/AddApartmentWizard";
+import UserLandlordApartments from "./components/userSpace/UserLandlordApartments";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
               {
                 path: "listings",
                 element: <UserLandlordListingsPage />,
+              },
+              {
+                path: "apartments",
+                element: <UserLandlordApartments />,
               },
             ],
           },

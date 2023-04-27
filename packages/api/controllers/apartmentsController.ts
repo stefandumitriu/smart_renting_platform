@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import {
+  deleteApartment,
   getApartmentById,
+  getApartmentsByOwnerId,
   storeAddress,
   storeApartment,
   updateAddress,
@@ -13,6 +15,21 @@ import { v4 as uuidv4 } from "uuid";
 import * as fs from "fs";
 
 const ADDRESS_PROOF_STORAGE_PATH = "../../local_storage/addressProof";
+
+export const getOwnerApartments = async (req: Request, res: Response) => {
+  try {
+    const dbApartments = await getApartmentsByOwnerId(
+      req.query.ownerId as string
+    );
+    const apartments = await Promise.all(
+      dbApartments.map(convertDbApartmentToApartment)
+    );
+    res.send(apartments);
+  } catch (e) {
+    res.sendStatus(500);
+    console.error(e);
+  }
+};
 
 export const getApartment = async (req: Request, res: Response) => {
   try {
@@ -40,6 +57,16 @@ export const patchApartment = async (req: Request, res: Response) => {
     res.send(apartment);
   } catch (e) {
     res.send(e).sendStatus(500);
+    console.error(e);
+  }
+};
+
+export const deleteApartmentById = async (req: Request, res: Response) => {
+  try {
+    await deleteApartment(req.params.id as string);
+    res.sendStatus(204);
+  } catch (e) {
+    res.sendStatus(500);
     console.error(e);
   }
 };

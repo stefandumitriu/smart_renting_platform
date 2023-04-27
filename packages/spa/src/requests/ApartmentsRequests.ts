@@ -10,6 +10,13 @@ export const GetApartmentByIdRequest = async (id: string) => {
   return axiosResponse.data as Apartment;
 };
 
+export const GetApartmentsByOwnerIdRequest = async (ownerId: string) => {
+  const axiosResponse = await axiosBaseInstance.get(
+    `${GET_APARTMENTS_PATH}?ownerId=${ownerId}`
+  );
+  return axiosResponse.data as Apartment[];
+};
+
 export const PostApartmentRequest = async (newApartment: FormData) => {
   const axiosResponse = await axiosBaseInstance.post(
     `${GET_APARTMENTS_PATH}`,
@@ -28,4 +35,11 @@ export const PatchApartmentRequest = async (
     apartment
   );
   return axiosResponse.data as Apartment;
+};
+
+export const DeleteApartmentRequest = async (id: string) => {
+  const axiosResponse = await axiosBaseInstance.delete(
+    `${GET_APARTMENTS_PATH}/${id}`
+  );
+  return axiosResponse.status;
 };

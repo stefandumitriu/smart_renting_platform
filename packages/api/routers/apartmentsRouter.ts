@@ -1,7 +1,9 @@
 import express from "express";
 import {
   addApartment,
+  deleteApartmentById,
   getApartment,
+  getOwnerApartments,
   patchApartment,
 } from "../controllers/apartmentsController";
 import multer from "multer";
@@ -28,7 +30,9 @@ apartmentsRouter.post(
   multer({ storage: imageUpload }).single("addressProof"),
   addApartment
 );
+apartmentsRouter.get("/", getOwnerApartments);
 apartmentsRouter.get("/:id", getApartment);
 apartmentsRouter.patch("/:id", patchApartment);
+apartmentsRouter.delete("/:id", deleteApartmentById);
 
 export default apartmentsRouter;
