@@ -71,7 +71,6 @@ export const deleteApartmentById = async (req: Request, res: Response) => {
 export const addApartment = async (req: Request, res: Response) => {
   try {
     const body = req.body as NewApartment;
-    console.log(req.body, req.file);
     const addedAddress = await storeAddress({
       ...JSON.parse(body.address as unknown as string),
       id: uuidv4(),

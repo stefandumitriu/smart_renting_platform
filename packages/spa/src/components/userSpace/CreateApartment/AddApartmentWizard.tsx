@@ -47,8 +47,11 @@ const AddApartmentWizard: React.FC<{}> = () => {
       setSubmitting(true);
       const formData = new FormData();
       formData.append("address", JSON.stringify(values.address));
+      formData.append("utilities", JSON.stringify(values.utilities));
       formData.append("addressProof", values.addressProof || "");
-      Object.keys(_.omit(values, "address", "addressProof")).forEach((key) =>
+      Object.keys(
+        _.omit(values, "address", "addressProof", "utilities")
+      ).forEach((key) =>
         formData.append(
           key,
           values[key as keyof NewApartment]?.toString() ?? ""
@@ -68,7 +71,13 @@ const AddApartmentWizard: React.FC<{}> = () => {
             {
               ownerId: currentUser.id,
               buildingType: BuildingTypeEnum.Apartament,
-            } as NewApartment
+              utilities: {
+                "Curent, Apa, Canalizare, Gaz": false,
+                CATV: false,
+                "Incalzire pardoseala": false,
+                "Internet wireless": false,
+              },
+            } as unknown as NewApartment
           }
           onSubmit={handleSubmit}
         >
