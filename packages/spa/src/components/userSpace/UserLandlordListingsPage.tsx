@@ -19,7 +19,10 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { GetUserListingsRequest } from "../../requests/ListingsRequests";
+import {
+  DeleteListingRequest,
+  GetUserListingsRequest,
+} from "../../requests/ListingsRequests";
 import { AuthContext } from "../../contexts/AuthContext";
 
 interface LandlordListingCardProps {
@@ -208,6 +211,15 @@ const UserLandlordListingsPage: React.FC<{}> = () => {
     [setPage]
   );
 
+  const handleDelete = useCallback(async (id: string) => {
+    const status = await DeleteListingRequest(id);
+    if (status === 204) {
+      setListings(listings.filter((l) => l.id !== id));
+    } else {
+      console.error("Delete listing request failed");
+    }
+  }, []);
+
   return (
     <Layout pageTitle="Anunturile mele">
       <Grid
@@ -222,7 +234,7 @@ const UserLandlordListingsPage: React.FC<{}> = () => {
           <Grid item xs={12} paddingX={2}>
             <LandlordListingCard
               listing={listing}
-              handleDelete={(id: string) => console.log(id)}
+              handleDelete={handleDelete}
             />
           </Grid>
         ))}

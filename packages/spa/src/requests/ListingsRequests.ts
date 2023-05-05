@@ -16,6 +16,13 @@ export const CreateListingRequest = async (listing: FormData) => {
   return axiosResponse.data as Listing;
 };
 
+export const DeleteListingRequest = async (id: string) => {
+  const axiosResponse = await axiosBaseInstance.delete(
+    `${GET_LISTINGS_PATH}/${id}`
+  );
+  return axiosResponse.status;
+};
+
 export const GetListingsRequest = async () => {
   const axiosResponse = await axiosBaseInstance.get(GET_LISTINGS_PATH);
   return axiosResponse.data as Listing[];

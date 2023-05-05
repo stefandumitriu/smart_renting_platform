@@ -46,3 +46,7 @@ export async function getListingByApartmentId(
     .select()
     .first();
 }
+
+export async function deleteListingById(id: string): Promise<void> {
+  await knex(LISTINGS_TABLE_NAME).where({ id }).delete();
+}

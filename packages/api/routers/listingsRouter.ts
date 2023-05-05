@@ -5,6 +5,7 @@ import {
   createFavouriteListing,
   deleteApplicationById,
   deleteFavouriteListingById,
+  deleteListing,
   getApplicationsByLandlordId,
   getApplicationsByTenantId,
   getFavouriteListingsForUser,
@@ -41,6 +42,7 @@ listingsRouter.get("", getListings);
 listingsRouter.get("/favourite-listing", getFavouriteListingsForUser);
 listingsRouter.get("/user/:id", getUserListings);
 listingsRouter.get("/:id", getListingById);
+listingsRouter.delete("/:id", deleteListing);
 listingsRouter.post("/favourite-listing", createFavouriteListing);
 listingsRouter.delete("/favourite-listing/:id", deleteFavouriteListingById);
 listingsRouter.post("/applications", createApplication);

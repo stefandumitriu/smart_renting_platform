@@ -17,7 +17,7 @@ import {
   getTenantApplications,
 } from "@packages/db/services/listings/applicationService";
 import { convertDbApplicationToAPIApplication } from "../convertors/listings/application";
-import { storeListing } from "@packages/db/services";
+import { deleteListingById, storeListing } from "@packages/db/services";
 import { NewListing } from "../models/listings/listing";
 import { v4 as uuidv4 } from "uuid";
 import { convertDbListingToAPIListing } from "../convertors/listings/listing";
@@ -35,6 +35,16 @@ export const addListing = async (req: Request, res: Response) => {
     });
     const listing = await convertDbListingToAPIListing(dbListing);
     res.send(listing);
+  } catch (e) {
+    res.sendStatus(500);
+    console.error(e);
+  }
+};
+
+export const deleteListing = async (req: Request, res: Response) => {
+  try {
+    await deleteListingById(req.params.id as string);
+    res.sendStatus(204);
   } catch (e) {
     res.sendStatus(500);
     console.error(e);
