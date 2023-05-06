@@ -24,6 +24,7 @@ import {
   GetUserListingsRequest,
 } from "../../requests/ListingsRequests";
 import { AuthContext } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 interface LandlordListingCardProps {
   listing: Listing;
@@ -149,9 +150,11 @@ const LandlordListingCard: React.FC<LandlordListingCardProps> = ({
             alignContent="center"
           >
             <Grid item>
-              <Button color="info" variant="contained" fullWidth>
-                Vezi cereri
-              </Button>
+              <Link to={`/properties/${listing.id}/applications`}>
+                <Button color="info" variant="contained" fullWidth>
+                  Vezi cereri
+                </Button>
+              </Link>
             </Grid>
             <Grid item>
               <Button

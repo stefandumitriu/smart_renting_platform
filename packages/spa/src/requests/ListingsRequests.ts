@@ -90,6 +90,14 @@ export const GetTenantApplicationsRequest = async (tenantId: string) => {
   return axiosResponse.data as Application[];
 };
 
+export const GetListingApplicationsRequest = async (listingId: string) => {
+  const axiosResponse = await axiosBaseInstance.get(
+    `${GET_LISTINGS_PATH}/${listingId}/applications`
+  );
+
+  return axiosResponse.data as Application[];
+};
+
 export const DeleteApplicationRequest = async (id: string) => {
   const axiosResponse = await axiosBaseInstance.delete(
     `${APPLICATIONS_PATH}/${id}`

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { application, Request, Response } from "express";
 import {
   getAllListings,
   getListing,
@@ -13,6 +13,7 @@ import { createNewApplication } from "../services/listings/applicationService";
 import { NewApplication } from "../models/listings/application";
 import {
   deleteApplication,
+  getApplicationsForListing,
   getLandlordApplications,
   getTenantApplications,
 } from "@packages/db/services/listings/applicationService";
@@ -166,6 +167,24 @@ export const getApplicationsByLandlordId = async (
       })
     );
     res.send(applications).status(200);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+};
+
+export const getApplicationByListingId = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const dbApplications = await getApplicationsForListing(
+      req.params.listingId as string
+    );
+    const applications = await Promise.all(
+      dbApplications.map(convertDbApplicationToAPIApplication)
+    );
+    res.send(applications);
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
