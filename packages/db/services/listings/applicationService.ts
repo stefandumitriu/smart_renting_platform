@@ -5,7 +5,7 @@ import {
 import knex from "../../knex";
 
 export async function storeApplication(
-  application: DbApplication
+  application: Omit<DbApplication, "created_at">
 ): Promise<DbApplication[]> {
   return knex(APPLICATIONS_TABLE_NAME)
     .insert(application)

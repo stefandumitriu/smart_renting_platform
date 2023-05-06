@@ -8,6 +8,7 @@ export enum ApplicationStatus {
 
 export interface DbApplication {
   id: string;
+  created_at: Date;
   landlordId: string;
   tenantId: string;
   listingId: string;
