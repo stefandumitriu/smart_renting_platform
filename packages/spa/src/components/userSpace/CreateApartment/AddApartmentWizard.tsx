@@ -48,9 +48,18 @@ const AddApartmentWizard: React.FC<{}> = () => {
       const formData = new FormData();
       formData.append("address", JSON.stringify(values.address));
       formData.append("utilities", JSON.stringify(values.utilities));
+      formData.append("appliances", JSON.stringify(values.appliances));
+      formData.append("finishes", JSON.stringify(values.finishes));
       formData.append("addressProof", values.addressProof || "");
       Object.keys(
-        _.omit(values, "address", "addressProof", "utilities")
+        _.omit(
+          values,
+          "address",
+          "addressProof",
+          "utilities",
+          "appliances",
+          "finishes"
+        )
       ).forEach((key) =>
         formData.append(
           key,
@@ -77,6 +86,20 @@ const AddApartmentWizard: React.FC<{}> = () => {
                 "Incalzire pardoseala": false,
                 "Internet wireless": false,
               },
+              appliances: {
+                "Masina de spalat rufe": false,
+                "Masina de spalat vase": false,
+                TV: false,
+                Frigider: false,
+                "Cuptor microunde": false,
+                Termostat: true,
+              },
+              finishes: {
+                "Usa metalica exterior": false,
+                Termopane: false,
+                "Izolatie termica": false,
+                "Instalatie sanitara premium": false,
+              },
             } as unknown as NewApartment
           }
           onSubmit={handleSubmit}
@@ -102,20 +125,14 @@ const AddApartmentWizard: React.FC<{}> = () => {
                   </Step>
                 ))}
               </Stepper>
-              <SwipeableViews index={activeStep}>
-                {steps.map((step, index) => {
-                  const Component = step.component;
-                  return <Component key={index} />;
-                })}
-              </SwipeableViews>
               <Grid
                 item
                 container
-                xs={8}
+                xs={9}
                 justifyContent="space-between"
                 spacing={2}
                 marginX="auto"
-                marginBottom={2}
+                marginTop={4}
               >
                 <Button
                   disabled={isFirstStep()}
@@ -134,6 +151,12 @@ const AddApartmentWizard: React.FC<{}> = () => {
                   {isLastStep() ? "Submit" : "Next"}
                 </Button>
               </Grid>
+              <SwipeableViews index={activeStep}>
+                {steps.map((step, index) => {
+                  const Component = step.component;
+                  return <Component key={index} />;
+                })}
+              </SwipeableViews>
             </Form>
           )}
         </Formik>
