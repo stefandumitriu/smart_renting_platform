@@ -1,4 +1,4 @@
-import { application, Request, Response } from "express";
+import { Request, Response } from "express";
 import {
   getAllListings,
   getListing,
@@ -18,11 +18,16 @@ import {
   getTenantApplications,
 } from "@packages/db/services/listings/applicationService";
 import { convertDbApplicationToAPIApplication } from "../convertors/listings/application";
-import { deleteListingById, storeListing } from "@packages/db/services";
+import {
+  deleteListingById,
+  storeListing,
+  updateApartment,
+} from "@packages/db/services";
 import { NewListing } from "../models/listings/listing";
 import { v4 as uuidv4 } from "uuid";
 import { convertDbListingToAPIListing } from "../convertors/listings/listing";
 import _ from "lodash";
+import { ApartmentStatus } from "@packages/db/models/listings/apartment";
 
 export const addListing = async (req: Request, res: Response) => {
   try {
@@ -34,6 +39,9 @@ export const addListing = async (req: Request, res: Response) => {
       photosUrl: filepaths,
       id: uuidv4(),
     });
+    await updateApartment((req.body as NewListing).apartmentId, {
+      status: ApartmentStatus.Listed,
+    });
     const listing = await convertDbListingToAPIListing(dbListing);
     res.send(listing);
   } catch (e) {
@@ -44,7 +52,9 @@ export const addListing = async (req: Request, res: Response) => {
 
 export const deleteListing = async (req: Request, res: Response) => {
   try {
+    const apartmentId = (await getListing(req.params.id as string)).apartmentId;
     await deleteListingById(req.params.id as string);
+    await updateApartment(apartmentId, { status: ApartmentStatus.Available });
     res.sendStatus(204);
   } catch (e) {
     res.sendStatus(500);

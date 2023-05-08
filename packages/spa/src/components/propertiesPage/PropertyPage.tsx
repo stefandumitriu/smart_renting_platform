@@ -56,6 +56,13 @@ const PropertyPage: React.FC<{}> = () => {
   const [rentApplyFormModalOpen, setRentApplyFormModalOpen] = useState(false);
   const [hasAppliedForListing, setHasAppliedForListing] = useState(false);
 
+  const ownsProperty = useMemo(() => {
+    if (currentUser) {
+      return currentUser.id === params.apartment.ownerId;
+    }
+    return false;
+  }, []);
+
   const handleRentApplyFormClose = useCallback(() => {
     setRentApplyFormModalOpen(false);
   }, []);
@@ -453,6 +460,7 @@ const PropertyPage: React.FC<{}> = () => {
                     onClick={() => setRentApplyFormModalOpen(true)}
                     color="secondary"
                     variant="contained"
+                    disabled={ownsProperty}
                   >
                     Depune cerere de inchiriere
                   </Button>

@@ -25,6 +25,7 @@ import { StyledTextField } from "../landingPage/SignupForm";
 import Dropzone from "react-dropzone";
 import * as Yup from "yup";
 import _ from "lodash";
+import { ApartmentStatus } from "@packages/db/models/listings/apartment";
 
 const rentalPeriods = ["1 an", "> 1 an", "6 luni", "3 luni"];
 
@@ -77,8 +78,12 @@ const AddListingPage: React.FC<{}> = () => {
     fetchApartments().then((res) => setApartments(res));
   }, [setApartments, fetchApartments]);
 
+  const availableApartments = useMemo(() => {
+    return apartments.filter((a) => a.status === ApartmentStatus.Available);
+  }, [apartments]);
+
   const apartmentOptions = useMemo(() => {
-    return apartments.map((apartment) => ({
+    return availableApartments.map((apartment) => ({
       label:
         apartment.address.streetType +
         " " +
@@ -90,7 +95,7 @@ const AddListingPage: React.FC<{}> = () => {
         " camere",
       value: apartment.id,
     }));
-  }, [apartments]);
+  }, [availableApartments]);
   return (
     <Layout pageTitle="Adauga anunt">
       <Formik
