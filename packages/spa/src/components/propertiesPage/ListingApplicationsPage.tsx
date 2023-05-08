@@ -53,7 +53,11 @@ const ApplicationCard: React.FC<ApplicationCardParams> = ({
 }: ApplicationCardParams) => {
   const theme = useTheme();
   return (
-    <Link to={`${application.id}`} style={{ textDecoration: "none" }}>
+    <Link
+      to={`${application.id}`}
+      style={{ textDecoration: "none" }}
+      state={{ application }}
+    >
       <Paper
         sx={{
           width: "100%",

@@ -88,6 +88,18 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
       </Grid>
       <UserLoginModal open={openLogin} handleClose={handleLoginClose} />
       {children}
+      <Grid
+        item
+        container
+        xs={12}
+        justifyContent={"center"}
+        sx={{ backgroundColor: "white" }}
+        marginTop={2}
+      >
+        <Grid item>
+          <Typography>All rights reserved @ Stefan Dumitriu - 2023</Typography>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

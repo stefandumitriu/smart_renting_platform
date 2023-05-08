@@ -27,6 +27,7 @@ import UserLandlordApartments from "./components/userSpace/UserLandlordApartment
 import AddListingPage from "./components/userSpace/AddListingPage";
 import ListingApplicationsPage from "./components/propertiesPage/ListingApplicationsPage";
 import listingApplicationsLoader from "./loaders/ListingApplicationsPageLoader";
+import ApplicationPage from "./components/propertiesPage/ApplicationPage";
 
 const router = createBrowserRouter([
   {
@@ -55,8 +56,17 @@ const router = createBrowserRouter([
           },
           {
             path: "applications",
-            element: <ListingApplicationsPage />,
-            loader: listingApplicationsLoader,
+            children: [
+              {
+                index: true,
+                element: <ListingApplicationsPage />,
+                loader: listingApplicationsLoader,
+              },
+              {
+                path: ":id",
+                element: <ApplicationPage />,
+              },
+            ],
           },
         ],
       },
