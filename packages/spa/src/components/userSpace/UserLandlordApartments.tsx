@@ -24,6 +24,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import { ApartmentStatus } from "@packages/db/models/listings/apartment";
 
 interface ApartmentCardProps {
   apartment: Apartment;
@@ -35,6 +36,34 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
   handleDelete,
 }) => {
   const theme = useTheme();
+
+  const getBgColorFromApartmentStatus = (apartmentStatus: ApartmentStatus) => {
+    switch (apartmentStatus) {
+      case ApartmentStatus.Available:
+        return theme.palette.primary.main;
+      case ApartmentStatus.Listed:
+        return theme.palette.secondary.light;
+      case ApartmentStatus.Rented:
+        return theme.palette.error.light;
+      default:
+        return theme.palette.error.light;
+    }
+  };
+
+  const getTextColorFromApartmentStatus = (
+    apartmentStatus: ApartmentStatus
+  ) => {
+    switch (apartmentStatus) {
+      case ApartmentStatus.Available:
+        return "black";
+      case ApartmentStatus.Listed:
+        return "white";
+      case ApartmentStatus.Rented:
+        return "black";
+      default:
+        return "black";
+    }
+  };
   return (
     <Paper sx={{ width: "100%", borderRadius: "20px" }} elevation={4}>
       <Grid container>
@@ -52,7 +81,28 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
             >
               <CardContent sx={{ height: "100%" }}>
                 <Grid container rowSpacing={2} sx={{ height: "100%" }}>
-                  <Grid item container xs={12} justifyContent="center">
+                  <Paper
+                    sx={{
+                      zIndex: 1,
+                      textAlign: "center",
+                      marginLeft: "-16px",
+                      paddingX: "8px",
+                      paddingY: "4px",
+                      backgroundColor: getBgColorFromApartmentStatus(
+                        apartment.status
+                      ),
+                      color: getTextColorFromApartmentStatus(apartment.status),
+                    }}
+                  >
+                    {apartment.status}
+                  </Paper>
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    justifyContent="center"
+                    marginTop={-2}
+                  >
                     <Grid item>
                       <Typography
                         color={theme.palette.secondary.main}
@@ -72,7 +122,7 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
                       </Typography>
                     </Grid>
                   </Grid>
-                  <Grid item container xs={12}>
+                  <Grid item container xs={12} marginBottom={2}>
                     <Grid item xs={2}>
                       <Chip label={apartment.surface.toString(10) + " m2"} />
                     </Grid>
