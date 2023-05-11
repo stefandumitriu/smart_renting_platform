@@ -22,6 +22,7 @@ import {
   deleteListingById,
   storeListing,
   updateApartment,
+  updateListing,
 } from "@packages/db/services";
 import { NewListing } from "../models/listings/listing";
 import { v4 as uuidv4 } from "uuid";
@@ -36,11 +37,25 @@ export const addListing = async (req: Request, res: Response) => {
     );
     const dbListing = await storeListing({
       ..._.omit(req.body as NewListing, "photos"),
-      photosUrl: filepaths,
+      photosUrl: filepaths || undefined,
       id: uuidv4(),
     });
     await updateApartment((req.body as NewListing).apartmentId, {
       status: ApartmentStatus.Listed,
+    });
+    const listing = await convertDbListingToAPIListing(dbListing);
+    res.send(listing);
+  } catch (e) {
+    res.sendStatus(500);
+    console.error(e);
+  }
+};
+
+export const patchListing = async (req: Request, res: Response) => {
+  try {
+    const dbListing = await updateListing(req.params.id as string, {
+      ...req.body,
+      lastUpdated: new Date(),
     });
     const listing = await convertDbListingToAPIListing(dbListing);
     res.send(listing);

@@ -13,6 +13,7 @@ import {
   getListingById,
   getListings,
   getUserListings,
+  patchListing,
 } from "../controllers/listingsController";
 import multer from "multer";
 import path from "path";
@@ -44,6 +45,7 @@ listingsRouter.get("/favourite-listing", getFavouriteListingsForUser);
 listingsRouter.get("/user/:id", getUserListings);
 listingsRouter.get("/:listingId/applications", getApplicationByListingId);
 listingsRouter.get("/:id", getListingById);
+listingsRouter.patch("/:id", patchListing);
 listingsRouter.delete("/:id", deleteListing);
 listingsRouter.post("/favourite-listing", createFavouriteListing);
 listingsRouter.delete("/favourite-listing/:id", deleteFavouriteListingById);

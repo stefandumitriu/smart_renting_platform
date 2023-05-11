@@ -11,6 +11,18 @@ export async function storeListing(listing: DbListing): Promise<DbListing> {
   return addedListing;
 }
 
+export async function updateListing(
+  id: string,
+  listing: Partial<DbListing>
+): Promise<DbListing> {
+  await knex<DbListing>(LISTINGS_TABLE_NAME).where({ id }).update(listing);
+  const updatedListing = await getListingById(id);
+  if (!updatedListing) {
+    throw new Error("Update listing operation failed");
+  }
+  return updatedListing;
+}
+
 export async function getListings(): Promise<DbListing[]> {
   return knex(LISTINGS_TABLE_NAME).select();
 }

@@ -61,7 +61,7 @@ const PropertyPage: React.FC<{}> = () => {
       return currentUser.id === params.apartment.ownerId;
     }
     return false;
-  }, []);
+  }, [currentUser, params]);
 
   const handleRentApplyFormClose = useCallback(() => {
     setRentApplyFormModalOpen(false);
@@ -116,19 +116,21 @@ const PropertyPage: React.FC<{}> = () => {
     return `${params.apartment.owner.firstName} ${params.apartment.owner.lastName}`;
   }, [params]);
 
-  const images: string[] = useMemo(
-    () =>
-      params.photosUrl?.map(
+  const images: string[] = useMemo(() => {
+    if (params.photosUrl && params.photosUrl.length > 0) {
+      return params.photosUrl?.map(
         (photoUrl) =>
           "http://localhost:8080" + photoUrl.replaceAll("\\", "/").slice(5)
-      ) || [
+      );
+    } else {
+      return [
         "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg",
         "https://www.franklinsapartments.com/img/Apt5a.jpg",
         "https://www.franklinsapartments.com/img/Apt6c.jpg",
         "https://riceandroman.azureedge.net/prop-1464/1464-1.jpg",
-      ],
-    [params]
-  );
+      ];
+    }
+  }, [params]);
 
   const [activeImage, setActiveImage] = useState(0);
   const [isFavourite, setIsFavourite] = useState(false);

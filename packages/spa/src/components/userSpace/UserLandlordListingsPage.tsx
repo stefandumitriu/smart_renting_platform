@@ -157,14 +157,14 @@ const LandlordListingCard: React.FC<LandlordListingCardProps> = ({
               </Link>
             </Grid>
             <Grid item>
-              <Button
-                color="primary"
-                variant="contained"
-                fullWidth
-                onClick={() => handleDelete(listing.id)}
+              <Link
+                to={`/properties/${listing.id}/edit`}
+                style={{ textDecoration: "none" }}
               >
-                Editeaza
-              </Button>
+                <Button color="primary" variant="contained" fullWidth>
+                  Editeaza
+                </Button>
+              </Link>
             </Grid>
             <Grid item>
               <Button
@@ -214,14 +214,17 @@ const UserLandlordListingsPage: React.FC<{}> = () => {
     [setPage]
   );
 
-  const handleDelete = useCallback(async (id: string) => {
-    const status = await DeleteListingRequest(id);
-    if (status === 204) {
-      setListings(listings.filter((l) => l.id !== id));
-    } else {
-      console.error("Delete listing request failed");
-    }
-  }, []);
+  const handleDelete = useCallback(
+    async (id: string) => {
+      const status = await DeleteListingRequest(id);
+      if (status === 204) {
+        setListings(listings.filter((l) => l.id !== id));
+      } else {
+        console.error("Delete listing request failed");
+      }
+    },
+    [setListings, listings]
+  );
 
   return (
     <Layout pageTitle="Anunturile mele">

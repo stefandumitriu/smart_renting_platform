@@ -28,6 +28,7 @@ import AddListingPage from "./components/userSpace/AddListingPage";
 import ListingApplicationsPage from "./components/propertiesPage/ListingApplicationsPage";
 import listingApplicationsLoader from "./loaders/ListingApplicationsPageLoader";
 import ApplicationPage from "./components/propertiesPage/ApplicationPage";
+import EditListingPage from "./components/userSpace/EditListingPage";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,11 @@ const router = createBrowserRouter([
       {
         path: ":id",
         children: [
+          {
+            path: "edit",
+            element: <EditListingPage />,
+            loader: propertyPageLoader,
+          },
           {
             index: true,
             element: <PropertyPage />,

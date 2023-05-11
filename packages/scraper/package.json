@@ -12,6 +12,6 @@
   "scripts": {
     "clean": "yarn tsc --build --clean",
     "build": "yarn tsc",
-    "start": "node ./bin/scraper.js"
+    "start": ""
   }
 }
