@@ -15,6 +15,9 @@ import { CreateContractRequest } from "../../requests/ContractsRequest";
 import { useNavigate } from "react-router-dom";
 import { FormDatePicker } from "../../FormInputsWrappers";
 import { StyledTextField } from "../landingPage/SignupForm";
+import { PatchApplicationRequest } from "../../requests/ListingsRequests";
+import { ApartmentStatus, ApplicationStatus } from "@packages/db/models";
+import { PatchApartmentRequest } from "../../requests/ApartmentsRequests";
 
 interface CreateContractModelProps {
   open: boolean;
@@ -32,10 +35,17 @@ const CreateContractModal: React.FC<CreateContractModelProps> = ({
   const submitCallback = useCallback(
     async (values: NewContact) => {
       const contract = await CreateContractRequest(values);
+      await PatchApplicationRequest(application.id, {
+        status: ApplicationStatus.Approved,
+      });
+      await PatchApartmentRequest(application.listing.apartmentId, {
+        ...application.listing.apartment,
+        status: ApartmentStatus.Rented,
+      });
       console.log(contract);
       navigate("/user/dashboard/landlord/apartments");
     },
-    [navigate]
+    [navigate, application]
   );
   return (
     <Modal open={open} onClose={handleClose}>

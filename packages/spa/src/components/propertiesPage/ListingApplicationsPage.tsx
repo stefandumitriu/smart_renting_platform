@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "../Layout";
 import { Link, useLoaderData } from "react-router-dom";
 import { Application } from "@packages/api/models/listings/application";
-import { Grid, Paper, Typography, useTheme } from "@mui/material";
+import { Grid, Paper, Theme, Typography, useTheme } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ApplicationStatus } from "@packages/db/models/listings/application";
@@ -36,6 +36,20 @@ const translateApplicationStatus: (status: ApplicationStatus) => string = (
       return "In asteptare";
     case ApplicationStatus.Rejected:
       return "Refuzat";
+  }
+};
+
+const statusColor: (status: ApplicationStatus, theme: Theme) => string = (
+  status,
+  theme
+) => {
+  switch (status) {
+    case ApplicationStatus.Approved:
+      return theme.palette.success.light;
+    case ApplicationStatus.Waiting:
+      return theme.palette.warning.main;
+    case ApplicationStatus.Rejected:
+      return theme.palette.error.main;
   }
 };
 
@@ -80,7 +94,7 @@ const ApplicationCard: React.FC<ApplicationCardParams> = ({
               </Grid>
               <Grid item>
                 <Typography
-                  color={theme.palette.warning.main}
+                  color={statusColor(application.status, theme)}
                   fontWeight="bold"
                 >
                   {translateApplicationStatus(application.status)}

@@ -93,6 +93,17 @@ export const CreateApplicationRequest = async (
   return axiosResponse.data;
 };
 
+export const PatchApplicationRequest = async (
+  id: string,
+  application: Partial<Application>
+) => {
+  const axiosResponse = await axiosBaseInstance.patch(
+    `${APPLICATIONS_PATH}/${id}`,
+    application
+  );
+  return axiosResponse.data as Application;
+};
+
 export const GetTenantApplicationsRequest = async (tenantId: string) => {
   const axiosResponse = await axiosBaseInstance.get(
     `${APPLICATIONS_PATH}/tenant/${tenantId}`

@@ -16,6 +16,7 @@ import {
   getApplicationsForListing,
   getLandlordApplications,
   getTenantApplications,
+  updateApplication,
 } from "@packages/db/services/listings/applicationService";
 import { convertDbApplicationToAPIApplication } from "../convertors/listings/application";
 import {
@@ -29,6 +30,7 @@ import { v4 as uuidv4 } from "uuid";
 import { convertDbListingToAPIListing } from "../convertors/listings/listing";
 import _ from "lodash";
 import { ApartmentStatus } from "@packages/db/models/listings/apartment";
+import { DbApplication } from "@packages/db";
 
 export const addListing = async (req: Request, res: Response) => {
   try {
@@ -157,6 +159,20 @@ export const createApplication = async (req: Request, res: Response) => {
   } catch (e) {
     console.log(e);
     res.sendStatus(400);
+  }
+};
+
+export const patchApplication = async (req: Request, res: Response) => {
+  try {
+    const dbApplication = await updateApplication(
+      req.params.id as string,
+      req.body as Partial<DbApplication>
+    );
+    const application = convertDbApplicationToAPIApplication(dbApplication);
+    res.status(200).send(application);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
   }
 };
 

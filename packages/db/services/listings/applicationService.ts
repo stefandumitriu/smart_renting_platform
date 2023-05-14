@@ -1,7 +1,4 @@
-import {
-  APPLICATIONS_TABLE_NAME,
-  DbApplication,
-} from "../../models/listings/application";
+import { APPLICATIONS_TABLE_NAME, DbApplication } from "../../models";
 import knex from "../../knex";
 
 export async function storeApplication(
@@ -10,6 +7,29 @@ export async function storeApplication(
   return knex(APPLICATIONS_TABLE_NAME)
     .insert(application)
     .returning(Object.keys(application));
+}
+
+export async function updateApplication(
+  id: string,
+  application: Partial<DbApplication>
+): Promise<DbApplication> {
+  await knex<DbApplication>(APPLICATIONS_TABLE_NAME)
+    .where({ id })
+    .update(application);
+  const updatedApplication = await getApplicationById(id);
+  if (!updatedApplication) {
+    throw new Error("Error on update operation");
+  }
+  return updatedApplication;
+}
+
+async function getApplicationById(
+  id: string
+): Promise<DbApplication | undefined> {
+  return knex<DbApplication>(APPLICATIONS_TABLE_NAME)
+    .where({ id })
+    .select()
+    .first();
 }
 
 export async function getLandlordApplications(
