@@ -24,6 +24,7 @@ import {
 } from "@mui/icons-material";
 import { GetUserEmailRequest } from "../../requests/UserSignupRequest";
 import moment from "moment";
+import CreateContractModal from "./CreateContractModal";
 
 const ApplicationPage: React.FC<{}> = () => {
   const { state } = useLocation();
@@ -46,6 +47,17 @@ const ApplicationPage: React.FC<{}> = () => {
   useEffect(() => {
     fetchFn().then((data) => setTenantEmail(data));
   }, [fetchFn]);
+
+  const [contractModalOpen, setContractModalOpen] = useState<boolean>(false);
+
+  const approveRequestCallback = useCallback(() => {
+    setContractModalOpen(true);
+  }, [setContractModalOpen]);
+
+  const handleContractModalClose = useCallback(() => {
+    setContractModalOpen(false);
+  }, []);
+
   return (
     <Layout>
       <Grid
@@ -275,7 +287,7 @@ const ApplicationPage: React.FC<{}> = () => {
           <Grid item xs={12} md="auto">
             <Button
               color="success"
-              onClick={() => console.log("Application approved")}
+              onClick={approveRequestCallback}
               variant="contained"
               startIcon={<Done />}
             >
@@ -284,6 +296,11 @@ const ApplicationPage: React.FC<{}> = () => {
           </Grid>
         </Grid>
       </Grid>
+      <CreateContractModal
+        open={contractModalOpen}
+        handleClose={handleContractModalClose}
+        application={application}
+      />
     </Layout>
   );
 };

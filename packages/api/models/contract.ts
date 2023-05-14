@@ -15,4 +15,7 @@ export type Contract = Omit<DbContract, "startDate" | "endDate"> &
     endDate?: Moment;
   };
 
-export type NewContact = Omit<DbContract, "id" | "status">;
+export type NewContact = Omit<DbContract, "id" | "status"> & {
+  startDate: Moment;
+  endDate?: Moment;
+};

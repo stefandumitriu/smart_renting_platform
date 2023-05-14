@@ -13,6 +13,10 @@ export function convertNewContractToDbContract(
     ...contract,
     id: uuidv4(),
     status: ContractStatus.Draft,
+    startDate: new Date(contract.startDate as unknown as string),
+    endDate: contract.endDate
+      ? new Date(contract.endDate as unknown as string)
+      : undefined,
   };
 }
 
