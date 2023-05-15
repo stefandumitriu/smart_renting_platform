@@ -1,4 +1,7 @@
-import { storeContract } from "@packages/db/services/contractService";
+import {
+  getContractForTenantUser,
+  storeContract,
+} from "@packages/db/services/contractService";
 import {
   convertDbContractToContract,
   convertNewContractToDbContract,
@@ -11,6 +14,22 @@ export const createNewContract = async (req: Request, res: Response) => {
     const dbContract = await storeContract(
       convertNewContractToDbContract(req.body as NewContact)
     );
+    const contract = await convertDbContractToContract(dbContract);
+    res.status(200).send(contract);
+  } catch (e) {
+    res.sendStatus(500);
+    console.error(e);
+  }
+};
+
+export const getContractByTenantId = async (req: Request, res: Response) => {
+  try {
+    const dbContract = await getContractForTenantUser(
+      req.params.tenantId as string
+    );
+    if (!dbContract) {
+      throw new Error("Tenant contract not found for user");
+    }
     const contract = await convertDbContractToContract(dbContract);
     res.status(200).send(contract);
   } catch (e) {

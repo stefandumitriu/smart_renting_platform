@@ -1,10 +1,30 @@
-import { CONTRACTS_TABLE_NAME, DbContract } from "../models";
+import { CONTRACTS_TABLE_NAME, ContractStatus, DbContract } from "../models";
 import knex from "../knex";
 
 export async function getContractById(
   id: string
 ): Promise<DbContract | undefined> {
   return knex<DbContract>(CONTRACTS_TABLE_NAME).where({ id }).select().first();
+}
+
+export async function getContractForTenantUser(
+  tenantId: string
+): Promise<DbContract | undefined> {
+  return knex<DbContract>(CONTRACTS_TABLE_NAME)
+    .where({ tenantId, status: ContractStatus.Ongoing })
+    .orWhere({ tenantId, status: ContractStatus.Draft })
+    .select()
+    .first();
+}
+
+export async function getContractForLandlordByApartmentId(
+  apartmentId: string,
+  landlordId: string
+): Promise<DbContract | undefined> {
+  return knex<DbContract>(CONTRACTS_TABLE_NAME)
+    .where({ apartmentId, landlordId })
+    .select()
+    .first();
 }
 
 export async function storeContract(contract: DbContract): Promise<DbContract> {

@@ -112,30 +112,32 @@ const UserTenantDashboard: React.FC<{}> = () => {
             </Paper>
           </Grid>
           <Grid item xs={4}>
-            <Paper
-              elevation={5}
-              sx={{
-                height: "100%",
-                ":hover": {
-                  boxShadow: 20,
-                },
-              }}
-            >
-              <Stack
-                spacing={2}
-                alignItems="center"
-                sx={{ height: "100%" }}
-                justifyContent="center"
+            <Link to={"contract"} style={{ textDecoration: "none" }}>
+              <Paper
+                elevation={5}
+                sx={{
+                  height: "100%",
+                  ":hover": {
+                    boxShadow: 20,
+                  },
+                }}
               >
-                <ContentPaste
-                  color="secondary"
-                  sx={{ height: "50%", width: "50%" }}
-                />
-                <Typography color={theme.palette.secondary.main} variant="h5">
-                  Contract Curent
-                </Typography>
-              </Stack>
-            </Paper>
+                <Stack
+                  spacing={2}
+                  alignItems="center"
+                  sx={{ height: "100%" }}
+                  justifyContent="center"
+                >
+                  <ContentPaste
+                    color="secondary"
+                    sx={{ height: "50%", width: "50%" }}
+                  />
+                  <Typography color={theme.palette.secondary.main} variant="h5">
+                    Contract Curent
+                  </Typography>
+                </Stack>
+              </Paper>
+            </Link>
           </Grid>
         </Grid>
       </Grid>

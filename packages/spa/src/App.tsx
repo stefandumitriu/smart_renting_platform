@@ -29,6 +29,7 @@ import ListingApplicationsPage from "./components/propertiesPage/ListingApplicat
 import listingApplicationsLoader from "./loaders/ListingApplicationsPageLoader";
 import ApplicationPage from "./components/propertiesPage/ApplicationPage";
 import EditListingPage from "./components/userSpace/EditListingPage";
+import ContractPage from "./components/userSpace/ContractPage";
 
 const router = createBrowserRouter([
   {
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
               {
                 path: "rent-applications",
                 element: <UserTenantRentApplications />,
+              },
+              {
+                path: "contract",
+                element: <ContractPage userIsTenant />,
               },
             ],
           },
