@@ -24,6 +24,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 enum ApartmentStatus {
   UnderReview = "Under Review",
@@ -158,6 +159,18 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
             sx={{ height: "100%", width: "100%" }}
             alignContent="center"
           >
+            {apartment.status === ApartmentStatus.Rented && (
+              <Grid item>
+                <Link
+                  to={`${apartment.id}/contract`}
+                  state={{ apartmentId: apartment.id }}
+                >
+                  <Button color="secondary" variant="contained" fullWidth>
+                    Vezi contract
+                  </Button>
+                </Link>
+              </Grid>
+            )}
             <Grid item>
               <Button
                 color="error"

@@ -2,7 +2,11 @@ import Layout from "../Layout";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Contract } from "@packages/api/models/contract";
-import { GetTenantContractRequest } from "../../requests/ContractsRequest";
+import {
+  GetLandlordApartmentContractRequest,
+  GetTenantContractRequest,
+  UpdateContractRequest,
+} from "../../requests/ContractsRequest";
 import {
   Alert,
   AlertTitle,
@@ -21,6 +25,14 @@ import { Apartment } from "@packages/api/models/listings/apartment";
 import { UserProfile } from "@packages/api/models/users/userProfile";
 import { CalendarToday, Email, Phone, Work } from "@mui/icons-material";
 import { GetUserEmailRequest } from "../../requests/UserSignupRequest";
+import { useLocation } from "react-router-dom";
+import EditContractModal from "./EditContractModal";
+
+enum ContractStatus {
+  Draft = "Draft",
+  Ongoing = "In desfasurare",
+  Closed = "Incheiat",
+}
 
 interface ContractPageProps {
   userIsTenant?: boolean;
@@ -158,11 +170,120 @@ const UserInfo: React.FC<{ user: UserProfile; theme: Theme }> = ({
   );
 };
 
+const ContractDetailsSection: React.FC<{
+  contract: Contract;
+  userIsTenant?: boolean;
+  updateContractCallback: (contract: Contract) => void;
+}> = ({ contract, userIsTenant, updateContractCallback }) => {
+  const theme = useTheme();
+  const [editContractModalOpen, setEditContractModalOpen] =
+    useState<boolean>(false);
+  const handleClose = useCallback(() => {
+    setEditContractModalOpen(false);
+  }, [setEditContractModalOpen]);
+  return (
+    <>
+      <Grid item container xs={12} marginTop={2} justifyContent="space-between">
+        <Grid item xs={12} md="auto">
+          <Typography variant="h4" color={theme.palette.secondary.main}>
+            Detalii Contract
+          </Typography>
+        </Grid>
+        {contract.status === "Draft" && !userIsTenant && (
+          <Grid item xs={12} md="auto">
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => setEditContractModalOpen(true)}
+            >
+              Editeaza contract
+            </Button>
+          </Grid>
+        )}
+      </Grid>
+      <Grid item container xs={12} columnSpacing={2} marginTop={2}>
+        <Grid item xs={12} md="auto">
+          <Typography fontWeight="bold" color={theme.palette.secondary.main}>
+            Interval Inchiriere
+          </Typography>
+        </Grid>
+        <Grid item container xs={12} md="auto">
+          <Typography>
+            {moment(contract.startDate).format("DD-MM-YYYY")}
+            {" - "}
+            {contract.endDate
+              ? moment(contract.endDate).format("DD-MM-YYYY")
+              : "Nedeterminat"}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} columnSpacing={2} marginTop={1}>
+        <Grid item xs={12} md="auto">
+          <Typography fontWeight="bold" color={theme.palette.secondary.main}>
+            Zi plata
+          </Typography>
+        </Grid>
+        <Grid item container xs={12} md="auto">
+          <Typography>{contract.rentPayday}</Typography>
+        </Grid>
+      </Grid>
+      {contract.paymentInfo && (
+        <Grid item container xs={12} columnSpacing={2} marginTop={1}>
+          <Grid item xs={12} md="auto">
+            <Typography fontWeight="bold" color={theme.palette.secondary.main}>
+              Modalitate de plata
+            </Typography>
+          </Grid>
+          <Grid item container xs={12} md="auto">
+            <Typography>{contract.paymentInfo}</Typography>
+          </Grid>
+        </Grid>
+      )}
+      <Grid item container xs={12} columnSpacing={2} marginTop={1}>
+        <Grid item xs={12} md="auto">
+          <Typography fontWeight="bold" color={theme.palette.secondary.main}>
+            Garantie
+          </Typography>
+        </Grid>
+        <Grid item container xs={12} md="auto">
+          <Typography>{contract.depositValue}</Typography>
+        </Grid>
+      </Grid>
+      {contract.additionalClauses && (
+        <Grid item container xs={12} columnSpacing={2} marginTop={1}>
+          <Grid item xs={12} md="auto">
+            <Typography fontWeight="bold" color={theme.palette.secondary.main}>
+              Modalitate de plata
+            </Typography>
+          </Grid>
+          <Grid item container xs={12} md="auto">
+            <Typography>{contract.additionalClauses}</Typography>
+          </Grid>
+        </Grid>
+      )}
+      <EditContractModal
+        open={editContractModalOpen}
+        handleClose={handleClose}
+        contract={contract}
+        updateCallback={updateContractCallback}
+      />
+    </>
+  );
+};
+
 const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
   const { currentUser } = useContext(AuthContext);
+  const { state } = useLocation();
   const theme = useTheme();
 
   const [contract, setContract] = useState<Contract | undefined>(undefined);
+
+  const updateContractCallback = useCallback(
+    (contract: Contract) => {
+      setContract(contract);
+    },
+    [setContract]
+  );
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -170,9 +291,23 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
     if (currentUser) {
       if (userIsTenant) {
         GetTenantContractRequest(currentUser.id).then((c) => setContract(c));
+      } else {
+        GetLandlordApartmentContractRequest(
+          currentUser.id,
+          state.apartmentId
+        ).then((c) => setContract(c));
       }
     }
-  }, [currentUser, userIsTenant]);
+  }, [currentUser, userIsTenant, state]);
+
+  const changeContractStatus = useCallback(async () => {
+    if (contract) {
+      await UpdateContractRequest(contract.id, {
+        status: ContractStatus.Ongoing,
+      });
+    }
+    setOpen(false);
+  }, [contract]);
 
   useEffect(() => {
     if (contract) {
@@ -193,174 +328,118 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
           marginY={2}
         >
           <Grid item container xs={12}>
-            <Collapse in={open} sx={{ width: "100%" }}>
-              <Alert
-                severity="warning"
-                action={
-                  <Button
-                    color="inherit"
-                    size="small"
-                    onClick={() => setOpen(false)}
-                  >
-                    Confirma Contract
+            {userIsTenant && (
+              <Collapse in={open} sx={{ width: "100%" }}>
+                <Alert
+                  severity="warning"
+                  action={
+                    <Button
+                      color="inherit"
+                      size="small"
+                      onClick={() => changeContractStatus()}
+                    >
+                      Confirma Contract
+                    </Button>
+                  }
+                  sx={{ width: "100%" }}
+                >
+                  <AlertTitle>Acest contract este un draft!</AlertTitle>
+                  Citeste informatiile contractuale apoi confirma aici
+                </Alert>
+              </Collapse>
+            )}
+          </Grid>
+          <ContractDetailsSection
+            contract={contract}
+            updateContractCallback={updateContractCallback}
+            userIsTenant={userIsTenant}
+          />
+          <Grid item xs={12} marginTop={2}>
+            <Divider
+              sx={{
+                backgroundColor: `${theme.palette.secondary.main}`,
+                borderBottomWidth: 2,
+              }}
+            />
+          </Grid>
+          {userIsTenant && (
+            <>
+              <Grid
+                item
+                container
+                xs={12}
+                marginTop={2}
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Grid item xs={12} md="auto">
+                  <Typography variant="h4" color={theme.palette.secondary.main}>
+                    Detalii Apartament
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md="auto">
+                  <Button variant="contained" color="secondary">
+                    Adauga recenzie
                   </Button>
-                }
-                sx={{ width: "100%" }}
-              >
-                <AlertTitle>Acest contract este un draft!</AlertTitle>
-                Citeste informatiile contractuale apoi confirma aici
-              </Alert>
-            </Collapse>
-          </Grid>
-          <Grid item container xs={12} marginTop={2}>
-            <Typography variant="h4" color={theme.palette.secondary.main}>
-              Detalii Contract
-            </Typography>
-          </Grid>
-          <Grid item container xs={12} columnSpacing={2} marginTop={2}>
-            <Grid item xs={12} md="auto">
-              <Typography
-                fontWeight="bold"
-                color={theme.palette.secondary.main}
-              >
-                Interval Inchiriere
-              </Typography>
-            </Grid>
-            <Grid item container xs={12} md="auto">
-              <Typography>
-                {moment(contract.startDate).format("DD-MM-YYYY")}
-                {" - "}
-                {contract.endDate
-                  ? moment(contract.endDate).format("DD-MM-YYYY")
-                  : "Nedeterminat"}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid item container xs={12} columnSpacing={2} marginTop={1}>
-            <Grid item xs={12} md="auto">
-              <Typography
-                fontWeight="bold"
-                color={theme.palette.secondary.main}
-              >
-                Zi plata
-              </Typography>
-            </Grid>
-            <Grid item container xs={12} md="auto">
-              <Typography>{contract.rentPayday}</Typography>
-            </Grid>
-          </Grid>
-          {contract.paymentInfo && (
-            <Grid item container xs={12} columnSpacing={2} marginTop={1}>
-              <Grid item xs={12} md="auto">
-                <Typography
-                  fontWeight="bold"
-                  color={theme.palette.secondary.main}
-                >
-                  Modalitate de plata
-                </Typography>
+                </Grid>
               </Grid>
-              <Grid item container xs={12} md="auto">
-                <Typography>{contract.paymentInfo}</Typography>
+              <Grid item container xs={12} columnSpacing={2} marginTop={2}>
+                <Grid item xs={12} md="auto">
+                  <Typography
+                    fontWeight="bold"
+                    color={theme.palette.secondary.main}
+                  >
+                    Adresa
+                  </Typography>
+                </Grid>
+                <Grid item container xs={12} md="auto">
+                  <Typography>
+                    {getFullAddress(contract.apartment.address)}
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid>
+              <Grid item container xs={12} columnSpacing={2} marginTop={1}>
+                <Grid item xs={12} md="auto">
+                  <Typography
+                    fontWeight="bold"
+                    color={theme.palette.secondary.main}
+                  >
+                    Suprafata Apartament
+                  </Typography>
+                </Grid>
+                <Grid item container xs={12} md="auto">
+                  <Typography>{contract.apartment.surface} .m.p</Typography>
+                </Grid>
+              </Grid>
+              <Grid item container xs={12} columnSpacing={2} marginTop={1}>
+                <Grid item xs={12} md="auto">
+                  <Typography
+                    fontWeight="bold"
+                    color={theme.palette.secondary.main}
+                  >
+                    Dotari
+                  </Typography>
+                </Grid>
+                <Grid item container xs={12} md="auto">
+                  <Typography>{getExtras(contract.apartment)}</Typography>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} md="auto" marginTop={1}>
+                <Button variant="contained" color="secondary">
+                  Vezi recenziile
+                </Button>
+              </Grid>
+              <Grid item xs={12} marginTop={2}>
+                <Divider
+                  flexItem
+                  sx={{
+                    backgroundColor: `${theme.palette.secondary.main}`,
+                    borderBottomWidth: 2,
+                  }}
+                />
+              </Grid>
+            </>
           )}
-          {contract.additionalClauses && (
-            <Grid item container xs={12} columnSpacing={2} marginTop={1}>
-              <Grid item xs={12} md="auto">
-                <Typography
-                  fontWeight="bold"
-                  color={theme.palette.secondary.main}
-                >
-                  Modalitate de plata
-                </Typography>
-              </Grid>
-              <Grid item container xs={12} md="auto">
-                <Typography>{contract.additionalClauses}</Typography>
-              </Grid>
-            </Grid>
-          )}
-          <Grid item xs={12} marginTop={2}>
-            <Divider
-              sx={{
-                backgroundColor: `${theme.palette.secondary.main}`,
-                borderBottomWidth: 2,
-              }}
-            />
-          </Grid>
-          <Grid
-            item
-            container
-            xs={12}
-            marginTop={2}
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Grid item xs={12} md="auto">
-              <Typography variant="h4" color={theme.palette.secondary.main}>
-                Detalii Apartament
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md="auto">
-              <Button variant="contained" color="secondary">
-                Adauga recenzie
-              </Button>
-            </Grid>
-          </Grid>
-          <Grid item container xs={12} columnSpacing={2} marginTop={2}>
-            <Grid item xs={12} md="auto">
-              <Typography
-                fontWeight="bold"
-                color={theme.palette.secondary.main}
-              >
-                Adresa
-              </Typography>
-            </Grid>
-            <Grid item container xs={12} md="auto">
-              <Typography>
-                {getFullAddress(contract.apartment.address)}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid item container xs={12} columnSpacing={2} marginTop={1}>
-            <Grid item xs={12} md="auto">
-              <Typography
-                fontWeight="bold"
-                color={theme.palette.secondary.main}
-              >
-                Suprafata Apartament
-              </Typography>
-            </Grid>
-            <Grid item container xs={12} md="auto">
-              <Typography>{contract.apartment.surface} .m.p</Typography>
-            </Grid>
-          </Grid>
-          <Grid item container xs={12} columnSpacing={2} marginTop={1}>
-            <Grid item xs={12} md="auto">
-              <Typography
-                fontWeight="bold"
-                color={theme.palette.secondary.main}
-              >
-                Dotari
-              </Typography>
-            </Grid>
-            <Grid item container xs={12} md="auto">
-              <Typography>{getExtras(contract.apartment)}</Typography>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} md="auto" marginTop={1}>
-            <Button variant="contained" color="secondary">
-              Vezi recenziile
-            </Button>
-          </Grid>
-          <Grid item xs={12} marginTop={2}>
-            <Divider
-              flexItem
-              sx={{
-                backgroundColor: `${theme.palette.secondary.main}`,
-                borderBottomWidth: 2,
-              }}
-            />
-          </Grid>
           <UserInfo
             user={userIsTenant ? contract.landlord : contract.tenant}
             theme={theme}

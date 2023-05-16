@@ -35,3 +35,15 @@ export async function storeContract(contract: DbContract): Promise<DbContract> {
   }
   return dbContract;
 }
+
+export async function updateContract(
+  id: string,
+  contract: Partial<DbContract>
+): Promise<DbContract> {
+  await knex(CONTRACTS_TABLE_NAME).where({ id }).update(contract);
+  const dbContract = await getContractById(id);
+  if (!dbContract) {
+    throw new Error("Update contract operation failed");
+  }
+  return dbContract;
+}

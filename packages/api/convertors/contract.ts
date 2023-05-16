@@ -20,6 +20,20 @@ export function convertNewContractToDbContract(
   };
 }
 
+export function convertContractToDbContract(
+  contract: Partial<Contract>
+): Partial<DbContract> {
+  return {
+    ...contract,
+    startDate: contract.startDate
+      ? new Date(contract.startDate as unknown as string)
+      : undefined,
+    endDate: contract.endDate
+      ? new Date(contract.endDate as unknown as string)
+      : undefined,
+  };
+}
+
 export async function convertDbContractToContract(
   dbContract: DbContract
 ): Promise<Contract> {

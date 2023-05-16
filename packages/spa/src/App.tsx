@@ -132,7 +132,21 @@ const router = createBrowserRouter([
               },
               {
                 path: "apartments",
-                element: <UserLandlordApartments />,
+                children: [
+                  {
+                    index: true,
+                    element: <UserLandlordApartments />,
+                  },
+                  {
+                    path: ":id",
+                    children: [
+                      {
+                        path: "contract",
+                        element: <ContractPage />,
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
