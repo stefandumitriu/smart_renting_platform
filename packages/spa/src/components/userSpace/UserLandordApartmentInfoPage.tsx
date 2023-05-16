@@ -14,14 +14,28 @@ import {
 import { Form, Formik } from "formik";
 import { useLoaderData } from "react-router-dom";
 import { FormAutocomplete } from "../../FormInputsWrappers";
-import { StreetTypeEnum } from "@packages/db/models/listings/address";
 import { StyledTextField } from "../landingPage/SignupForm";
 import _ from "lodash";
-import {
-  HeatingTypeEnum,
-  SubdivisonTypeEnum,
-} from "@packages/db/models/listings/apartment";
 import { PatchApartmentRequest } from "../../requests/ApartmentsRequests";
+
+enum StreetTypeEnum {
+  Alee = "Aleea",
+  Strada = "Strada",
+  Sosea = "Soseaua",
+  Bulevard = "Bulevardul",
+  Splai = "Splaiul",
+}
+
+enum HeatingTypeEnum {
+  Centrala = "Centrala Proprie",
+  Termoficare = "Termoficare",
+}
+
+enum SubdivisonTypeEnum {
+  Decomandat = "Decomandat",
+  Semidecomandat = "Semidecomandat",
+  Nedecomandat = "Nedecomandat",
+}
 
 const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
   const theme = useTheme();

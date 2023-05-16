@@ -5,10 +5,15 @@ import { Application } from "@packages/api/models/listings/application";
 import { Grid, Paper, Theme, Typography, useTheme } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { ApplicationStatus } from "@packages/db/models/listings/application";
 
 interface ApplicationCardParams {
   application: Application;
+}
+
+enum ApplicationStatus {
+  Waiting = "Waiting",
+  Approved = "Approved",
+  Rejected = "Rejected",
 }
 
 enum Months {

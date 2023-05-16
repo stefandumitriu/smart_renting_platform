@@ -24,7 +24,13 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { ApartmentStatus } from "@packages/db/models/listings/apartment";
+
+enum ApartmentStatus {
+  UnderReview = "Under Review",
+  Available = "Available",
+  Listed = "Listed",
+  Rented = "Rented",
+}
 
 interface ApartmentCardProps {
   apartment: Apartment;

@@ -19,7 +19,12 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Listing } from "@packages/api/models/listings/listing";
 import { Link, useLoaderData } from "react-router-dom";
 import { Clear } from "@mui/icons-material";
-import { SubdivisonTypeEnum } from "@packages/db/models/listings/apartment";
+
+enum SubdivisonTypeEnum {
+  Decomandat = "Decomandat",
+  Semidecomandat = "Semidecomandat",
+  Nedecomandat = "Nedecomandat",
+}
 
 const ListingsPage: React.FC<{}> = () => {
   const theme = useTheme();

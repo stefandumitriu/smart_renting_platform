@@ -53,7 +53,7 @@ const UserFavouriteListings: React.FC<{}> = () => {
     <Layout pageTitle="Anunturi Favorite">
       <Grid item container xs={12} minHeight={"100vh"}>
         <Grid item container xs={12} justifyContent="center">
-          <Grid item container xs={8}>
+          <Grid item container xs={8} alignContent="flex-start">
             {listings &&
               listings.map((listing) => (
                 <Grid item container xs={12} justifyContent="center" my={2}>

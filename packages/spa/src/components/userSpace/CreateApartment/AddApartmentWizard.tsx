@@ -16,9 +16,13 @@ import {
 import AddressProofStep from "./AdressProofStep";
 import { Form, Formik, FormikHelpers } from "formik";
 import SwipeableViews from "react-swipeable-views";
-import { BuildingTypeEnum } from "@packages/db/models/listings/apartment";
 import ApartmentInfoStep from "./ApartmentInfoStep";
 import _ from "lodash";
+
+enum BuildingTypeEnum {
+  Apartament = "Bloc de apartamente",
+  Casa = "Casa/Vila",
+}
 
 const AddApartmentWizard: React.FC<{}> = () => {
   const { currentUser } = useContext(AuthContext);

@@ -16,8 +16,20 @@ import { useNavigate } from "react-router-dom";
 import { FormDatePicker } from "../../FormInputsWrappers";
 import { StyledTextField } from "../landingPage/SignupForm";
 import { PatchApplicationRequest } from "../../requests/ListingsRequests";
-import { ApartmentStatus, ApplicationStatus } from "@packages/db/models";
 import { PatchApartmentRequest } from "../../requests/ApartmentsRequests";
+
+enum ApplicationStatus {
+  Waiting = "Waiting",
+  Approved = "Approved",
+  Rejected = "Rejected",
+}
+
+enum ApartmentStatus {
+  UnderReview = "Under Review",
+  Available = "Available",
+  Listed = "Listed",
+  Rented = "Rented",
+}
 
 interface CreateContractModelProps {
   open: boolean;

@@ -25,7 +25,13 @@ import { StyledTextField } from "../landingPage/SignupForm";
 import Dropzone from "react-dropzone";
 import * as Yup from "yup";
 import _ from "lodash";
-import { ApartmentStatus } from "@packages/db/models/listings/apartment";
+
+enum ApartmentStatus {
+  UnderReview = "Under Review",
+  Available = "Available",
+  Listed = "Listed",
+  Rented = "Rented",
+}
 
 const rentalPeriods = ["1 an", "> 1 an", "6 luni", "3 luni"];
 
