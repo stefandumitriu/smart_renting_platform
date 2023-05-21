@@ -25,7 +25,7 @@ import { Apartment } from "@packages/api/models/listings/apartment";
 import { UserProfile } from "@packages/api/models/users/userProfile";
 import { CalendarToday, Email, Phone, Work } from "@mui/icons-material";
 import { GetUserEmailRequest } from "../../requests/UserSignupRequest";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import EditContractModal from "./EditContractModal";
 import CreateUserReviewModal from "./reviews/CreateUserReviewModal";
 import CreateApartmentReviewModal from "./reviews/CreateApartmentReviewModal";
@@ -55,7 +55,8 @@ const UserInfo: React.FC<{
   user: UserProfile;
   theme: Theme;
   handleUserReviewModalOpen: () => void;
-}> = ({ user, theme, handleUserReviewModalOpen }) => {
+  userIsTenant?: boolean;
+}> = ({ user, theme, handleUserReviewModalOpen, userIsTenant }) => {
   const [email, setEmail] = useState<string>("");
 
   const fetchFn = useCallback(async () => {
@@ -164,13 +165,17 @@ const UserInfo: React.FC<{
           </Grid>
         </Grid>
         <Grid item container xs={12} justifyContent="flex-start">
-          <Button
-            color="secondary"
-            onClick={() => console.log("Review clicked")}
-            variant="contained"
-          >
-            Vezi recenziile
-          </Button>
+          <Grid item xs={12} md="auto" marginTop={1}>
+            <Link
+              to={`/user/dashboard/${userIsTenant ? "landlord" : "tenant"}/${
+                user.id
+              }/reviews`}
+            >
+              <Button variant="contained" color="secondary">
+                Vezi recenziile
+              </Button>
+            </Link>
+          </Grid>
         </Grid>
       </Grid>
     </>
@@ -345,9 +350,11 @@ const ApartmentInfo: React.FC<ApartmentInfoProps> = ({
         </Grid>
       </Grid>
       <Grid item xs={12} md="auto" marginTop={1}>
-        <Button variant="contained" color="secondary">
-          Vezi recenziile
-        </Button>
+        <Link to={`/apartments/${apartment.id}/reviews`}>
+          <Button variant="contained" color="secondary">
+            Vezi recenziile
+          </Button>
+        </Link>
       </Grid>
       <Grid item xs={12} marginTop={2}>
         <Divider
@@ -488,6 +495,7 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
             user={userIsTenant ? contract.landlord : contract.tenant}
             theme={theme}
             handleUserReviewModalOpen={handleUserReviewModalOpen}
+            userIsTenant={userIsTenant}
           />
           <CreateUserReviewModal
             open={userReviewModalOpen}

@@ -25,3 +25,30 @@ export async function CreateApartmentReviewRequest(
   );
   return response.data as ApartmentReview;
 }
+
+export async function GetLandlordUserReviewsRequest(
+  id: string
+): Promise<UserReview[]> {
+  const response = await axiosBaseInstance.get(
+    `${USER_REVIEWS_PATH}/${id}/landlord`
+  );
+  return response.data as UserReview[];
+}
+
+export async function GetTenantUserReviewsRequest(
+  id: string
+): Promise<UserReview[]> {
+  const response = await axiosBaseInstance.get(
+    `${USER_REVIEWS_PATH}/${id}/tenant`
+  );
+  return response.data as UserReview[];
+}
+
+export async function GetApartmentReviewsRequest(
+  id: string
+): Promise<ApartmentReview[]> {
+  const response = await axiosBaseInstance.get(
+    `${APARTMENT_REVIEWS_PATH}/${id}`
+  );
+  return response.data as ApartmentReview[];
+}

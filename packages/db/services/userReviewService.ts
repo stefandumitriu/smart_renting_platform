@@ -1,4 +1,4 @@
-import { DbUserReview, USER_REVIEWS_TABLE_NAME } from "../models";
+import { DbUserReview, ReviewType, USER_REVIEWS_TABLE_NAME } from "../models";
 import knex from "../knex";
 
 export async function getUserReviewById(
@@ -6,6 +6,32 @@ export async function getUserReviewById(
 ): Promise<DbUserReview | undefined> {
   return knex<DbUserReview>(USER_REVIEWS_TABLE_NAME)
     .where({ id })
+    .select()
+    .first();
+}
+
+export async function getLandlordReviews(
+  userId: string
+): Promise<DbUserReview[]> {
+  return knex<DbUserReview>(USER_REVIEWS_TABLE_NAME)
+    .where({ userId, type: ReviewType.Landlord })
+    .select();
+}
+
+export async function getTenantReviews(
+  userId: string
+): Promise<DbUserReview[]> {
+  return knex<DbUserReview>(USER_REVIEWS_TABLE_NAME)
+    .where({ userId, type: ReviewType.Tenant })
+    .select();
+}
+
+export async function getReviewByReviewerAndUserIds(
+  reviewerId: string,
+  userId: string
+): Promise<DbUserReview | undefined> {
+  return knex<DbUserReview>(USER_REVIEWS_TABLE_NAME)
+    .where({ reviewerId, userId })
     .select()
     .first();
 }

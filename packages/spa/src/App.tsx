@@ -30,6 +30,14 @@ import listingApplicationsLoader from "./loaders/ListingApplicationsPageLoader";
 import ApplicationPage from "./components/propertiesPage/ApplicationPage";
 import EditListingPage from "./components/userSpace/EditListingPage";
 import ContractPage from "./components/userSpace/ContractPage";
+import ApartmentReviewsPage from "./components/userSpace/reviews/ApartmentReviewsPage";
+import {
+  apartmentReviewsLoader,
+  landlordUserReviewsLoader,
+  tenantUserReviewsLoader,
+} from "./loaders/ReviewPageLoaders";
+import TenantUseReviewsPage from "./components/userSpace/reviews/TenantUserReviewsPage";
+import LandlordUserReviewsPage from "./components/userSpace/reviews/LandlordUserReviewsPage";
 
 const router = createBrowserRouter([
   {
@@ -108,6 +116,16 @@ const router = createBrowserRouter([
                 path: "contract",
                 element: <ContractPage userIsTenant />,
               },
+              {
+                path: ":id",
+                children: [
+                  {
+                    path: "reviews",
+                    element: <TenantUseReviewsPage />,
+                    loader: tenantUserReviewsLoader,
+                  },
+                ],
+              },
             ],
           },
           {
@@ -116,6 +134,16 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <UserLandlordDashboard />,
+              },
+              {
+                path: ":id",
+                children: [
+                  {
+                    path: "reviews",
+                    element: <LandlordUserReviewsPage />,
+                    loader: landlordUserReviewsLoader,
+                  },
+                ],
               },
               {
                 path: "listings",
@@ -167,8 +195,18 @@ const router = createBrowserRouter([
       },
       {
         path: ":id",
-        element: <UserLandlordApartmentInfoPage />,
-        loader: apartmentInfoPageLoader,
+        children: [
+          {
+            index: true,
+            element: <UserLandlordApartmentInfoPage />,
+            loader: apartmentInfoPageLoader,
+          },
+          {
+            path: "reviews",
+            element: <ApartmentReviewsPage />,
+            loader: apartmentReviewsLoader,
+          },
+        ],
       },
     ],
   },

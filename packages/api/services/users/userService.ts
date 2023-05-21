@@ -14,7 +14,6 @@ import {
 } from "../../convertors/users/userProfile";
 import { generateAccessToken } from "../../authentication/tokenAuthentication";
 import { UserProfile } from "../../models/users/userProfile";
-import { DbUserProfile } from "@packages/db";
 
 export async function createNewUser(body: UserSignUpInfo): Promise<string> {
   const dbUserCredentials = await convertAPIUserSignupInfoToDbUserCredentials(
