@@ -27,6 +27,8 @@ import { CalendarToday, Email, Phone, Work } from "@mui/icons-material";
 import { GetUserEmailRequest } from "../../requests/UserSignupRequest";
 import { useLocation } from "react-router-dom";
 import EditContractModal from "./EditContractModal";
+import CreateUserReviewModal from "./reviews/CreateUserReviewModal";
+import CreateApartmentReviewModal from "./reviews/CreateApartmentReviewModal";
 
 enum ContractStatus {
   Draft = "Draft",
@@ -49,10 +51,11 @@ const getExtras = (apartment: Apartment) => {
     .toString();
 };
 
-const UserInfo: React.FC<{ user: UserProfile; theme: Theme }> = ({
-  user,
-  theme,
-}) => {
+const UserInfo: React.FC<{
+  user: UserProfile;
+  theme: Theme;
+  handleUserReviewModalOpen: () => void;
+}> = ({ user, theme, handleUserReviewModalOpen }) => {
   const [email, setEmail] = useState<string>("");
 
   const fetchFn = useCallback(async () => {
@@ -72,7 +75,11 @@ const UserInfo: React.FC<{ user: UserProfile; theme: Theme }> = ({
           </Typography>
         </Grid>
         <Grid item xs={12} md="auto">
-          <Button color="secondary" variant="contained">
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={() => handleUserReviewModalOpen()}
+          >
             Adauga recenzie
           </Button>
         </Grid>
@@ -246,7 +253,7 @@ const ContractDetailsSection: React.FC<{
           </Typography>
         </Grid>
         <Grid item container xs={12} md="auto">
-          <Typography>{contract.depositValue}</Typography>
+          <Typography>{contract.depositValue} euro</Typography>
         </Grid>
       </Grid>
       {contract.additionalClauses && (
@@ -271,12 +278,120 @@ const ContractDetailsSection: React.FC<{
   );
 };
 
+interface ApartmentInfoProps {
+  apartment: Apartment;
+  theme: Theme;
+  handleApartmentReviewModalOpen: () => void;
+}
+
+const ApartmentInfo: React.FC<ApartmentInfoProps> = ({
+  apartment,
+  theme,
+  handleApartmentReviewModalOpen,
+}: ApartmentInfoProps) => {
+  return (
+    <>
+      <Grid
+        item
+        container
+        xs={12}
+        marginTop={2}
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Grid item xs={12} md="auto">
+          <Typography variant="h4" color={theme.palette.secondary.main}>
+            Detalii Apartament
+          </Typography>
+        </Grid>
+        <Grid item xs={12} md="auto">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleApartmentReviewModalOpen()}
+          >
+            Adauga recenzie
+          </Button>
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} columnSpacing={2} marginTop={2}>
+        <Grid item xs={12} md="auto">
+          <Typography fontWeight="bold" color={theme.palette.secondary.main}>
+            Adresa
+          </Typography>
+        </Grid>
+        <Grid item container xs={12} md="auto">
+          <Typography>{getFullAddress(apartment.address)}</Typography>
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} columnSpacing={2} marginTop={1}>
+        <Grid item xs={12} md="auto">
+          <Typography fontWeight="bold" color={theme.palette.secondary.main}>
+            Suprafata Apartament
+          </Typography>
+        </Grid>
+        <Grid item container xs={12} md="auto">
+          <Typography>{apartment.surface} m.p.</Typography>
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} columnSpacing={2} marginTop={1}>
+        <Grid item xs={12} md="auto">
+          <Typography fontWeight="bold" color={theme.palette.secondary.main}>
+            Dotari
+          </Typography>
+        </Grid>
+        <Grid item container xs={12} md="auto">
+          <Typography>{getExtras(apartment)}</Typography>
+        </Grid>
+      </Grid>
+      <Grid item xs={12} md="auto" marginTop={1}>
+        <Button variant="contained" color="secondary">
+          Vezi recenziile
+        </Button>
+      </Grid>
+      <Grid item xs={12} marginTop={2}>
+        <Divider
+          flexItem
+          sx={{
+            backgroundColor: `${theme.palette.secondary.main}`,
+            borderBottomWidth: 2,
+          }}
+        />
+      </Grid>
+    </>
+  );
+};
+
 const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
   const { currentUser } = useContext(AuthContext);
   const { state } = useLocation();
   const theme = useTheme();
 
   const [contract, setContract] = useState<Contract | undefined>(undefined);
+  const [userReviewModalOpen, setUserReviewModalOpen] =
+    useState<boolean>(false);
+  const [apartmentReviewModalOpen, setApartmentReviewModalOpen] =
+    useState<boolean>(false);
+
+  const handleApartmentReviewModalOpen = useCallback(
+    () => setApartmentReviewModalOpen(true),
+    [setApartmentReviewModalOpen]
+  );
+
+  const handleApartmentReviewModalClose = useCallback(
+    () => setApartmentReviewModalOpen(false),
+    [setApartmentReviewModalOpen]
+  );
+
+  const handleUserReviewModalClose = useCallback(
+    () => setUserReviewModalOpen(false),
+    [setUserReviewModalOpen]
+  );
+
+  const handleUserReviewModalOpen = useCallback(
+    () => setUserReviewModalOpen(true),
+    [setUserReviewModalOpen]
+  );
 
   const updateContractCallback = useCallback(
     (contract: Contract) => {
@@ -363,86 +478,27 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
             />
           </Grid>
           {userIsTenant && (
-            <>
-              <Grid
-                item
-                container
-                xs={12}
-                marginTop={2}
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Grid item xs={12} md="auto">
-                  <Typography variant="h4" color={theme.palette.secondary.main}>
-                    Detalii Apartament
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} md="auto">
-                  <Button variant="contained" color="secondary">
-                    Adauga recenzie
-                  </Button>
-                </Grid>
-              </Grid>
-              <Grid item container xs={12} columnSpacing={2} marginTop={2}>
-                <Grid item xs={12} md="auto">
-                  <Typography
-                    fontWeight="bold"
-                    color={theme.palette.secondary.main}
-                  >
-                    Adresa
-                  </Typography>
-                </Grid>
-                <Grid item container xs={12} md="auto">
-                  <Typography>
-                    {getFullAddress(contract.apartment.address)}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Grid item container xs={12} columnSpacing={2} marginTop={1}>
-                <Grid item xs={12} md="auto">
-                  <Typography
-                    fontWeight="bold"
-                    color={theme.palette.secondary.main}
-                  >
-                    Suprafata Apartament
-                  </Typography>
-                </Grid>
-                <Grid item container xs={12} md="auto">
-                  <Typography>{contract.apartment.surface} .m.p</Typography>
-                </Grid>
-              </Grid>
-              <Grid item container xs={12} columnSpacing={2} marginTop={1}>
-                <Grid item xs={12} md="auto">
-                  <Typography
-                    fontWeight="bold"
-                    color={theme.palette.secondary.main}
-                  >
-                    Dotari
-                  </Typography>
-                </Grid>
-                <Grid item container xs={12} md="auto">
-                  <Typography>{getExtras(contract.apartment)}</Typography>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} md="auto" marginTop={1}>
-                <Button variant="contained" color="secondary">
-                  Vezi recenziile
-                </Button>
-              </Grid>
-              <Grid item xs={12} marginTop={2}>
-                <Divider
-                  flexItem
-                  sx={{
-                    backgroundColor: `${theme.palette.secondary.main}`,
-                    borderBottomWidth: 2,
-                  }}
-                />
-              </Grid>
-            </>
+            <ApartmentInfo
+              apartment={contract.apartment}
+              theme={theme}
+              handleApartmentReviewModalOpen={handleApartmentReviewModalOpen}
+            />
           )}
           <UserInfo
             user={userIsTenant ? contract.landlord : contract.tenant}
             theme={theme}
+            handleUserReviewModalOpen={handleUserReviewModalOpen}
+          />
+          <CreateUserReviewModal
+            open={userReviewModalOpen}
+            handleClose={handleUserReviewModalClose}
+            contract={contract}
+            type={userIsTenant ? "LANDLORD" : "TENANT"}
+          />
+          <CreateApartmentReviewModal
+            open={apartmentReviewModalOpen}
+            handleClose={handleApartmentReviewModalClose}
+            contract={contract}
           />
         </Grid>
       )}
