@@ -47,6 +47,7 @@ const router = createBrowserRouter([
   {
     path: "map",
     element: <MapPage />,
+    loader: listingsPageLoader,
   },
   {
     path: "properties",
