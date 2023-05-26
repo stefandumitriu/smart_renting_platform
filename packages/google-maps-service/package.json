@@ -1,5 +1,6 @@
 {
-  "name": "@packages/db",
+  "name": "@packages/google-maps-service",
+  "packageManager": "yarn@3.3.0",
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
@@ -8,12 +9,5 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "start": ""
-  },
-  "dependencies": {
-    "@packages/google-maps-service": "1.0.0",
-    "knex": "^2.3.0",
-    "pg": "^8.8.0",
-    "ts-node": "^10.9.1",
-    "uuid": "^9.0.0"
   }
 }

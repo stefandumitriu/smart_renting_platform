@@ -2901,10 +2901,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@packages/db@workspace:packages/db"
   dependencies:
+    "@packages/google-maps-service": 1.0.0
     knex: ^2.3.0
     pg: ^8.8.0
     ts-node: ^10.9.1
     uuid: ^9.0.0
+  languageName: unknown
+  linkType: soft
+
+"@packages/google-maps-service@1.0.0, @packages/google-maps-service@workspace:packages/google-maps-service":
+  version: 0.0.0-use.local
+  resolution: "@packages/google-maps-service@workspace:packages/google-maps-service"
   languageName: unknown
   linkType: soft
 

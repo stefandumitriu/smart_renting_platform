@@ -1,4 +1,4 @@
-import { ADDRESS_TABLE_NAME, DbAddress } from "../../models/listings/address";
+import { ADDRESS_TABLE_NAME, DbAddress } from "../../models";
 import knex from "../../knex";
 
 export async function storeAddress(address: DbAddress): Promise<DbAddress> {

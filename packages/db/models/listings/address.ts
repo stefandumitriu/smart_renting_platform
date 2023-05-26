@@ -9,12 +9,15 @@ export interface DbAddress {
   blockEntrance?: number;
   floor?: number;
   flatNumber?: number;
+  lat?: number;
+  long?: number;
 }
 
 export enum StreetTypeEnum {
   Alee = "Aleea",
+  Calea = "Calea",
   Strada = "Strada",
-  Sosea = "Soseaua",
+  Sosea = "Şoseaua",
   Bulevard = "Bulevardul",
   Splai = "Splaiul",
 }

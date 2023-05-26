@@ -16,8 +16,9 @@ import { NewApartment } from "@packages/api/models/listings/apartment";
 
 enum StreetTypeEnum {
   Alee = "Aleea",
+  Calea = "Calea",
   Strada = "Strada",
-  Sosea = "Soseaua",
+  Sosea = "Şoseaua",
   Bulevard = "Bulevardul",
   Splai = "Splaiul",
 }

@@ -9,11 +9,13 @@ import {
 } from "@packages/db/services/listings";
 import { generateApartments } from "@packages/db/seeds/apartmentGenerator";
 import { generateListings } from "@packages/db/seeds/listingGenerator";
+import { LISTINGS_TABLE_NAME } from "@packages/db/models";
 
 const runSeeds = async () => {
   await knex(APARTMENTS_TABLE_NAME).del();
   await knex(ADDRESS_TABLE_NAME).del();
-  const addressSeed = generateAddresses();
+  await knex(LISTINGS_TABLE_NAME).del();
+  const addressSeed = await generateAddresses();
   await Promise.all(addressSeed.map((address) => storeAddress(address)));
   const apartmentSeed = generateApartments(addressSeed);
   await Promise.all(

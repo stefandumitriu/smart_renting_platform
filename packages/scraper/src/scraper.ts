@@ -16,25 +16,9 @@ interface Listing {
 
   const page = await browser.newPage();
 
-  await page.goto("https://www.imobiliare.ro/inchirieri-apartamente/bucuresti");
-
-  const lastPageNumberElement = await page.evaluate(() => {
-    const elements = document.querySelectorAll("a.butonpaginare");
-    const elArray = Array.from(elements);
-    return elArray
-      .map((el) => el.textContent?.trim())
-      .filter((s) => s !== "")
-      .pop();
-  });
-
-  if (!lastPageNumberElement) {
-    console.log("Can't find last page index");
-    return;
-  }
-
   const listings: Partial<Listing>[] = [];
 
-  for (let nr_pag = 1; nr_pag < 5; nr_pag++) {
+  for (let nr_pag = 1; nr_pag < 3; nr_pag++) {
     await page.goto(
       `https://www.imobiliare.ro/inchirieri-apartamente/bucuresti?pagina=${nr_pag}`
     );
