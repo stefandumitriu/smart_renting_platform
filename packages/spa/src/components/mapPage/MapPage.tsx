@@ -1,6 +1,6 @@
 import { Wrapper } from "@googlemaps/react-wrapper";
-import React, { useEffect, useRef, useState } from "react";
-import { Grid, Typography, useTheme } from "@mui/material";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Grid, useTheme } from "@mui/material";
 import Layout from "../Layout";
 import { useLoaderData } from "react-router-dom";
 import { Listing } from "@packages/api/models/listings/listing";
@@ -13,6 +13,57 @@ const Map: React.FC<{ listings: Listing[] }> = ({ listings }) => {
   const [markerLibrary, setMarkerLibrary] =
     useState<google.maps.MarkerLibrary>();
   const theme = useTheme();
+
+  const toggleHighlight = useCallback((markerView: any, listing: Listing) => {
+    if (markerView.content.classList.contains("highlight")) {
+      markerView.content.classList.remove("highlight");
+      markerView.zIndex = null;
+    } else {
+      markerView.content.classList.add("highlight");
+      markerView.zIndex = 1;
+    }
+  }, []);
+
+  const buildContent = useCallback((listing: Listing) => {
+    const content = document.createElement("div");
+    content.classList.add("property");
+    content.innerHTML = `
+    <div class="icon">
+        ${listing.price}€
+    </div>
+    <div class="details">
+        <div class="price" style="color: black">${listing.title}</div>
+        <div class="address">${
+          listing.apartment.address.streetType +
+          " " +
+          listing.apartment.address.streetName +
+          ", Nr. " +
+          listing.apartment.address.streetNumber
+        }</div>
+        <div class="features">
+            <div>
+                <span style="color: black">${
+                  listing.apartment.noOfRooms
+                } cam.</span>
+            </div>
+            <div>
+                <span style="color: black">${
+                  listing.apartment.noOfBathrooms
+                } bai</span>
+            </div>
+            <div>
+                <span style="color: black">${
+                  listing.apartment.surface
+                } m<sup>2</sup></span>
+            </div>
+            <a class="btn" href="/properties/${listing.id}">
+                Vezi anunt
+            </a>
+        </div>
+    </div>
+    `;
+    return content;
+  }, []);
 
   useEffect(() => {
     google.maps
@@ -43,20 +94,18 @@ const Map: React.FC<{ listings: Listing[] }> = ({ listings }) => {
             !listing.apartment.address.lat ||
             !listing.apartment.address.long
           ) {
-            return;
+            return undefined;
           }
           const latLng = {
             lat: listing.apartment.address.lat,
             lng: listing.apartment.address.long,
           };
-          const priceTag = document.createElement("div");
-          priceTag.className = "price-tag";
-          priceTag.textContent = listing.price + "€";
           const marker = new markerLibrary.AdvancedMarkerElement({
             position: latLng,
             map,
-            content: priceTag,
+            content: buildContent(listing),
           });
+          marker.addListener("click", () => toggleHighlight(marker, listing));
           return marker;
         })
         .filter(
@@ -68,20 +117,26 @@ const Map: React.FC<{ listings: Listing[] }> = ({ listings }) => {
   }, [map, markerLibrary, listings]);
 
   return (
-    <Grid container item sx={{ height: "100vh", width: "100%" }} mt={2}>
-      <Grid item ref={ref} sx={{ height: "100%", width: "60%" }} />
-      <Grid item container flexDirection="column" xs ml={2}>
-        <Grid item xs="auto">
-          <Typography
-            color={theme.palette.secondary.main}
-            fontWeight="bolder"
-            fontSize={30}
-            align="center"
-          >
-            Properties Nearby
-          </Typography>
-        </Grid>
-      </Grid>
+    <Grid
+      container
+      item
+      sx={{
+        height: "100vh",
+        width: "80%",
+        border: `4px solid ${theme.palette.secondary.main}`,
+      }}
+      mt={2}
+      padding={2}
+      mx="auto"
+    >
+      <Grid
+        item
+        ref={ref}
+        sx={{
+          height: "100%",
+          width: "100%",
+        }}
+      />
     </Grid>
   );
 };
