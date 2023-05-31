@@ -25,6 +25,7 @@ import { StyledTextField } from "../landingPage/SignupForm";
 import Dropzone from "react-dropzone";
 import * as Yup from "yup";
 import _ from "lodash";
+import { useNavigate } from "react-router-dom";
 
 enum ApartmentStatus {
   UnderReview = "Under Review",
@@ -60,6 +61,7 @@ const AddListingPage: React.FC<{}> = () => {
   const { currentUser } = useContext(AuthContext);
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const navigate = useNavigate();
   const handleSubmit = useCallback(
     async (values: NewListing) => {
       const formData = new FormData();
@@ -69,6 +71,7 @@ const AddListingPage: React.FC<{}> = () => {
       );
       const listing = await CreateListingRequest(formData);
       console.log(listing);
+      navigate("/user/dashboard/landlord/listings");
     },
     [uploadedFiles]
   );

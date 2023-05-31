@@ -12,6 +12,11 @@ import { convertDbApartmentToApartment } from "../convertors/listings/apartment"
 import { Apartment, NewApartment } from "../models/listings/apartment";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
+import {
+  geocode,
+  GoogleGeocodingLatLong,
+} from "@packages/google-maps-service/geocoding";
+import { generateLatLong } from "@packages/google-maps-service/randomize";
 
 export const getOwnerApartments = async (req: Request, res: Response) => {
   try {
@@ -45,7 +50,16 @@ export const getApartment = async (req: Request, res: Response) => {
 export const patchApartment = async (req: Request, res: Response) => {
   try {
     const body = req.body as Apartment;
-    await updateAddress(body.addressId, body.address);
+    let latLong: GoogleGeocodingLatLong | undefined = await geocode(
+      body.address.streetType,
+      body.address.streetName,
+      body.address.streetNumber
+    );
+    await updateAddress(body.addressId, {
+      ...body.address,
+      lat: latLong?.lat,
+      long: latLong?.long,
+    });
     const updatedDbApartment = await updateApartment(
       req.params.id as string,
       _.omit(body, ["address", "owner", "id"])
@@ -71,9 +85,21 @@ export const deleteApartmentById = async (req: Request, res: Response) => {
 export const addApartment = async (req: Request, res: Response) => {
   try {
     const body = req.body as NewApartment;
+    const address = JSON.parse(body.address as unknown as string);
+    let latLong: GoogleGeocodingLatLong | undefined = await geocode(
+      address.streetType,
+      address.streetName,
+      address.streetNumber
+    );
+    console.log(latLong);
+    if (!latLong) {
+      latLong = generateLatLong();
+    }
     const addedAddress = await storeAddress({
-      ...JSON.parse(body.address as unknown as string),
+      ...address,
       id: uuidv4(),
+      lat: latLong.lat,
+      long: latLong.long,
     });
     const addedApartment = await storeApartment({
       ..._.omit(body, "address"),

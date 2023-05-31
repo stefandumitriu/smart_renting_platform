@@ -5,6 +5,7 @@ import {
   GoogleGeocodingStreetAddress,
   reverseGeocode,
 } from "@packages/google-maps-service/reverseGeocoding";
+import { generateLatLong } from "@packages/google-maps-service/randomize";
 
 const StreetNamesArray = [
   "Mihai Eminescu",
@@ -17,16 +18,6 @@ const StreetNamesArray = [
   "Teilor",
 ];
 
-const generateNumber = (min: number, max: number) => {
-  const range = max - min;
-  return min + range * Math.random();
-};
-
-const MINIMUM_LAT = 44.39868001087234;
-const MAXIMUM_LAT = 44.468175401855945;
-const MINIMUM_LONG = 26.0313953612246;
-const MAXIMUM_LONG = 26.160003310713883;
-
 export async function generateAddresses(): Promise<DbAddress[]> {
   const scrapedListingsFileContent = fs.readFileSync("../../scrapedData.json", {
     encoding: "utf-8",
@@ -35,8 +26,7 @@ export async function generateAddresses(): Promise<DbAddress[]> {
   const listings = JSON.parse(scrapedListingsFileContent);
   return Promise.all(
     listings.map(async (listing: any) => {
-      const lat = generateNumber(MINIMUM_LAT, MAXIMUM_LAT);
-      const long = generateNumber(MINIMUM_LONG, MAXIMUM_LONG);
+      const { lat, long } = generateLatLong();
       const streetAddressGoogle: GoogleGeocodingStreetAddress | undefined =
         await reverseGeocode(lat, long);
       console.log(streetAddressGoogle);
