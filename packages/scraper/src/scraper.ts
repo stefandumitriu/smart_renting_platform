@@ -11,10 +11,20 @@ interface Listing {
   price: string;
 }
 
+function sleep(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 (async () => {
   const browser = await puppeteer.launch();
 
   const page = await browser.newPage();
+
+  await page.setUserAgent(
+    "Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0"
+  );
 
   const listings: Partial<Listing>[] = [];
 
@@ -50,6 +60,7 @@ interface Listing {
       });
     });
     listings.push(...currentPageListings);
+    await sleep(5000);
   }
 
   fs.writeFileSync("../../scrapedData.json", JSON.stringify(listings), "utf-8");

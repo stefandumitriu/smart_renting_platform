@@ -10,6 +10,7 @@ import {
 import { generateApartments } from "@packages/db/seeds/apartmentGenerator";
 import { generateListings } from "@packages/db/seeds/listingGenerator";
 import { LISTINGS_TABLE_NAME } from "@packages/db/models";
+import { seedNeighbourhoodBounds } from "@packages/google-maps-service/neighbourhoods";
 
 const runSeeds = async () => {
   await knex(APARTMENTS_TABLE_NAME).del();
@@ -23,6 +24,7 @@ const runSeeds = async () => {
   );
   const listingSeed = generateListings(apartmentSeed);
   await Promise.all(listingSeed.map((listing) => storeListing(listing)));
+  await seedNeighbourhoodBounds();
 };
 
 runSeeds().then(() => process.exit(0));
