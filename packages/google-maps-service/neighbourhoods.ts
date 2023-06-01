@@ -96,5 +96,9 @@ const getNeighbourhoodBounds = async (
 
 export const seedNeighbourhoodBounds = async (): Promise<void> => {
   const bounds = await Promise.all(NEIGHBOURHOODS.map(getNeighbourhoodBounds));
-  fs.writeFileSync("../neighbourhoods.json", JSON.stringify(bounds), "utf-8");
+  fs.writeFileSync(
+    "../spa/src/neighbourhoods.json",
+    JSON.stringify(bounds),
+    "utf-8"
+  );
 };

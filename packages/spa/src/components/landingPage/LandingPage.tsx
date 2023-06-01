@@ -1,20 +1,25 @@
 import {
+  Autocomplete,
   Grid,
   IconButton,
   InputAdornment,
-  OutlinedInput,
   Paper,
   Stack,
+  TextField,
   Typography,
   useTheme,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Layout from "../Layout";
 import { ListAlt, Map } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import neighbourhoods from "../../neighbourhoods.json";
 
 export default function LandingPage() {
   const theme = useTheme();
+  const [searchValue, setSearchValue] = useState<string>("");
+  const navigate = useNavigate();
   return (
     <Layout>
       <Grid item>
@@ -29,20 +34,26 @@ export default function LandingPage() {
           justifyContent="space-around"
         >
           <Grid item alignSelf="center" width="60%">
-            <OutlinedInput
-              color="secondary"
-              placeholder="Search for a city or neighbourhood"
+            <Autocomplete
               fullWidth
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => console.log("clicked")}
-                    color="secondary"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  color="secondary"
+                  placeholder="Search for a city or neighbourhood"
+                  fullWidth
+                />
+              )}
+              options={neighbourhoods.map((n) => n.neighbourhood)}
+              clearOnBlur
+              selectOnFocus
+              freeSolo
+              onInputChange={(_, value) => {
+                setSearchValue(value);
+              }}
+              open={searchValue.length > 2}
+              autoHighlight
+              onChange={(_, value) => navigate(`/properties?area=${value}`)}
             />
           </Grid>
         </Grid>

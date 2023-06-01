@@ -17,8 +17,9 @@ import {
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Listing } from "@packages/api/models/listings/listing";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import { Clear } from "@mui/icons-material";
+import neighbourhoods from "../../neighbourhoods.json";
 
 enum SubdivisonTypeEnum {
   Decomandat = "Decomandat",
@@ -29,6 +30,7 @@ enum SubdivisonTypeEnum {
 const ListingsPage: React.FC<{}> = () => {
   const theme = useTheme();
   const listings = useLoaderData() as Listing[];
+  const [searchParams, _] = useSearchParams();
   const [page, setPage] = useState<number>(1);
   const [noOfRooms, setNoOfRooms] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
@@ -37,9 +39,15 @@ const ListingsPage: React.FC<{}> = () => {
   const [maxSurface, setMaxSurface] = useState(0);
   const [subdivisionType, setSubdivisionType] = useState("");
 
+  const [area, setArea] = useState<string>("");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    setArea(searchParams.get("area") ?? "");
+  }, [searchParams]);
 
   const handleNoOfRoomsFilterChange = useCallback(
     (event: SelectChangeEvent<number>) => {
@@ -83,6 +91,13 @@ const ListingsPage: React.FC<{}> = () => {
     [setSubdivisionType]
   );
 
+  const handleAreaFilterChange = useCallback(
+    (event: SelectChangeEvent<string>) => {
+      setArea(event.target.value);
+    },
+    [setArea]
+  );
+
   const filteredListing = useMemo(() => {
     return listings
       .filter(
@@ -100,7 +115,26 @@ const ListingsPage: React.FC<{}> = () => {
       .filter(
         (listing) =>
           !subdivisionType || listing.apartment.subdivision === subdivisionType
-      );
+      )
+      .filter((listing) => {
+        if (!area) {
+          return true;
+        }
+        const bounds = neighbourhoods.find((n) => n.neighbourhood === area);
+        if (!bounds) {
+          return true;
+        }
+        const lat = listing.apartment.address.lat;
+        const long = listing.apartment.address.long;
+        return (
+          lat &&
+          long &&
+          lat > bounds.southwest.lat &&
+          lat < bounds.northeast.lat &&
+          long > bounds.southwest.long &&
+          long < bounds.northeast.long
+        );
+      });
   }, [
     listings,
     noOfRooms,
@@ -109,6 +143,7 @@ const ListingsPage: React.FC<{}> = () => {
     minSurface,
     maxSurface,
     subdivisionType,
+    area,
   ]);
 
   const displayedListings = useMemo(() => {
@@ -398,6 +433,42 @@ const ListingsPage: React.FC<{}> = () => {
                       <MenuItem value={SubdivisonTypeEnum.Nedecomandat}>
                         {SubdivisonTypeEnum.Nedecomandat}
                       </MenuItem>
+                    </Select>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Typography>Zona</Typography>
+                  </Grid>
+                  <Grid item xs={10} marginTop={-1}>
+                    <Select
+                      fullWidth
+                      onChange={handleAreaFilterChange}
+                      defaultValue={""}
+                      value={area}
+                      inputProps={{ IconComponent: () => null }}
+                      endAdornment={
+                        <IconButton
+                          sx={{ display: area ? "" : "none" }}
+                          onClick={() => {
+                            setArea("");
+                          }}
+                        >
+                          <Clear />
+                        </IconButton>
+                      }
+                      MenuProps={{
+                        style: {
+                          maxHeight: 200,
+                        },
+                      }}
+                    >
+                      {neighbourhoods.map((n) => (
+                        <MenuItem value={n.neighbourhood}>
+                          {n.neighbourhood}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </Grid>
                 </Grid>
