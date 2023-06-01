@@ -1,15 +1,12 @@
 import {
   Autocomplete,
   Grid,
-  IconButton,
-  InputAdornment,
   Paper,
   Stack,
   TextField,
   Typography,
   useTheme,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import Layout from "../Layout";
 import { ListAlt, Map } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";

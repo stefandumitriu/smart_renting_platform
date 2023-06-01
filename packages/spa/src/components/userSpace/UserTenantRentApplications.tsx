@@ -21,6 +21,8 @@ import {
   useTheme,
 } from "@mui/material";
 import OwnerProfileModal from "../propertiesPage/OwnerProfileModal";
+import { UserReview } from "@packages/api/models";
+import { GetLandlordUserReviewsRequest } from "../../requests/ReviewsRequests";
 
 interface TenantRentApplicationCardProps {
   application: Application;
@@ -41,8 +43,15 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
     },
   });
   const [ownerProfileOpen, setOwnerProfileOpen] = useState(false);
+  const [ownerReviews, setOwnerReviews] = useState<UserReview[]>([]);
   const handleOwnerProfileClose = useCallback(() => {
     setOwnerProfileOpen(false);
+  }, []);
+
+  useEffect(() => {
+    GetLandlordUserReviewsRequest(application.landlordId).then((res) =>
+      setOwnerReviews(res)
+    );
   }, []);
 
   return (
@@ -207,6 +216,7 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
         open={ownerProfileOpen}
         handleClose={handleOwnerProfileClose}
         owner={application.listing.apartment.owner}
+        ownerReviews={ownerReviews}
       />
     </Paper>
   );

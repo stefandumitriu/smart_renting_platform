@@ -59,7 +59,8 @@ const CreateUserReviewModal: React.FC<CreateUserReviewModalProps> = ({
             initialValues={
               {
                 reviewerId: currentUser.id,
-                userId: contract.landlordId,
+                userId:
+                  type === "TENANT" ? contract.tenantId : contract.landlordId,
                 type,
                 fairnessRating: 0,
                 communicationRating: 0,

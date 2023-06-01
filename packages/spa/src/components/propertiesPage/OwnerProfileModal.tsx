@@ -16,17 +16,21 @@ import { deepOrange } from "@mui/material/colors";
 import { UserProfile } from "@packages/api/models/users/userProfile";
 import { Email, Phone } from "@mui/icons-material";
 import { GetUserEmailRequest } from "../../requests/UserSignupRequest";
+import { UserReview } from "@packages/api/models";
+import { Link } from "react-router-dom";
 
 interface OwnerProfileModalProps {
   open: boolean;
   handleClose: () => void;
   owner: UserProfile;
+  ownerReviews?: UserReview[];
 }
 
 const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
   open,
   handleClose,
   owner,
+  ownerReviews,
 }) => {
   const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
   const fetchFn = useCallback(async () => {
@@ -48,6 +52,25 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
   const ownerName = useMemo(() => {
     return `${owner.firstName} ${owner.lastName}`;
   }, [owner]);
+
+  const { fairnessScore, communicationScore, availabilityScore } =
+    useMemo(() => {
+      if (ownerReviews) {
+        return ownerReviews.reduce(
+          (acc, review) => {
+            acc.fairnessScore += review.fairnessRating / ownerReviews.length;
+            acc.communicationScore +=
+              review.communicationRating / ownerReviews.length;
+            acc.availabilityScore +=
+              review.availabilityRating / ownerReviews.length;
+            return acc;
+          },
+          { fairnessScore: 0, communicationScore: 0, availabilityScore: 0 }
+        );
+      }
+      return { fairnessScore: 0, communicationScore: 0, availabilityScore: 0 };
+    }, [ownerReviews]);
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Fade in={open}>
@@ -106,7 +129,7 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
                 justifyContent="center"
                 marginTop={1}
               >
-                <Grid item container xs={4} justifyContent="center" spacing={1}>
+                <Grid item container xs={4} justifyContent="center">
                   <Grid item xs={12}>
                     <Typography
                       fontWeight="bolder"
@@ -116,10 +139,31 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
                       Rating
                     </Typography>
                   </Grid>
+                  <Grid item xs={12}>
+                    <Typography
+                      fontWeight="bold"
+                      color={theme.palette.secondary.main}
+                      textAlign="center"
+                    >
+                      {(
+                        (fairnessScore +
+                          communicationScore +
+                          availabilityScore) /
+                        3
+                      ).toPrecision(2)}{" "}
+                      / 5
+                    </Typography>
+                  </Grid>
                   <Grid item container xs={12} justifyContent="center">
                     <Grid item>
                       <StyledRating
                         defaultValue={2.5}
+                        value={
+                          (fairnessScore +
+                            communicationScore +
+                            availabilityScore) /
+                          3
+                        }
                         precision={0.5}
                         size="large"
                         readOnly
@@ -195,6 +239,7 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
                 <Grid item>
                   <StyledRating
                     defaultValue={2.5}
+                    value={fairnessScore}
                     precision={0.5}
                     size="small"
                     readOnly
@@ -208,6 +253,7 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
                 <Grid item>
                   <StyledRating
                     defaultValue={2.5}
+                    value={communicationScore}
                     precision={0.5}
                     size="small"
                     readOnly
@@ -221,6 +267,7 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
                 <Grid item>
                   <StyledRating
                     defaultValue={2.5}
+                    value={availabilityScore}
                     precision={0.5}
                     size="small"
                     readOnly
@@ -228,13 +275,15 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
                 </Grid>
               </Grid>
               <Grid item container xs={12} justifyContent="center">
-                <Button
-                  color="secondary"
-                  onClick={() => console.log("Review clicked")}
-                  variant="contained"
-                >
-                  Vezi recenziile
-                </Button>
+                <Link to={`/user/dashboard/landlord/${owner.id}/reviews`}>
+                  <Button
+                    color="secondary"
+                    onClick={() => console.log("Review clicked")}
+                    variant="contained"
+                  >
+                    Vezi recenziile
+                  </Button>
+                </Link>
               </Grid>
             </Grid>
           </Grid>

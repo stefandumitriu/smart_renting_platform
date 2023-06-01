@@ -44,6 +44,11 @@ import {
 import { FavouriteListing } from "@packages/api/models/listings/favouriteListing";
 import OwnerProfileModal from "./OwnerProfileModal";
 import RentApplyFormModal from "./RentApplyFormModal";
+import { ApartmentReview, UserReview } from "@packages/api/models";
+import {
+  GetApartmentReviewsRequest,
+  GetLandlordUserReviewsRequest,
+} from "../../requests/ReviewsRequests";
 
 const PropertyPage: React.FC<{}> = () => {
   const params = useLoaderData() as Listing;
@@ -55,6 +60,43 @@ const PropertyPage: React.FC<{}> = () => {
   const [ownerProfileOpen, setOwnerProfileOpen] = useState(false);
   const [rentApplyFormModalOpen, setRentApplyFormModalOpen] = useState(false);
   const [hasAppliedForListing, setHasAppliedForListing] = useState(false);
+  const [landlordReviews, setLandlordReviews] = useState<UserReview[]>([]);
+  const [apartmentReviews, setApartmentReviews] = useState<ApartmentReview[]>(
+    []
+  );
+
+  useEffect(() => {
+    GetLandlordUserReviewsRequest(params.apartment.ownerId).then((res) =>
+      setLandlordReviews(res)
+    );
+    GetApartmentReviewsRequest(params.apartmentId).then((res) =>
+      setApartmentReviews(res)
+    );
+  }, []);
+
+  const landlordScore = useMemo(() => {
+    return (
+      landlordReviews.reduce((acc, review) => {
+        acc +=
+          review.fairnessRating +
+          review.communicationRating +
+          review.availabilityRating;
+        return acc;
+      }, 0) /
+      (3 * landlordReviews.length)
+    );
+  }, [landlordReviews]);
+
+  const apartmentScore = useMemo(() => {
+    return (
+      apartmentReviews.reduce((acc, review) => {
+        acc +=
+          review.qualityRating + review.comfortRating + review.locationRating;
+        return acc;
+      }, 0) /
+      (3 * apartmentReviews.length)
+    );
+  }, [apartmentReviews]);
 
   const ownsProperty = useMemo(() => {
     if (currentUser) {
@@ -312,13 +354,7 @@ const PropertyPage: React.FC<{}> = () => {
                         justifyContent="center"
                         marginTop={1}
                       >
-                        <Grid
-                          item
-                          container
-                          xs={4}
-                          justifyContent="center"
-                          spacing={1}
-                        >
+                        <Grid item container xs={4} justifyContent="center">
                           <Grid item xs={12}>
                             <Typography
                               fontWeight="bolder"
@@ -328,10 +364,20 @@ const PropertyPage: React.FC<{}> = () => {
                               Rating
                             </Typography>
                           </Grid>
+                          <Grid item xs={12}>
+                            <Typography
+                              fontWeight="bold"
+                              color={theme.palette.secondary.main}
+                              textAlign="center"
+                            >
+                              {landlordScore.toPrecision(2)} / 5
+                            </Typography>
+                          </Grid>
                           <Grid item container xs={12} justifyContent="center">
                             <Grid item>
                               <StyledRating
                                 defaultValue={2.5}
+                                value={landlordScore}
                                 precision={0.5}
                                 size="small"
                                 readOnly
@@ -359,13 +405,7 @@ const PropertyPage: React.FC<{}> = () => {
                       sx={{ height: "100%" }}
                     >
                       <Grid item container xs={12} justifyContent="center">
-                        <Grid
-                          item
-                          container
-                          xs={6}
-                          justifyContent="center"
-                          spacing={1}
-                        >
+                        <Grid item container xs={12} justifyContent="center">
                           <Grid item xs={12}>
                             <Typography
                               fontWeight="bolder"
@@ -375,10 +415,24 @@ const PropertyPage: React.FC<{}> = () => {
                               Rating Apartament
                             </Typography>
                           </Grid>
+                          <Grid item xs={12}>
+                            <Typography
+                              fontWeight="bolder"
+                              color={theme.palette.secondary.main}
+                              textAlign="center"
+                            >
+                              {isNaN(apartmentScore)
+                                ? "Nu exista review-uri"
+                                : `${apartmentScore.toPrecision(2)} / 5`}
+                            </Typography>
+                          </Grid>
                           <Grid item container xs={12} justifyContent="center">
                             <Grid item>
                               <StyledRating
-                                defaultValue={2.5}
+                                defaultValue={0}
+                                value={
+                                  isNaN(apartmentScore) ? 0 : apartmentScore
+                                }
                                 precision={0.5}
                                 size="small"
                                 readOnly
@@ -699,6 +753,7 @@ const PropertyPage: React.FC<{}> = () => {
         open={ownerProfileOpen}
         handleClose={handleOwnerProfileClose}
         owner={params.apartment.owner}
+        ownerReviews={landlordReviews}
       />
       <RentApplyFormModal
         open={rentApplyFormModalOpen}
