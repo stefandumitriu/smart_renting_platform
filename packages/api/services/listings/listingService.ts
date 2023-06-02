@@ -13,31 +13,7 @@ import { convertDbListingToAPIListing } from "../../convertors/listings/listing"
 
 export async function getAllListings(): Promise<Listing[]> {
   const dbListings = await getListings();
-  return Promise.all(
-    dbListings.map(async (listing) => {
-      const dbApartment = await getApartmentById(listing.apartmentId);
-      if (!dbApartment) {
-        throw new Error(`${listing.id}: Apartment not found`);
-      }
-      const address = await getAddressById(dbApartment.addressId);
-      const owner = await getUserProfileById(dbApartment.ownerId);
-      if (!address) {
-        throw new Error(`${listing.id}: Address not found`);
-      }
-      if (!owner) {
-        throw new Error(`${listing.id}: Owner not found`);
-      }
-      const apartment: Apartment = {
-        ...dbApartment,
-        address,
-        owner: convertDbUserProfileToAPIUserProfile(owner),
-      };
-      return {
-        ...listing,
-        apartment,
-      };
-    })
-  );
+  return Promise.all(dbListings.map(convertDbListingToAPIListing));
 }
 
 export async function getListing(id: string): Promise<Listing> {

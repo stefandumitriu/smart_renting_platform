@@ -16,29 +16,13 @@ import {
   patchApplication,
   patchListing,
 } from "../controllers/listingsController";
-import multer from "multer";
-import path from "path";
+import { s3UploadMiddleware } from "../aws/s3Uploader";
 
 const listingsRouter = express.Router();
 
-const imageUpload = multer.diskStorage({
-  destination: "../../local_storage/listingPhotos",
-  filename(
-    req: Express.Request,
-    file: Express.Multer.File,
-    callback: (error: Error | null, filename: string) => void
-  ) {
-    const filename =
-      file.originalname.split(".")[0] +
-      Math.floor(Math.random() * 1000).toString() +
-      path.extname(file.originalname);
-    callback(null, filename);
-  },
-});
-
 listingsRouter.post(
   "",
-  multer({ storage: imageUpload }).array("photos"),
+  s3UploadMiddleware("listing-photo").array("photos"),
   addListing
 );
 listingsRouter.get("", getListings);

@@ -160,10 +160,7 @@ const PropertyPage: React.FC<{}> = () => {
 
   const images: string[] = useMemo(() => {
     if (params.photosUrl && params.photosUrl.length > 0) {
-      return params.photosUrl?.map(
-        (photoUrl) =>
-          "http://localhost:8080" + photoUrl.replaceAll("\\", "/").slice(5)
-      );
+      return params.photosUrl;
     } else {
       return [
         "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg",

@@ -104,7 +104,7 @@ export const addApartment = async (req: Request, res: Response) => {
     const addedApartment = await storeApartment({
       ..._.omit(body, "address"),
       addressId: addedAddress.id,
-      addressProof: req.file?.path,
+      addressProof: (req.file as any).key,
       id: uuidv4(),
     });
     const apartment = await convertDbApartmentToApartment(addedApartment);

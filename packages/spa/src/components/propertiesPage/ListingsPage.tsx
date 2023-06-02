@@ -308,7 +308,12 @@ const ListingsPage: React.FC<{}> = () => {
                           <Grid item xs={4}>
                             <CardMedia
                               component="img"
-                              image="https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg"
+                              image={
+                                listing.photosUrl &&
+                                listing.photosUrl.length > 0
+                                  ? listing.photosUrl[0]
+                                  : "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg"
+                              }
                               sx={{ height: "100%" }}
                             />
                           </Grid>

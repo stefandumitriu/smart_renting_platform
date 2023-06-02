@@ -34,9 +34,7 @@ import { DbApplication } from "@packages/db";
 
 export const addListing = async (req: Request, res: Response) => {
   try {
-    const filepaths = ((req.files || []) as Express.Multer.File[]).map(
-      (file: Express.Multer.File) => file.path
-    );
+    const filepaths = ((req.files || []) as any[]).map((file: any) => file.key);
     const dbListing = await storeListing({
       ..._.omit(req.body as NewListing, "photos"),
       photosUrl: filepaths || undefined,
