@@ -37,3 +37,7 @@ export async function createApartmentReview(
   }
   return createdApartmentReview;
 }
+
+export async function getAllApartmentReviews(): Promise<DbApartmentReview[]> {
+  return knex<DbApartmentReview>(APARTMENT_REVIEWS_TABLE_NAME).select();
+}

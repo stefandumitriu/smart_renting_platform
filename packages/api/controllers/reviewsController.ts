@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   createUserReview,
+  getAllLandlordReviews,
   getLandlordReviews,
   getTenantReviews,
 } from "@packages/db/services/userReviewService";
@@ -11,6 +12,7 @@ import {
 import { NewApartmentReview, NewUserReview } from "../models";
 import {
   createApartmentReview,
+  getAllApartmentReviews,
   getApartmentReviews,
 } from "@packages/db/services/apartmentReviewService";
 import {
@@ -85,6 +87,30 @@ export const getApartmentReviewsById = async (req: Request, res: Response) => {
     res.status(200).send(apartmentReviews);
   } catch (e) {
     res.sendStatus(500);
+    console.error(e);
+  }
+};
+
+export const fetchAllLandlordReviews = async (req: Request, res: Response) => {
+  try {
+    const dbLandlordReviews = await getAllLandlordReviews();
+    const landlordReviews = await Promise.all(
+      dbLandlordReviews.map(convertDbUserReviewToUserReview)
+    );
+    res.status(200).send(landlordReviews);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const fetchAllApartmentReviews = async (req: Request, res: Response) => {
+  try {
+    const dbApartmentReviews = await getAllApartmentReviews();
+    const apartmentReviews = await Promise.all(
+      dbApartmentReviews.map(convertDbApartmentReviewToApartmentReview)
+    );
+    res.status(200).send(apartmentReviews);
+  } catch (e) {
     console.error(e);
   }
 };

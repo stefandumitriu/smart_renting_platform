@@ -46,3 +46,9 @@ export async function createUserReview(
   }
   return createdUserReview;
 }
+
+export async function getAllLandlordReviews(): Promise<DbUserReview[]> {
+  return knex<DbUserReview>(USER_REVIEWS_TABLE_NAME)
+    .where({ type: ReviewType.Landlord })
+    .select();
+}

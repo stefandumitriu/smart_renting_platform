@@ -18,8 +18,13 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Listing } from "@packages/api/models/listings/listing";
 import { Link, useLoaderData, useSearchParams } from "react-router-dom";
-import { Clear } from "@mui/icons-material";
+import { Clear, Star } from "@mui/icons-material";
 import neighbourhoods from "../../neighbourhoods.json";
+import { ApartmentReview, UserReview } from "@packages/api/models";
+import {
+  GetAllApartmentReviewsRequest,
+  GetAllLandlordReviewsRequest,
+} from "../../requests/ReviewsRequests";
 
 enum SubdivisonTypeEnum {
   Decomandat = "Decomandat",
@@ -27,10 +32,18 @@ enum SubdivisonTypeEnum {
   Nedecomandat = "Nedecomandat",
 }
 
+enum SortMethod {
+  Price = "Pret",
+  Surface = "Suprafata",
+  Rooms = "Numar camere",
+  ApartmentScore = "Scor apartament",
+  OwnerScore = "Scor proprietar",
+}
+
 const ListingsPage: React.FC<{}> = () => {
   const theme = useTheme();
   const listings = useLoaderData() as Listing[];
-  const [searchParams, _] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [page, setPage] = useState<number>(1);
   const [noOfRooms, setNoOfRooms] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
@@ -38,11 +51,80 @@ const ListingsPage: React.FC<{}> = () => {
   const [minSurface, setMinSurface] = useState(0);
   const [maxSurface, setMaxSurface] = useState(0);
   const [subdivisionType, setSubdivisionType] = useState("");
+  const [landlordReviews, setLandlordReviews] = useState<UserReview[]>([]);
+  const [apartmentReviews, setApartmentReviews] = useState<ApartmentReview[]>(
+    []
+  );
+  const [sortMethod, setSortMethod] = useState<string>(
+    SortMethod.ApartmentScore
+  );
+
+  const sortFn = useCallback(
+    (listingA: Listing, listingB: Listing) => {
+      switch (sortMethod) {
+        case undefined:
+          return 0;
+        case SortMethod.Price:
+          return listingA.price - listingB.price;
+        case SortMethod.Surface:
+          return listingA.apartment.surface - listingB.apartment.surface;
+        case SortMethod.Rooms:
+          return listingA.apartment.noOfRooms - listingB.apartment.noOfRooms;
+        case SortMethod.OwnerScore:
+          return (
+            getOwnerScore(listingB.apartment.ownerId) -
+            getOwnerScore(listingA.apartment.ownerId)
+          );
+        case SortMethod.ApartmentScore:
+          return (
+            getApartmentScore(listingB.apartmentId) -
+            getApartmentScore(listingA.apartmentId)
+          );
+        default:
+          return 0;
+      }
+    },
+    [sortMethod]
+  );
 
   const [area, setArea] = useState<string>("");
 
+  const getApartmentScore = useCallback(
+    (apartmentId: string) => {
+      return apartmentReviews
+        .filter((a) => a.apartmentId === apartmentId)
+        .reduce((acc, review, _, arr) => {
+          acc +=
+            (review.comfortRating +
+              review.qualityRating +
+              review.locationRating) /
+            (arr.length * 3);
+          return acc;
+        }, 0);
+    },
+    [apartmentReviews]
+  );
+
+  const getOwnerScore = useCallback(
+    (ownerId: string) => {
+      return landlordReviews
+        .filter((a) => a.userId === ownerId)
+        .reduce((acc, review, _, arr) => {
+          acc +=
+            (review.fairnessRating +
+              review.communicationRating +
+              review.availabilityRating) /
+            (arr.length * 3);
+          return acc;
+        }, 0);
+    },
+    [landlordReviews]
+  );
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    GetAllLandlordReviewsRequest().then((res) => setLandlordReviews(res));
+    GetAllApartmentReviewsRequest().then((res) => setApartmentReviews(res));
   }, []);
 
   useEffect(() => {
@@ -134,7 +216,8 @@ const ListingsPage: React.FC<{}> = () => {
           long > bounds.southwest.long &&
           long < bounds.northeast.long
         );
-      });
+      })
+      .sort(sortFn);
   }, [
     listings,
     noOfRooms,
@@ -144,6 +227,7 @@ const ListingsPage: React.FC<{}> = () => {
     maxSurface,
     subdivisionType,
     area,
+    sortMethod,
   ]);
 
   const displayedListings = useMemo(() => {
@@ -166,6 +250,46 @@ const ListingsPage: React.FC<{}> = () => {
     <Layout>
       <Grid item container xs={12} sx={{ minHeight: "100vh" }}>
         <Grid item container xs={12}>
+          <Grid item container xs={12}>
+            <Grid item xs={12} sm={4}>
+              <Paper sx={{ width: "100%" }}>
+                <Grid
+                  container
+                  xs={12}
+                  padding={2}
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Grid item xs={4}>
+                    <Typography fontWeight="bolder">Sorteaza dupa</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Select
+                      fullWidth
+                      onChange={(e) => setSortMethod(e.target.value)}
+                      defaultValue={SortMethod.ApartmentScore}
+                      value={sortMethod}
+                      inputProps={{ IconComponent: () => null }}
+                      endAdornment={
+                        <IconButton
+                          sx={{ display: sortMethod ? "" : "none" }}
+                          onClick={() => {
+                            setSortMethod("");
+                          }}
+                        >
+                          <Clear />
+                        </IconButton>
+                      }
+                    >
+                      {Object.values(SortMethod).map((v) => (
+                        <MenuItem value={v}>{v}</MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+          </Grid>
           <Grid item container xs={8}>
             {displayedListings.map((listing) => {
               return (
@@ -185,6 +309,7 @@ const ListingsPage: React.FC<{}> = () => {
                             <CardMedia
                               component="img"
                               image="https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg"
+                              sx={{ height: "100%" }}
                             />
                           </Grid>
                           <Grid item xs={8} my={4}>
@@ -217,10 +342,67 @@ const ListingsPage: React.FC<{}> = () => {
                                   <Chip label={listing.apartment.subdivision} />
                                 </Grid>
                               </Grid>
-                              <Grid item xs={12} alignSelf="flex-end">
-                                <Typography fontWeight="bolder">
-                                  {listing.price}€ / luna
-                                </Typography>
+                              <Grid
+                                item
+                                container
+                                xs={12}
+                                alignSelf="flex-end"
+                                justifyContent="space-between"
+                              >
+                                <Grid item>
+                                  <Typography fontWeight="bolder">
+                                    {listing.price}€ / luna
+                                  </Typography>
+                                </Grid>
+                                <Grid
+                                  item
+                                  container
+                                  xs={4}
+                                  flexDirection="column"
+                                >
+                                  <Grid item container alignContent="center">
+                                    <Grid item>
+                                      <Typography
+                                        color={theme.palette.secondary.main}
+                                        fontWeight="bold"
+                                        display="inline"
+                                      >
+                                        Scor proprietar:{" "}
+                                        {getOwnerScore(
+                                          listing.apartment.ownerId
+                                        ).toPrecision(2)}{" "}
+                                        / 5
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                      <Star
+                                        color="secondary"
+                                        fontSize="small"
+                                      />
+                                    </Grid>
+                                  </Grid>
+                                  <Grid item container alignContent="center">
+                                    <Grid item>
+                                      <Typography
+                                        color={theme.palette.secondary.main}
+                                        fontWeight="bold"
+                                        display="inline"
+                                      >
+                                        Scor apartament:{" "}
+                                        {getApartmentScore(
+                                          listing.apartment.id
+                                        ).toPrecision(2)}{" "}
+                                        / 5
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                      <Star
+                                        color="secondary"
+                                        fontSize="small"
+                                      />
+                                    </Grid>
+                                  </Grid>
+                                </Grid>
                               </Grid>
                             </Grid>
                           </Grid>

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Application } from "@packages/api/models/listings/application";
 import Layout from "../Layout";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -25,6 +25,8 @@ import {
 import { GetUserEmailRequest } from "../../requests/UserSignupRequest";
 import moment from "moment";
 import CreateContractModal from "./CreateContractModal";
+import { GetTenantUserReviewsRequest } from "../../requests/ReviewsRequests";
+import { UserReview } from "@packages/api/models";
 
 const ApplicationPage: React.FC<{}> = () => {
   const { state } = useLocation();
@@ -48,7 +50,28 @@ const ApplicationPage: React.FC<{}> = () => {
     fetchFn().then((data) => setTenantEmail(data));
   }, [fetchFn]);
 
+  useEffect(() => {
+    GetTenantUserReviewsRequest(application.tenantId).then((reviews) =>
+      setTenantReviews(reviews)
+    );
+  }, []);
+
   const [contractModalOpen, setContractModalOpen] = useState<boolean>(false);
+  const [tenantReviews, setTenantReviews] = useState<UserReview[]>([]);
+  const { fairnessScore, communicationScore, availabilityScore } =
+    useMemo(() => {
+      return tenantReviews.reduce(
+        (acc, review) => {
+          acc.fairnessScore += review.fairnessRating / tenantReviews.length;
+          acc.communicationScore +=
+            review.communicationRating / tenantReviews.length;
+          acc.availabilityScore +=
+            review.availabilityRating / tenantReviews.length;
+          return acc;
+        },
+        { fairnessScore: 0, communicationScore: 0, availabilityScore: 0 }
+      );
+    }, [tenantReviews]);
 
   const approveRequestCallback = useCallback(() => {
     setContractModalOpen(true);
@@ -212,6 +235,7 @@ const ApplicationPage: React.FC<{}> = () => {
             <Grid item>
               <StyledRating
                 defaultValue={2.5}
+                value={fairnessScore}
                 precision={0.5}
                 size="small"
                 readOnly
@@ -225,6 +249,7 @@ const ApplicationPage: React.FC<{}> = () => {
             <Grid item>
               <StyledRating
                 defaultValue={2.5}
+                value={communicationScore}
                 precision={0.5}
                 size="small"
                 readOnly
@@ -238,6 +263,7 @@ const ApplicationPage: React.FC<{}> = () => {
             <Grid item>
               <StyledRating
                 defaultValue={2.5}
+                value={availabilityScore}
                 precision={0.5}
                 size="small"
                 readOnly
@@ -245,13 +271,11 @@ const ApplicationPage: React.FC<{}> = () => {
             </Grid>
           </Grid>
           <Grid item container xs={12} justifyContent="flex-start">
-            <Button
-              color="secondary"
-              onClick={() => console.log("Review clicked")}
-              variant="contained"
-            >
-              Vezi recenziile
-            </Button>
+            <Link to={`/user/dashboard/tenant/${application.tenantId}/reviews`}>
+              <Button color="secondary" variant="contained">
+                Vezi recenziile
+              </Button>
+            </Link>
           </Grid>
         </Grid>
         <Grid item xs={12}>
@@ -263,38 +287,40 @@ const ApplicationPage: React.FC<{}> = () => {
             }}
           />
         </Grid>
-        <Grid
-          item
-          container
-          xs={12}
-          justifyContent="space-between"
-          marginX="auto"
-          rowSpacing={2}
-        >
-          <Grid item xs={12} md="auto">
-            <Button
-              color="error"
-              onClick={() => {
-                console.log("Application rejected");
-                navigate(`/properties/${application.listingId}/applications`);
-              }}
-              variant="contained"
-              startIcon={<Clear />}
-            >
-              Refuza cerere
-            </Button>
+        {application.status === "Waiting" && (
+          <Grid
+            item
+            container
+            xs={12}
+            justifyContent="space-between"
+            marginX="auto"
+            rowSpacing={2}
+          >
+            <Grid item xs={12} md="auto">
+              <Button
+                color="error"
+                onClick={() => {
+                  console.log("Application rejected");
+                  navigate(`/properties/${application.listingId}/applications`);
+                }}
+                variant="contained"
+                startIcon={<Clear />}
+              >
+                Refuza cerere
+              </Button>
+            </Grid>
+            <Grid item xs={12} md="auto">
+              <Button
+                color="success"
+                onClick={approveRequestCallback}
+                variant="contained"
+                startIcon={<Done />}
+              >
+                Aproba cerere
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md="auto">
-            <Button
-              color="success"
-              onClick={approveRequestCallback}
-              variant="contained"
-              startIcon={<Done />}
-            >
-              Aproba cerere
-            </Button>
-          </Grid>
-        </Grid>
+        )}
       </Grid>
       <CreateContractModal
         open={contractModalOpen}

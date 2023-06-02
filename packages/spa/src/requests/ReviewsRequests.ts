@@ -52,3 +52,15 @@ export async function GetApartmentReviewsRequest(
   );
   return response.data as ApartmentReview[];
 }
+
+export async function GetAllLandlordReviewsRequest(): Promise<UserReview[]> {
+  const response = await axiosBaseInstance.get(USER_REVIEWS_PATH);
+  return response.data as UserReview[];
+}
+
+export async function GetAllApartmentReviewsRequest(): Promise<
+  ApartmentReview[]
+> {
+  const response = await axiosBaseInstance.get(APARTMENT_REVIEWS_PATH);
+  return response.data as ApartmentReview[];
+}
