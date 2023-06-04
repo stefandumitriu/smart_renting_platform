@@ -11,11 +11,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { deepOrange } from "@mui/material/colors";
 import { UserProfile } from "@packages/api/models/users/userProfile";
 import { Email, Phone } from "@mui/icons-material";
-import { GetUserEmailRequest } from "../../requests/UserSignupRequest";
 import { UserReview } from "@packages/api/models";
 import { Link } from "react-router-dom";
 
@@ -32,14 +31,6 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
   owner,
   ownerReviews,
 }) => {
-  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
-  const fetchFn = useCallback(async () => {
-    return GetUserEmailRequest(owner.userId);
-  }, [owner]);
-
-  useEffect(() => {
-    fetchFn().then((data) => setUserEmail(data));
-  }, [fetchFn]);
   const theme = useTheme();
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
@@ -100,15 +91,24 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
             >
               <Grid item container xs={12} justifyContent="center">
                 <Grid item xs={4}>
-                  <Avatar
-                    sx={{
-                      bgcolor: deepOrange[500],
-                      marginX: "auto",
-                    }}
-                  >
-                    {ownerName.split(" ")[0][0]}
-                    {ownerName.split(" ")[1][0]}
-                  </Avatar>
+                  {owner.profilePhotoUrl ? (
+                    <Avatar
+                      sx={{
+                        marginX: "auto",
+                      }}
+                      src={owner.profilePhotoUrl}
+                    />
+                  ) : (
+                    <Avatar
+                      sx={{
+                        bgcolor: deepOrange[500],
+                        marginX: "auto",
+                      }}
+                    >
+                      {ownerName.split(" ")[0][0]}
+                      {ownerName.split(" ")[1][0]}
+                    </Avatar>
+                  )}
                 </Grid>
               </Grid>
               <Grid
@@ -214,7 +214,7 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
                   <Email color="primary" />
                 </Grid>
                 <Grid item>
-                  <Typography>{userEmail}</Typography>
+                  <Typography>{owner.email}</Typography>
                 </Grid>
               </Grid>
               <Grid item xs={12}>

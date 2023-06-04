@@ -7,13 +7,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import Layout from "../Layout";
-import {
-  GetUserEmailRequest,
-  UpdateUserProfileRequest,
-} from "../../requests/UserSignupRequest";
+import { UpdateUserProfileRequest } from "../../requests/UserSignupRequest";
 import { Edit } from "@mui/icons-material";
 import { StyledTextField } from "../landingPage/SignupForm";
 import { Form, Formik } from "formik";
@@ -78,7 +75,6 @@ const counties = [
 const UserSettings: React.FC<{}> = () => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const theme = useTheme();
-  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
   const [editNameActive, setEditNameActive] = useState(false);
 
   const handleEditNameButtonClick = useCallback(() => {
@@ -96,17 +92,6 @@ const UserSettings: React.FC<{}> = () => {
     },
     [setCurrentUser]
   );
-
-  const fetchFn = useCallback(async () => {
-    if (!currentUser) {
-      return undefined;
-    }
-    return GetUserEmailRequest(currentUser.userId);
-  }, [currentUser]);
-
-  useEffect(() => {
-    fetchFn().then((data) => setUserEmail(data));
-  }, [fetchFn]);
 
   return currentUser ? (
     <Layout pageTitle="Setari Profil">
@@ -133,11 +118,20 @@ const UserSettings: React.FC<{}> = () => {
                 <Grid item container xs={8} my={4} rowSpacing={2}>
                   <Grid item container xs={12} spacing={2}>
                     <Grid item>
-                      <IconButton onClick={() => console.log("Avatar clicked")}>
+                      {values.profilePhotoUrl ? (
                         <Avatar
                           sx={{ height: "150px", width: "150px" }}
+                          src={values.profilePhotoUrl}
                         ></Avatar>
-                      </IconButton>
+                      ) : (
+                        <IconButton
+                          onClick={() => console.log("Avatar clicked")}
+                        >
+                          <Avatar
+                            sx={{ height: "150px", width: "150px" }}
+                          ></Avatar>
+                        </IconButton>
+                      )}
                     </Grid>
                     <Grid item>
                       <Stack spacing={2}>
@@ -185,7 +179,7 @@ const UserSettings: React.FC<{}> = () => {
                           color={theme.palette.secondary.main}
                           fontStyle="italic"
                         >
-                          {userEmail}
+                          {currentUser?.email}
                         </Typography>
                       </Stack>
                     </Grid>

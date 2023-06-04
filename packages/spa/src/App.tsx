@@ -38,6 +38,7 @@ import {
 } from "./loaders/ReviewPageLoaders";
 import TenantUseReviewsPage from "./components/userSpace/reviews/TenantUserReviewsPage";
 import LandlordUserReviewsPage from "./components/userSpace/reviews/LandlordUserReviewsPage";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 const router = createBrowserRouter([
   {
@@ -236,15 +237,23 @@ function App() {
 
   const authContextValue = { currentUser, setCurrentUser };
   return (
-    <AuthContext.Provider value={authContextValue}>
-      <LocalizationProvider dateAdapter={AdapterMoment}>
-        <ThemeProvider theme={theme}>
-          <OnComponentInitContext.Provider value={onInit}>
-            <RouterProvider router={router} />
-          </OnComponentInitContext.Provider>
-        </ThemeProvider>
-      </LocalizationProvider>
-    </AuthContext.Provider>
+    <Auth0Provider
+      domain="dev-cfmc45lbwfdwwi36.eu.auth0.com"
+      clientId="Ai6AzjUEB2uVvDRhZa0IbGHxyU7Ol2gV"
+      authorizationParams={{
+        redirect_uri: "http://localhost:3000/",
+      }}
+    >
+      <AuthContext.Provider value={authContextValue}>
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <ThemeProvider theme={theme}>
+            <OnComponentInitContext.Provider value={onInit}>
+              <RouterProvider router={router} />
+            </OnComponentInitContext.Provider>
+          </ThemeProvider>
+        </LocalizationProvider>
+      </AuthContext.Provider>
+    </Auth0Provider>
   );
 }
 

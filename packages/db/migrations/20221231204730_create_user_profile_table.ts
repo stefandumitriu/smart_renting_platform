@@ -1,6 +1,8 @@
 import { Knex } from "knex";
-import { USER_CREDENTIALS_TABLE_NAME } from "../models/users/userCredentials";
-import { USER_PROFILE_TABLE_NAME } from "../models/users/userProfile";
+import {
+  USER_CREDENTIALS_TABLE_NAME,
+  USER_PROFILE_TABLE_NAME,
+} from "../models";
 
 exports.up = (knex: Knex) => {
   return knex.schema.createTable(USER_PROFILE_TABLE_NAME, (table) => {
@@ -11,8 +13,8 @@ exports.up = (knex: Knex) => {
       .references("id")
       .inTable(USER_CREDENTIALS_TABLE_NAME)
       .onDelete("CASCADE");
-    table.string("firstName").notNullable();
-    table.string("lastName").notNullable();
+    table.string("firstName").nullable();
+    table.string("lastName").nullable();
   });
 };
 

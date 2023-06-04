@@ -49,6 +49,7 @@ import {
   GetApartmentReviewsRequest,
   GetLandlordUserReviewsRequest,
 } from "../../requests/ReviewsRequests";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const PropertyPage: React.FC<{}> = () => {
   const params = useLoaderData() as Listing;
@@ -75,27 +76,23 @@ const PropertyPage: React.FC<{}> = () => {
   }, []);
 
   const landlordScore = useMemo(() => {
-    return (
-      landlordReviews.reduce((acc, review) => {
-        acc +=
-          review.fairnessRating +
+    return landlordReviews.reduce((acc, review, _, array) => {
+      acc +=
+        (review.fairnessRating +
           review.communicationRating +
-          review.availabilityRating;
-        return acc;
-      }, 0) /
-      (3 * landlordReviews.length)
-    );
+          review.availabilityRating) /
+        (3 * array.length);
+      return acc;
+    }, 0);
   }, [landlordReviews]);
 
   const apartmentScore = useMemo(() => {
-    return (
-      apartmentReviews.reduce((acc, review) => {
-        acc +=
-          review.qualityRating + review.comfortRating + review.locationRating;
-        return acc;
-      }, 0) /
-      (3 * apartmentReviews.length)
-    );
+    return apartmentReviews.reduce((acc, review, _, array) => {
+      acc +=
+        (review.qualityRating + review.comfortRating + review.locationRating) /
+        (3 * apartmentReviews.length);
+      return acc;
+    }, 0);
   }, [apartmentReviews]);
 
   const ownsProperty = useMemo(() => {
@@ -242,11 +239,12 @@ const PropertyPage: React.FC<{}> = () => {
             <Typography
               variant="subtitle1"
               color={theme.palette.secondary.main}
+              display="inline"
             >
-              Bucharest, {address.streetType} {address.streetName}
+              Bucuresti, {address.streetType} {address.streetName}
             </Typography>
           </Grid>
-          <Grid item xs={8} marginTop={4}>
+          <Grid item xs={8}>
             <SwipeableViews
               index={activeImage}
               onChangeIndex={handleStepChange}
@@ -306,7 +304,6 @@ const PropertyPage: React.FC<{}> = () => {
             container
             xs={3}
             marginX="auto"
-            marginTop={4}
             alignContent="start"
             rowSpacing={4}
           >
@@ -325,12 +322,24 @@ const PropertyPage: React.FC<{}> = () => {
                     >
                       <Grid item container xs={12} justifyContent="center">
                         <Grid item xs={4}>
-                          <Avatar
-                            sx={{ bgcolor: deepOrange[500], marginX: "auto" }}
-                          >
-                            {ownerName.split(" ")[0][0]}
-                            {ownerName.split(" ")[1][0]}
-                          </Avatar>
+                          {params.apartment.owner.profilePhotoUrl ? (
+                            <Avatar
+                              sx={{
+                                marginX: "auto",
+                              }}
+                              src={params.apartment.owner.profilePhotoUrl}
+                            />
+                          ) : (
+                            <Avatar
+                              sx={{
+                                bgcolor: deepOrange[500],
+                                marginX: "auto",
+                              }}
+                            >
+                              {ownerName.split(" ")[0][0]}
+                              {ownerName.split(" ")[1][0]}
+                            </Avatar>
+                          )}
                         </Grid>
                       </Grid>
                       <Grid
@@ -418,9 +427,7 @@ const PropertyPage: React.FC<{}> = () => {
                               color={theme.palette.secondary.main}
                               textAlign="center"
                             >
-                              {isNaN(apartmentScore)
-                                ? "Nu exista review-uri"
-                                : `${apartmentScore.toPrecision(2)} / 5`}
+                              {apartmentScore.toPrecision(2)} / 5
                             </Typography>
                           </Grid>
                           <Grid item container xs={12} justifyContent="center">
@@ -521,7 +528,7 @@ const PropertyPage: React.FC<{}> = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} marginTop={4}>
+          <Grid item xs={12} marginTop={2}>
             <Grid item container xs={12}>
               <Grid item xs={4}>
                 <Typography variant="h5">Descriere</Typography>

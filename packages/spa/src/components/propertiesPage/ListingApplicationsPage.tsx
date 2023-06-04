@@ -136,33 +136,43 @@ const ListingApplicationsPage: React.FC = () => {
         marginX="auto"
         my={1}
       >
-        <Grid item xs={12} marginTop={-4}>
-          <Typography variant="h2" color={theme.palette.secondary.main}>
-            Cereri de inchiriere
-          </Typography>
-        </Grid>
-        <Grid item container xs={12} marginBottom={2} marginTop={-4}>
-          <Grid item>
-            <LocationOnIcon color={"secondary"} />
+        {applications && applications.length > 0 ? (
+          <>
+            <Grid item xs={12} marginTop={-4}>
+              <Typography variant="h2" color={theme.palette.secondary.main}>
+                Cereri de inchiriere
+              </Typography>
+            </Grid>
+            <Grid item container xs={12} marginBottom={2} marginTop={-4}>
+              <Grid item>
+                <LocationOnIcon color={"secondary"} />
+              </Grid>
+              <Grid item>
+                <Typography variant="h6" color={theme.palette.secondary.main}>
+                  {applications[0].listing.apartment.address.streetType}{" "}
+                  {applications[0].listing.apartment.address.streetName}, Nr.{" "}
+                  {applications[0].listing.apartment.address.streetNumber}
+                  {" - "}
+                  {applications[0].listing.apartment.noOfRooms}{" "}
+                  {applications[0].listing.apartment.noOfRooms > 1
+                    ? "camere"
+                    : "camera"}
+                </Typography>
+              </Grid>
+            </Grid>
+            {applications.map((application) => (
+              <Grid item xs={8}>
+                <ApplicationCard application={application} />
+              </Grid>
+            ))}
+          </>
+        ) : (
+          <Grid item container xs={12} justifyContent="center">
+            <Grid item>
+              Nu exista cereri de inchiriere pentru acest apartament
+            </Grid>
           </Grid>
-          <Grid item>
-            <Typography variant="h6" color={theme.palette.secondary.main}>
-              {applications[0].listing.apartment.address.streetType}{" "}
-              {applications[0].listing.apartment.address.streetName}, Nr.{" "}
-              {applications[0].listing.apartment.address.streetNumber}
-              {" - "}
-              {applications[0].listing.apartment.noOfRooms}{" "}
-              {applications[0].listing.apartment.noOfRooms > 1
-                ? "camere"
-                : "camera"}
-            </Typography>
-          </Grid>
-        </Grid>
-        {applications.map((application) => (
-          <Grid item xs={8}>
-            <ApplicationCard application={application} />
-          </Grid>
-        ))}
+        )}
       </Grid>
     </Layout>
   );

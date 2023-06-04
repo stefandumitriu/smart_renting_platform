@@ -1,16 +1,14 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { ReactNode, useCallback, useContext, useEffect } from "react";
 import { Button, Grid, Typography, useTheme } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import UserLoginModal from "./landingPage/UserLoginModal";
 import { AuthContext } from "../contexts/AuthContext";
 import { OnComponentInitContext } from "../contexts/OnComponentInitContext";
+import { useAuth0 } from "@auth0/auth0-react";
+import {
+  UserLoginRequest,
+  UserSignupRequest,
+} from "../requests/UserSignupRequest";
 
 interface LayoutProps {
   children?: ReactNode;
@@ -19,20 +17,45 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
   const theme = useTheme();
-  const [openLogin, setOpenLogin] = useState(false);
-  const { currentUser } = useContext(AuthContext);
+  const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const onInit = useContext(OnComponentInitContext);
 
-  const handleLoginOpen = useCallback(() => {
-    setOpenLogin(true);
-  }, [setOpenLogin]);
+  const createUserCallback = useCallback(async (user: any) => {
+    const firstName: string | undefined = user.given_name;
+    const lastName: string | undefined = user.family_name;
+    const userProfile = await UserSignupRequest({
+      userId: user.sub,
+      email: user.email,
+      firstName,
+      lastName,
+      profilePhotoUrl: user.picture,
+    });
+    setCurrentUser(userProfile);
+  }, []);
 
-  const handleLoginClose = useCallback(() => {
-    setOpenLogin(false);
-  }, [setOpenLogin]);
+  const loginUserCallback = useCallback(async (user: any) => {
+    const userProfile = await UserLoginRequest(user.sub);
+    if (!userProfile) {
+      await createUserCallback(user);
+      return;
+    }
+    setCurrentUser(userProfile);
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+      loginUserCallback(user);
+    }
+  }, [user]);
 
   useEffect(() => onInit(), [onInit]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Grid
@@ -74,19 +97,26 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
           <Button
             color="secondary"
             onClick={
-              currentUser
+              isAuthenticated
                 ? () => {
                     navigate("/user/dashboard");
                   }
-                : handleLoginOpen
+                : () => {
+                    loginWithRedirect().then((_) =>
+                      console.log(isAuthenticated, user)
+                    );
+                  }
             }
             startIcon={<AccountCircleOutlinedIcon />}
           >
-            {currentUser && `${currentUser.firstName} ${currentUser.lastName}`}
+            {isAuthenticated &&
+              currentUser &&
+              (currentUser.firstName && currentUser.lastName
+                ? `${currentUser.firstName} ${currentUser.lastName}`
+                : currentUser.email.split("@")[0])}
           </Button>
         </Grid>
       </Grid>
-      <UserLoginModal open={openLogin} handleClose={handleLoginClose} />
       {children}
       <Grid
         item

@@ -249,48 +249,8 @@ const ListingsPage: React.FC<{}> = () => {
   return (
     <Layout>
       <Grid item container xs={12} sx={{ minHeight: "100vh" }}>
-        <Grid item container xs={12}>
-          <Grid item container xs={12}>
-            <Grid item xs={12} sm={4}>
-              <Paper sx={{ width: "100%" }}>
-                <Grid
-                  container
-                  xs={12}
-                  padding={2}
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Grid item xs={4}>
-                    <Typography fontWeight="bolder">Sorteaza dupa</Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Select
-                      fullWidth
-                      onChange={(e) => setSortMethod(e.target.value)}
-                      defaultValue={SortMethod.ApartmentScore}
-                      value={sortMethod}
-                      inputProps={{ IconComponent: () => null }}
-                      endAdornment={
-                        <IconButton
-                          sx={{ display: sortMethod ? "" : "none" }}
-                          onClick={() => {
-                            setSortMethod("");
-                          }}
-                        >
-                          <Clear />
-                        </IconButton>
-                      }
-                    >
-                      {Object.values(SortMethod).map((v) => (
-                        <MenuItem value={v}>{v}</MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
-                </Grid>
-              </Paper>
-            </Grid>
-          </Grid>
-          <Grid item container xs={8}>
+        <Grid item container xs={12} marginTop={2}>
+          <Grid item container xs={8} alignContent="flex-start">
             {displayedListings.map((listing) => {
               return (
                 <Grid item container xs={12} justifyContent="center" my={2}>
@@ -419,7 +379,63 @@ const ListingsPage: React.FC<{}> = () => {
               );
             })}
           </Grid>
-          <Grid item container xs={4} justifyContent="center" marginTop={2}>
+          <Grid
+            item
+            container
+            xs={4}
+            justifyContent="center"
+            marginTop={2}
+            alignContent="flex-start"
+            rowSpacing={2}
+          >
+            <Grid item xs={8}>
+              <Paper sx={{ width: "100%" }} elevation={4}>
+                <Grid
+                  item
+                  container
+                  xs={12}
+                  rowSpacing={2}
+                  justifyContent="center"
+                  paddingBottom={2}
+                >
+                  <Grid item xs={12}>
+                    <Typography
+                      color={theme.palette.secondary.main}
+                      textAlign="center"
+                      variant="h5"
+                    >
+                      Sorteaza
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Select
+                      fullWidth
+                      onChange={(e) => setSortMethod(e.target.value)}
+                      defaultValue={SortMethod.ApartmentScore}
+                      value={sortMethod}
+                      inputProps={{ IconComponent: () => null }}
+                      endAdornment={
+                        <IconButton
+                          sx={{ display: sortMethod ? "" : "none" }}
+                          onClick={() => {
+                            setSortMethod("");
+                          }}
+                        >
+                          <Clear />
+                        </IconButton>
+                      }
+                    >
+                      {Object.values(SortMethod).map((v) => (
+                        <MenuItem value={v}>{v}</MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
             <Grid item xs={8} marginTop={2}>
               <Paper sx={{ width: "100%" }} elevation={4}>
                 <Grid

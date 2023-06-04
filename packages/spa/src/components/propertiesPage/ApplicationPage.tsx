@@ -22,7 +22,6 @@ import {
   Phone,
   Work,
 } from "@mui/icons-material";
-import { GetUserEmailRequest } from "../../requests/UserSignupRequest";
 import moment from "moment";
 import CreateContractModal from "./CreateContractModal";
 import { GetTenantUserReviewsRequest } from "../../requests/ReviewsRequests";
@@ -33,7 +32,6 @@ const ApplicationPage: React.FC<{}> = () => {
   const application = useMemo(() => state.application as Application, [state]);
   const theme = useTheme();
   const navigate = useNavigate();
-  const [tenantEmail, setTenantEmail] = useState<string | undefined>(undefined);
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
       color: `${theme.palette.secondary.main}`,
@@ -42,13 +40,6 @@ const ApplicationPage: React.FC<{}> = () => {
       color: `${theme.palette.secondary.main}`,
     },
   });
-  const fetchFn = useCallback(async () => {
-    return GetUserEmailRequest(application.tenant.userId);
-  }, [application]);
-
-  useEffect(() => {
-    fetchFn().then((data) => setTenantEmail(data));
-  }, [fetchFn]);
 
   useEffect(() => {
     GetTenantUserReviewsRequest(application.tenantId).then((reviews) =>
@@ -210,7 +201,7 @@ const ApplicationPage: React.FC<{}> = () => {
               <Email color="secondary" />
             </Grid>
             <Grid item>
-              <Typography>{tenantEmail}</Typography>
+              <Typography>{application.tenant.email}</Typography>
             </Grid>
           </Grid>
           <Grid item xs={12}>

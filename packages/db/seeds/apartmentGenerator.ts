@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as fs from "fs";
 import { DbAddress } from "../models/listings/address";
 
-const OWNER_ID = "83813324-038d-4367-bc27-b79c4ea24020";
+const OWNER_ID = "0f688fbf-d1bd-4d34-802c-9f19f77397c8";
 const areaInfo =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non velit vitae augue tristique euismod. Aenean a nulla ipsum. Etiam pharetra id metus luctus dapibus. Sed lobortis varius urna a.";
 
@@ -106,7 +106,7 @@ export function generateApartments(addresses: DbAddress[]): DbApartment[] {
       appliances,
       finishes,
       areaInfo,
-      status: ApartmentStatus.Available,
+      status: ApartmentStatus.Listed,
     } as DbApartment;
   });
 }

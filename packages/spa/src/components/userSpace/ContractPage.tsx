@@ -24,7 +24,6 @@ import { Address } from "@packages/api/models/listings/address";
 import { Apartment } from "@packages/api/models/listings/apartment";
 import { UserProfile } from "@packages/api/models/users/userProfile";
 import { CalendarToday, Email, Phone, Work } from "@mui/icons-material";
-import { GetUserEmailRequest } from "../../requests/UserSignupRequest";
 import { Link, useLocation } from "react-router-dom";
 import EditContractModal from "./EditContractModal";
 import CreateUserReviewModal from "./reviews/CreateUserReviewModal";
@@ -57,16 +56,6 @@ const UserInfo: React.FC<{
   handleUserReviewModalOpen: () => void;
   userIsTenant?: boolean;
 }> = ({ user, theme, handleUserReviewModalOpen, userIsTenant }) => {
-  const [email, setEmail] = useState<string>("");
-
-  const fetchFn = useCallback(async () => {
-    return GetUserEmailRequest(user.userId);
-  }, [user]);
-
-  useEffect(() => {
-    fetchFn().then((data) => setEmail(data));
-  }, [fetchFn]);
-
   return (
     <>
       <Grid item container xs={12} marginTop={2} justifyContent="space-between">
@@ -161,7 +150,7 @@ const UserInfo: React.FC<{
             <Email color="secondary" />
           </Grid>
           <Grid item>
-            <Typography>{email}</Typography>
+            <Typography>{user.email}</Typography>
           </Grid>
         </Grid>
         <Grid item container xs={12} justifyContent="flex-start">

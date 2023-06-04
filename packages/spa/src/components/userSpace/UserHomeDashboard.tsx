@@ -4,12 +4,14 @@ import { Grid, Paper, Stack, Typography, useTheme } from "@mui/material";
 import { Business, Logout, ManageAccounts, Shop } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const UserHomeDashboard: React.FC<{}> = () => {
   const theme = useTheme();
   const { setCurrentUser } = useContext(AuthContext);
+  const { logout } = useAuth0();
   const logoutHandler = useCallback(() => {
-    localStorage.removeItem("currentUser");
+    logout();
     setCurrentUser(undefined);
   }, [setCurrentUser]);
   return (
