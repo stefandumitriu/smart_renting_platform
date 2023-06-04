@@ -18,6 +18,7 @@ import { UserProfile } from "@packages/api/models/users/userProfile";
 import { FormAutocomplete, FormDatePicker } from "../../FormInputsWrappers";
 import _ from "lodash";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const employmentStatus = [
   "Angajat",
@@ -75,6 +76,7 @@ const counties = [
 const UserSettings: React.FC<{}> = () => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const theme = useTheme();
+  const navigate = useNavigate();
   const [editNameActive, setEditNameActive] = useState(false);
 
   const handleEditNameButtonClick = useCallback(() => {
@@ -89,8 +91,9 @@ const UserSettings: React.FC<{}> = () => {
       );
       console.log(updatedUserProfile);
       setCurrentUser(updatedUserProfile);
+      navigate("/user/dashboard");
     },
-    [setCurrentUser]
+    [setCurrentUser, navigate]
   );
 
   return currentUser ? (
@@ -104,14 +107,14 @@ const UserSettings: React.FC<{}> = () => {
         }}
         onSubmit={handleSubmit}
       >
-        {({ values, handleChange }) => {
+        {({ values, handleChange, initialValues }) => {
           return (
             <Form>
               <Grid
                 item
                 container
                 xs={12}
-                sx={{ minHeight: "100vh", backgroundColor: "white" }}
+                sx={{ minHeight: "100vh" }}
                 justifyContent="center"
                 alignContent="start"
               >
@@ -144,6 +147,7 @@ const UserSettings: React.FC<{}> = () => {
                                   label="First Name"
                                   value={values.firstName}
                                   onChange={handleChange}
+                                  color="secondary"
                                 />
                               </Grid>
                               <Grid item>
@@ -152,6 +156,7 @@ const UserSettings: React.FC<{}> = () => {
                                   label="Last Name"
                                   value={values.lastName}
                                   onChange={handleChange}
+                                  color="secondary"
                                 />
                               </Grid>
                             </>
@@ -185,7 +190,7 @@ const UserSettings: React.FC<{}> = () => {
                     </Grid>
                   </Grid>
                   <Grid item container xs={12}>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={4}>
                       <StyledTextField
                         fullWidth
                         name="phoneNumber"
@@ -193,45 +198,73 @@ const UserSettings: React.FC<{}> = () => {
                         placeholder="Numar telefon"
                         onChange={handleChange}
                         value={values.phoneNumber}
+                        color="secondary"
                       />
                     </Grid>
                   </Grid>
                   <Grid item container xs={12}>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={4}>
                       <FormDatePicker
                         name="dateOfBirth"
                         value={values.dateOfBirth}
                         maxDate={moment()}
                         label={"Data nasterii"}
                         sx={{
-                          "& fieldset": { borderRadius: "10px" },
+                          "& fieldset": {
+                            borderRadius: "10px",
+                          },
+                          "& .Mui-focused fieldset.MuiOutlinedInput-notchedOutline":
+                            {
+                              borderColor: `${theme.palette.secondary.main}`,
+                            },
+                          "& .Mui-focused fieldset": {
+                            color: `${theme.palette.secondary.main}`,
+                          },
                           width: "100%",
                         }}
                       />
                     </Grid>
                   </Grid>
                   <Grid item container xs={12}>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={4}>
                       <FormAutocomplete<string>
                         name="town"
                         value={values.town}
                         options={counties}
                         label="Judet"
+                        sx={{
+                          "& .Mui-focused fieldset.MuiOutlinedInput-notchedOutline":
+                            {
+                              borderColor: `${theme.palette.secondary.main}`,
+                            },
+                          "& .Mui-focused": {
+                            color: `${theme.palette.secondary.main}`,
+                          },
+                        }}
                       />
                     </Grid>
                   </Grid>
                   <Grid item container xs={12}>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={4}>
                       <FormAutocomplete<string>
                         options={employmentStatus}
                         value={values.employmentStatus}
                         name="employmentStatus"
                         label="Status Angajare"
+                        sx={{
+                          "& .Mui-focused fieldset.MuiOutlinedInput-notchedOutline":
+                            {
+                              borderColor: `${theme.palette.secondary.main}`,
+                            },
+                          "& .Mui-focused": {
+                            color: `${theme.palette.secondary.main}`,
+                          },
+                        }}
                       />
                     </Grid>
                   </Grid>
                   <Grid item container xs={12}>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={4}>
                       <StyledTextField
                         multiline
                         maxRows={4}
@@ -241,16 +274,18 @@ const UserSettings: React.FC<{}> = () => {
                         value={values.about}
                         onChange={handleChange}
                         fullWidth
+                        color="secondary"
                       />
                     </Grid>
                   </Grid>
                   <Grid item container xs={12}>
-                    <Grid item xs={2}>
+                    <Grid item xs={12} sm={4}>
                       <Button
                         variant="contained"
                         color="secondary"
                         type="submit"
                         fullWidth
+                        disabled={_.isEqual(values, initialValues)}
                       >
                         Salveaza schimbarile
                       </Button>
