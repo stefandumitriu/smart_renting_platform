@@ -38,6 +38,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import {
   CreateFavouriteListingRequest,
   DeleteFavouriteListingRequest,
+  GetSimilarListingsRequest,
   GetTenantApplicationsRequest,
   GetUserFavouriteListingsRequest,
 } from "../../requests/ListingsRequests";
@@ -65,6 +66,7 @@ const PropertyPage: React.FC<{}> = () => {
   const [apartmentReviews, setApartmentReviews] = useState<ApartmentReview[]>(
     []
   );
+  const [similarListings, setSimilarListings] = useState<Listing[]>([]);
 
   useEffect(() => {
     GetLandlordUserReviewsRequest(params.apartment.ownerId).then((res) =>
@@ -73,7 +75,10 @@ const PropertyPage: React.FC<{}> = () => {
     GetApartmentReviewsRequest(params.apartmentId).then((res) =>
       setApartmentReviews(res)
     );
+    GetSimilarListingsRequest(params.id).then((res) => setSimilarListings(res));
   }, []);
+
+  useEffect(() => console.log(similarListings), [similarListings]);
 
   const landlordScore = useMemo(() => {
     return landlordReviews.reduce((acc, review, _, array) => {

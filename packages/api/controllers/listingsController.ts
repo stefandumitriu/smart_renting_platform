@@ -31,6 +31,7 @@ import { convertDbListingToAPIListing } from "../convertors/listings/listing";
 import _ from "lodash";
 import { ApartmentStatus } from "@packages/db/models/listings/apartment";
 import { DbApplication } from "@packages/db";
+import similarListingsClassifier from "../recommender-system/similarListingsClassifier";
 
 export const addListing = async (req: Request, res: Response) => {
   try {
@@ -94,6 +95,18 @@ export const getListingById = async (req: Request, res: Response) => {
   } catch (e) {
     console.log(e);
     res.sendStatus(404);
+  }
+};
+
+export const getSimilarListings = async (req: Request, res: Response) => {
+  try {
+    const refListing = await getListing(req.params.id as string);
+    const listings = await getAllListings();
+    const similarListings = similarListingsClassifier(refListing, listings, 5);
+    res.status(200).send(similarListings);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
   }
 };
 

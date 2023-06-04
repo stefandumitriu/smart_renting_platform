@@ -1,0 +1,52 @@
+import { Listing } from "../models/listings/listing";
+
+interface DeviationScore {
+  listingId: string;
+  score: number;
+}
+
+const getPriceDelta = (listings: Listing[]): number => {
+  const trimmedListings = listings.slice(1, listings.length - 1);
+  const sortedByPriceListings = listings.sort((a, b) => a.price - b.price);
+  return (
+    sortedByPriceListings[sortedByPriceListings.length - 1].price -
+    sortedByPriceListings[0].price
+  );
+};
+
+const ROOMS_SCALE_DOWN_FACTOR = 4;
+const SURFACE_SCALE_DOWN_FACTOR = 200;
+const PRICE_SCALE_DOWN_FACTOR = 500;
+
+const similarListingsClassifier = (
+  ref: Listing,
+  listings: Listing[],
+  n: number
+): Listing[] => {
+  const deviationScores: DeviationScore[] = listings.map((listing) => {
+    if (listing.id === ref.id) {
+      return {
+        listingId: listing.id,
+        score: 0,
+      };
+    }
+    const deviation =
+      Math.abs(listing.price - ref.price) / PRICE_SCALE_DOWN_FACTOR +
+      Math.abs(listing.apartment.noOfRooms - ref.apartment.noOfRooms) /
+        ROOMS_SCALE_DOWN_FACTOR +
+      Math.abs(listing.apartment.surface - ref.apartment.surface) /
+        SURFACE_SCALE_DOWN_FACTOR;
+    return {
+      listingId: listing.id,
+      score: deviation,
+    };
+  });
+  const sortedDeviationArray: DeviationScore[] = deviationScores.sort(
+    (a, b) => a.score - b.score
+  );
+  return sortedDeviationArray
+    .slice(1, Math.min(n + 1, sortedDeviationArray.length))
+    .map((e) => listings.find((l) => l.id === e.listingId) as Listing);
+};
+
+export default similarListingsClassifier;

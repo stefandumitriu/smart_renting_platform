@@ -53,6 +53,13 @@ export const GetListingByIdRequest = async (id: string) => {
   return axiosResponse.data as Listing;
 };
 
+export const GetSimilarListingsRequest = async (id: string) => {
+  const axiosResponse = await axiosBaseInstance.get(
+    `${GET_LISTINGS_PATH}/${id}/similar-listings`
+  );
+  return axiosResponse.data as Listing[];
+};
+
 export const GetUserFavouriteListingsRequest = async (userId: string) => {
   const axiosResponse = await axiosBaseInstance.get(
     `${FAVOURITE_LISTINGS_PATH}?userId=${userId}`

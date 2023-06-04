@@ -12,6 +12,7 @@ import {
   getFavouriteListingsForUser,
   getListingById,
   getListings,
+  getSimilarListings,
   getUserListings,
   patchApplication,
   patchListing,
@@ -29,6 +30,7 @@ listingsRouter.get("", getListings);
 listingsRouter.get("/favourite-listing", getFavouriteListingsForUser);
 listingsRouter.get("/user/:id", getUserListings);
 listingsRouter.get("/:listingId/applications", getApplicationByListingId);
+listingsRouter.get("/:id/similar-listings", getSimilarListings);
 listingsRouter.get("/:id", getListingById);
 listingsRouter.patch("/:id", patchListing);
 listingsRouter.delete("/:id", deleteListing);
