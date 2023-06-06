@@ -51,6 +51,7 @@ import {
   GetApartmentReviewsRequest,
   GetLandlordUserReviewsRequest,
 } from "../../requests/ReviewsRequests";
+import ApartmentModal from "./ApartmentModal";
 
 const localStorageUrl = "http://127.0.0.1:8080/local_storage/";
 
@@ -80,6 +81,7 @@ const PropertyPage: React.FC<{}> = () => {
     FavouriteListing | undefined
   >(undefined);
   const [ownerProfileOpen, setOwnerProfileOpen] = useState(false);
+  const [apartmentModalOpen, setApartmentModalOpen] = useState(false);
   const [rentApplyFormModalOpen, setRentApplyFormModalOpen] = useState(false);
   const [hasAppliedForListing, setHasAppliedForListing] = useState(false);
   const [landlordReviews, setLandlordReviews] = useState<UserReview[]>([]);
@@ -450,7 +452,11 @@ const PropertyPage: React.FC<{}> = () => {
                 elevation={4}
               >
                 <CardActionArea
-                  onClick={() => setOwnerProfileOpen(true)}
+                  onClick={() => {
+                    if (apartmentReviews.length > 0) {
+                      setApartmentModalOpen(true);
+                    }
+                  }}
                   sx={{ height: "100%" }}
                 >
                   <CardContent>
@@ -848,6 +854,12 @@ const PropertyPage: React.FC<{}> = () => {
         listing={params}
         handleClose={handleRentApplyFormClose}
         setHasAppliedForListing={() => setHasAppliedForListing(true)}
+      />
+      <ApartmentModal
+        open={apartmentModalOpen}
+        handleClose={() => setApartmentModalOpen(false)}
+        apartmentReviews={apartmentReviews}
+        apartmentId={params.apartmentId}
       />
     </Layout>
   );

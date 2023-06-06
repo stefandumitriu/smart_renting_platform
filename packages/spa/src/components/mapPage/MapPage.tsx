@@ -124,6 +124,7 @@ const Map: React.FC<{ listings: Listing[] }> = ({ listings }) => {
         height: "100vh",
         width: "80%",
         border: `4px solid ${theme.palette.secondary.main}`,
+        borderRadius: "30px",
       }}
       mt={2}
       padding={2}
@@ -135,6 +136,7 @@ const Map: React.FC<{ listings: Listing[] }> = ({ listings }) => {
         sx={{
           height: "100%",
           width: "100%",
+          borderRadius: "30px",
         }}
       />
     </Grid>

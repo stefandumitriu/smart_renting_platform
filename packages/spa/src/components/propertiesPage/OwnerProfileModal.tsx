@@ -34,10 +34,10 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
   const theme = useTheme();
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
     "& .MuiRating-iconHover": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
   });
   const ownerName = useMemo(() => {
@@ -81,6 +81,7 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
               maxWidth: "50%",
               height: "fit-content",
               minHeight: "80%",
+              borderRadius: "30px",
             }}
           >
             <Grid
@@ -143,7 +144,7 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
                   <Grid item xs={12}>
                     <Typography
                       fontWeight="bold"
-                      color={theme.palette.secondary.main}
+                      color={theme.palette.primary.main}
                       textAlign="center"
                     >
                       {(
@@ -204,7 +205,7 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
               </Grid>
               <Grid item container xs={12} spacing={1}>
                 <Grid item>
-                  <Phone color="primary" />
+                  <Phone color="secondary" />
                 </Grid>
                 <Grid item>
                   <Typography>{owner.phoneNumber}</Typography>
@@ -212,7 +213,7 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
               </Grid>
               <Grid item container xs={12} spacing={1}>
                 <Grid item>
-                  <Email color="primary" />
+                  <Email color="secondary" />
                 </Grid>
                 <Grid item>
                   <Typography>{owner.email}</Typography>
@@ -278,9 +279,10 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
               <Grid item container xs={12} justifyContent="center">
                 <Link to={`/user/dashboard/landlord/${owner.id}/reviews`}>
                   <Button
-                    color="secondary"
+                    color="primary"
                     onClick={() => console.log("Review clicked")}
                     variant="contained"
+                    sx={{ borderRadius: "10px" }}
                   >
                     Vezi recenziile
                   </Button>

@@ -69,7 +69,7 @@ export default function LandingPage() {
               <ImageButtonComponent
                 width="100%"
                 url="https://img.freepik.com/free-photo/aerial-photography-villa-complex-luxury-resort_1205-9756.jpg?w=1060&t=st=1686060551~exp=1686061151~hmac=2fcf0e3387657240ebff5d7d1cd118cb63d92a03fb651d7fcb7c70c6da33660a"
-                title="Cauta proprietati"
+                title="Lista proprietati"
               />
             </Link>
           </Grid>
