@@ -32,6 +32,7 @@ import {
   FavoriteOutlined,
   KeyboardArrowLeft,
   KeyboardArrowRight,
+  LocationOn,
 } from "@mui/icons-material";
 import { deepOrange } from "@mui/material/colors";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -50,7 +51,26 @@ import {
   GetApartmentReviewsRequest,
   GetLandlordUserReviewsRequest,
 } from "../../requests/ReviewsRequests";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+
+const localStorageUrl = "http://127.0.0.1:8080/local_storage/";
+
+const featuresPhotoName: Record<string, string> = {
+  "Incalizre pardoseala": "floor_heating",
+  "Masina de spalat vase": "dishwasher",
+  "Masina de spalat rufe": "washing-machine",
+  Frigider: "fridge",
+  Hota: "hood",
+  Termostat: "thermostat",
+  "Usa metalica exterior": "door",
+  Gresie: "tiles",
+  "Izolatie termica": "snowflake",
+  "Instalatie sanitara premium": "toilet",
+  "Internet Wireless": "wifi-router",
+  CATV: "cctv-camera",
+  TV: "television",
+  "Cuptor microunde": "microwave",
+  Termopane: "Window",
+};
 
 const PropertyPage: React.FC<{}> = () => {
   const params = useLoaderData() as Listing;
@@ -148,10 +168,10 @@ const PropertyPage: React.FC<{}> = () => {
 
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
     "& .MuiRating-iconHover": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
   });
 
@@ -213,6 +233,19 @@ const PropertyPage: React.FC<{}> = () => {
     setActiveImage(step);
   };
 
+  const featuresList = useMemo(() => {
+    const utilities = params.apartment.utilities
+      ? Object.entries(params.apartment.utilities).filter((e) => e[1])
+      : [];
+    const appliances = params.apartment.appliances
+      ? Object.entries(params.apartment.appliances).filter((e) => e[1])
+      : [];
+    const finishes = params.apartment.finishes
+      ? Object.entries(params.apartment.finishes).filter((e) => e[1])
+      : [];
+    return [...utilities, ...appliances, ...finishes];
+  }, [params]);
+
   return (
     <Layout>
       <Grid item sx={{ width: "100%" }}>
@@ -227,24 +260,29 @@ const PropertyPage: React.FC<{}> = () => {
             <Grid item xs={10}>
               <Typography variant="h5">{params.title}</Typography>
             </Grid>
-            <Grid item xs={1}>
-              <IconButton
-                color="secondary"
-                onClick={handleFavouriteButtonChange}
-              >
-                {isFavourite ? (
-                  <FavoriteOutlined />
-                ) : (
-                  <FavoriteBorderOutlined />
-                )}
-              </IconButton>
-            </Grid>
+            {currentUser && currentUser.id !== params.apartment.ownerId && (
+              <Grid item xs={1}>
+                <IconButton
+                  color="primary"
+                  onClick={handleFavouriteButtonChange}
+                >
+                  {isFavourite ? (
+                    <FavoriteOutlined />
+                  ) : (
+                    <FavoriteBorderOutlined />
+                  )}
+                </IconButton>
+              </Grid>
+            )}
           </Grid>
           <Grid item xs={12} marginTop={2}>
+            <LocationOn color="primary" fontSize="small" />
             <Typography
               variant="subtitle1"
-              color={theme.palette.secondary.main}
+              color={theme.palette.primary.main}
               display="inline"
+              fontWeight="bold"
+              sx={{ marginLeft: "4px" }}
             >
               Bucuresti, {address.streetType} {address.streetName}
             </Typography>
@@ -263,6 +301,7 @@ const PropertyPage: React.FC<{}> = () => {
                     width: "100%",
                     display: "block",
                     overflow: "hidden",
+                    borderRadius: "10px",
                   }}
                   src={url}
                   key={index}
@@ -276,7 +315,7 @@ const PropertyPage: React.FC<{}> = () => {
               sx={{
                 backgroundColor: "transparent",
                 ".MuiMobileStepper-dotActive": {
-                  backgroundColor: "#76323e",
+                  backgroundColor: `${theme.palette.secondary.main}`,
                 },
               }}
               color={theme.palette.secondary.main}
@@ -313,7 +352,10 @@ const PropertyPage: React.FC<{}> = () => {
             rowSpacing={4}
           >
             <Grid item xs={12} sx={{ minHeight: "40%" }}>
-              <Card sx={{ width: "100%", height: "100%" }} elevation={4}>
+              <Card
+                sx={{ width: "100%", height: "100%", borderRadius: "10px" }}
+                elevation={4}
+              >
                 <CardActionArea
                   onClick={() => setOwnerProfileOpen(true)}
                   sx={{ height: "100%" }}
@@ -378,7 +420,7 @@ const PropertyPage: React.FC<{}> = () => {
                           <Grid item xs={12}>
                             <Typography
                               fontWeight="bold"
-                              color={theme.palette.secondary.main}
+                              color={theme.palette.primary.main}
                               textAlign="center"
                             >
                               {landlordScore.toPrecision(2)} / 5
@@ -403,7 +445,10 @@ const PropertyPage: React.FC<{}> = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sx={{ minHeight: "20%" }}>
-              <Card sx={{ width: "100%", height: "100%" }} elevation={4}>
+              <Card
+                sx={{ width: "100%", height: "100%", borderRadius: "10px" }}
+                elevation={4}
+              >
                 <CardActionArea
                   onClick={() => setOwnerProfileOpen(true)}
                   sx={{ height: "100%" }}
@@ -429,7 +474,7 @@ const PropertyPage: React.FC<{}> = () => {
                           <Grid item xs={12}>
                             <Typography
                               fontWeight="bolder"
-                              color={theme.palette.secondary.main}
+                              color={theme.palette.primary.main}
                               textAlign="center"
                             >
                               {apartmentScore.toPrecision(2)} / 5
@@ -456,7 +501,7 @@ const PropertyPage: React.FC<{}> = () => {
               </Card>
             </Grid>
             <Grid item container xs={12} justifyContent="center">
-              <Paper sx={{ width: "100%" }} elevation={4}>
+              <Paper sx={{ width: "100%", borderRadius: "10px" }} elevation={4}>
                 <Grid item container xs={12} rowSpacing={1} paddingX={2}>
                   <Grid item container xs={12} justifyContent="space-between">
                     <Grid item>
@@ -515,7 +560,12 @@ const PropertyPage: React.FC<{}> = () => {
                 {hasAppliedForListing ? (
                   <Tooltip title="Deja ai aplicat pentru acest apartament">
                     <span>
-                      <Button color="secondary" variant="contained" disabled>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        sx={{ borderRadius: "10px" }}
+                        disabled
+                      >
                         Depune cerere de inchiriere
                       </Button>
                     </span>
@@ -523,9 +573,10 @@ const PropertyPage: React.FC<{}> = () => {
                 ) : (
                   <Button
                     onClick={() => setRentApplyFormModalOpen(true)}
-                    color="secondary"
+                    color="primary"
                     variant="contained"
                     disabled={ownsProperty}
+                    sx={{ borderRadius: "10px" }}
                   >
                     Depune cerere de inchiriere
                   </Button>
@@ -643,24 +694,6 @@ const PropertyPage: React.FC<{}> = () => {
                     />
                   </Grid>
                 </Grid>
-                <Grid item container xs={12} justifyContent="space-between">
-                  <Grid item xs={4}>
-                    <Typography>A.C.</Typography>
-                  </Grid>
-                  <Grid item container xs={4} justifyContent="end">
-                    <Typography fontWeight="bold">
-                      {params.apartment.cooling ? "Da" : "Nu"}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Divider
-                      sx={{
-                        backgroundColor: `${theme.palette.secondary.main}`,
-                        borderBottomWidth: 2,
-                      }}
-                    />
-                  </Grid>
-                </Grid>
               </Grid>
               <Grid item container xs={5} spacing={2} alignContent="flex-start">
                 <Grid item container xs={12} justifyContent="space-between">
@@ -674,7 +707,10 @@ const PropertyPage: React.FC<{}> = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Divider
-                      sx={{ backgroundColor: "#76323e", borderBottomWidth: 2 }}
+                      sx={{
+                        backgroundColor: `${theme.palette.secondary.main}`,
+                        borderBottomWidth: 2,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -714,34 +750,77 @@ const PropertyPage: React.FC<{}> = () => {
                     />
                   </Grid>
                 </Grid>
+                <Grid item container xs={12} justifyContent="space-between">
+                  <Grid item xs={4}>
+                    <Typography>A.C.</Typography>
+                  </Grid>
+                  <Grid item container xs={4} justifyContent="end">
+                    <Typography fontWeight="bold">
+                      {params.apartment.cooling ? "Da" : "Nu"}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Divider
+                      sx={{
+                        backgroundColor: `${theme.palette.secondary.main}`,
+                        borderBottomWidth: 2,
+                      }}
+                    />
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} marginTop={4}>
             <Grid item container xs={12}>
               <Grid item xs={4}>
-                <Typography variant="h5">Finisaje</Typography>
+                <Typography variant="h5">Dotari</Typography>
               </Grid>
             </Grid>
-            <Grid item container xs={12} marginTop={2}>
-              <Grid item xs={12}>
-                {params.apartment.utilities &&
-                  Object.entries(params.apartment.utilities).map(
-                    (e) => e[1] && <Typography>{e[0]}</Typography>
-                  )}
-              </Grid>
-              <Grid item xs={12}>
-                {params.apartment.appliances &&
-                  Object.entries(params.apartment.appliances).map(
-                    (e) => e[1] && <Typography>{e[0]}</Typography>
-                  )}
-              </Grid>
-              <Grid item xs={12}>
-                {params.apartment.finishes &&
-                  Object.entries(params.apartment.finishes).map(
-                    (e) => e[1] && <Typography>{e[0]}</Typography>
-                  )}
-              </Grid>
+            <Grid item container xs={8} marginTop={2}>
+              <Paper sx={{ width: "100%", borderRadius: "10px" }} elevation={4}>
+                <Grid
+                  container
+                  justifyContent="flex-start"
+                  spacing={2}
+                  padding={2}
+                >
+                  {featuresList.map((feature) => {
+                    if (!featuresPhotoName[feature[0]]) {
+                      return <></>;
+                    }
+                    return (
+                      <Grid
+                        item
+                        container
+                        flexDirection="column"
+                        xs={12}
+                        md={4}
+                        alignItems="center"
+                      >
+                        <Grid item>
+                          <img
+                            src={`${localStorageUrl}${
+                              featuresPhotoName[feature[0]]
+                            }.png`}
+                            width="32px"
+                            height="32px"
+                            style={{
+                              filter:
+                                "invert(41%) sepia(94%) saturate(1730%) hue-rotate(191deg) brightness(100%) contrast(106%)",
+                            }}
+                          />
+                        </Grid>
+                        <Grid item>
+                          <Typography fontWeight="bold">
+                            {feature[0]}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </Paper>
             </Grid>
           </Grid>
           <Grid item xs={12} marginTop={4}>

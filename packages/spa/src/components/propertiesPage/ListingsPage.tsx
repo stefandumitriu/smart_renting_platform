@@ -25,6 +25,7 @@ import {
   GetAllApartmentReviewsRequest,
   GetAllLandlordReviewsRequest,
 } from "../../requests/ReviewsRequests";
+import { values } from "lodash";
 
 enum SubdivisonTypeEnum {
   Decomandat = "Decomandat",
@@ -313,9 +314,13 @@ const ListingsPage: React.FC<{}> = () => {
                                 xs={12}
                                 alignSelf="flex-end"
                                 justifyContent="space-between"
+                                alignItems="flex-end"
                               >
                                 <Grid item>
-                                  <Typography fontWeight="bolder">
+                                  <Typography
+                                    fontWeight="bolder"
+                                    color={theme.palette.secondary.main}
+                                  >
                                     {listing.price}€ / luna
                                   </Typography>
                                 </Grid>
@@ -328,7 +333,7 @@ const ListingsPage: React.FC<{}> = () => {
                                   <Grid item container alignContent="center">
                                     <Grid item>
                                       <Typography
-                                        color={theme.palette.secondary.main}
+                                        color={theme.palette.primary.main}
                                         fontWeight="bold"
                                         display="inline"
                                       >
@@ -340,16 +345,13 @@ const ListingsPage: React.FC<{}> = () => {
                                       </Typography>
                                     </Grid>
                                     <Grid item>
-                                      <Star
-                                        color="secondary"
-                                        fontSize="small"
-                                      />
+                                      <Star color="primary" fontSize="small" />
                                     </Grid>
                                   </Grid>
                                   <Grid item container alignContent="center">
                                     <Grid item>
                                       <Typography
-                                        color={theme.palette.secondary.main}
+                                        color={theme.palette.primary.main}
                                         fontWeight="bold"
                                         display="inline"
                                       >
@@ -361,10 +363,7 @@ const ListingsPage: React.FC<{}> = () => {
                                       </Typography>
                                     </Grid>
                                     <Grid item>
-                                      <Star
-                                        color="secondary"
-                                        fontSize="small"
-                                      />
+                                      <Star color="primary" fontSize="small" />
                                     </Grid>
                                   </Grid>
                                 </Grid>
@@ -389,7 +388,7 @@ const ListingsPage: React.FC<{}> = () => {
             rowSpacing={2}
           >
             <Grid item xs={8}>
-              <Paper sx={{ width: "100%" }} elevation={4}>
+              <Paper sx={{ width: "100%", borderRadius: "10px" }} elevation={4}>
                 <Grid
                   item
                   container
@@ -403,6 +402,7 @@ const ListingsPage: React.FC<{}> = () => {
                       color={theme.palette.secondary.main}
                       textAlign="center"
                       variant="h5"
+                      fontWeight="bold"
                     >
                       Sorteaza
                     </Typography>
@@ -427,6 +427,7 @@ const ListingsPage: React.FC<{}> = () => {
                           <Clear />
                         </IconButton>
                       }
+                      sx={{ "& fieldset": { borderRadius: "10px" } }}
                     >
                       {Object.values(SortMethod).map((v) => (
                         <MenuItem value={v}>{v}</MenuItem>
@@ -437,7 +438,7 @@ const ListingsPage: React.FC<{}> = () => {
               </Paper>
             </Grid>
             <Grid item xs={8} marginTop={2}>
-              <Paper sx={{ width: "100%" }} elevation={4}>
+              <Paper sx={{ width: "100%", borderRadius: "10px" }} elevation={4}>
                 <Grid
                   item
                   container
@@ -451,6 +452,7 @@ const ListingsPage: React.FC<{}> = () => {
                       color={theme.palette.secondary.main}
                       textAlign="center"
                       variant="h5"
+                      fontWeight="bold"
                     >
                       Filtre
                     </Typography>
@@ -478,6 +480,7 @@ const ListingsPage: React.FC<{}> = () => {
                           <Clear />
                         </IconButton>
                       }
+                      sx={{ "& fieldset": { borderRadius: "10px" } }}
                     >
                       <MenuItem value={0}>Oricate</MenuItem>
                       <MenuItem value={1}>O camera</MenuItem>
@@ -503,6 +506,7 @@ const ListingsPage: React.FC<{}> = () => {
                         "&.MuiInputLabel": {
                           color: `${theme.palette.secondary.main}`,
                         },
+                        "& fieldset": { borderRadius: "10px" },
                       }}
                       endAdornment={
                         <IconButton
@@ -539,6 +543,7 @@ const ListingsPage: React.FC<{}> = () => {
                           <Clear />
                         </IconButton>
                       }
+                      sx={{ "& fieldset": { borderRadius: "10px" } }}
                     >
                       <MenuItem value={0}>Oricat</MenuItem>
                       <MenuItem value={400}>400€</MenuItem>
@@ -570,6 +575,7 @@ const ListingsPage: React.FC<{}> = () => {
                           <Clear />
                         </IconButton>
                       }
+                      sx={{ "& fieldset": { borderRadius: "10px" } }}
                     >
                       <MenuItem value={0}>Oricat</MenuItem>
                       <MenuItem value={30}>30mp</MenuItem>
@@ -595,6 +601,7 @@ const ListingsPage: React.FC<{}> = () => {
                           <Clear />
                         </IconButton>
                       }
+                      sx={{ "& fieldset": { borderRadius: "10px" } }}
                     >
                       <MenuItem value={0}>Oricat</MenuItem>
                       <MenuItem value={50}>50mp</MenuItem>
@@ -626,6 +633,7 @@ const ListingsPage: React.FC<{}> = () => {
                           <Clear />
                         </IconButton>
                       }
+                      sx={{ "& fieldset": { borderRadius: "10px" } }}
                     >
                       <MenuItem value={SubdivisonTypeEnum.Decomandat}>
                         {SubdivisonTypeEnum.Decomandat}
@@ -666,6 +674,7 @@ const ListingsPage: React.FC<{}> = () => {
                           maxHeight: 200,
                         },
                       }}
+                      sx={{ "& fieldset": { borderRadius: "10px" } }}
                     >
                       {neighbourhoods.map((n) => (
                         <MenuItem value={n.neighbourhood}>

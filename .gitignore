@@ -109,7 +109,3 @@ dist
 packages/**/*.js
 
 .yarn/
-
-scrapedData.json
-
-/local_storage/

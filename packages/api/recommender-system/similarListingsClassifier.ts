@@ -7,7 +7,9 @@ interface DeviationScore {
 
 const getPriceDelta = (listings: Listing[]): number => {
   const trimmedListings = listings.slice(1, listings.length - 1);
-  const sortedByPriceListings = listings.sort((a, b) => a.price - b.price);
+  const sortedByPriceListings = trimmedListings.sort(
+    (a, b) => a.price - b.price
+  );
   return (
     sortedByPriceListings[sortedByPriceListings.length - 1].price -
     sortedByPriceListings[0].price

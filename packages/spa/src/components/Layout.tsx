@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback, useContext, useEffect } from "react";
-import { Button, Grid, Typography, useTheme } from "@mui/material";
+import { Avatar, Button, Grid, Typography, useTheme } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { AuthContext } from "../contexts/AuthContext";
@@ -25,9 +25,14 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
   const createUserCallback = useCallback(async (user: any) => {
     const firstName: string | undefined = user.given_name;
     const lastName: string | undefined = user.family_name;
+    const email =
+      (user.email as string) ??
+      (firstName && lastName
+        ? `${firstName.toLowerCase()}.${lastName.toLowerCase()}@gmail.com`
+        : "default_email@gmail.com");
     const userProfile = await UserSignupRequest({
       userId: user.sub,
-      email: user.email,
+      email,
       firstName,
       lastName,
       profilePhotoUrl: user.picture,
@@ -62,7 +67,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
       container
       flexDirection="column"
       spacing={1}
-      sx={{ backgroundColor: theme.palette.primary.main }}
+      sx={{ backgroundColor: theme.palette.background.default }}
     >
       <Grid
         item
@@ -73,7 +78,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
         top={0}
         zIndex={100}
         mt={1}
-        sx={{ backgroundColor: theme.palette.primary.main }}
+        sx={{ backgroundColor: theme.palette.background.default }}
         paddingY={2}
         borderBottom={2}
         borderColor={theme.palette.secondary.main}
@@ -107,7 +112,16 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
                     );
                   }
             }
-            startIcon={<AccountCircleOutlinedIcon />}
+            startIcon={
+              isAuthenticated && currentUser && currentUser.profilePhotoUrl ? (
+                <Avatar
+                  src={currentUser.profilePhotoUrl}
+                  sx={{ width: 24, height: 24 }}
+                />
+              ) : (
+                <AccountCircleOutlinedIcon />
+              )
+            }
           >
             {isAuthenticated &&
               currentUser &&

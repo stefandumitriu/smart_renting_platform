@@ -71,6 +71,7 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
             direction="column"
             justifyContent="center"
             paddingX={4}
+            paddingY={2}
             sx={{
               position: "absolute",
               backgroundColor: "white",

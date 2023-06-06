@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from "react";
 import Layout from "../Layout";
 import { Grid, Paper, Stack, Typography, useTheme } from "@mui/material";
-import { Business, Logout, ManageAccounts, Shop } from "@mui/icons-material";
+import { Business, Logout, ManageAccounts, Person } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -44,7 +44,7 @@ const UserHomeDashboard: React.FC<{}> = () => {
                   sx={{ height: "100%" }}
                   justifyContent="center"
                 >
-                  <Shop
+                  <Person
                     color="secondary"
                     sx={{ height: "50%", width: "50%" }}
                   />

@@ -12,6 +12,7 @@ import { ListAlt, Map } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import neighbourhoods from "../../neighbourhoods.json";
+import ImageButtonComponent from "./ImageButton";
 
 export default function LandingPage() {
   const theme = useTheme();
@@ -19,25 +20,26 @@ export default function LandingPage() {
   const navigate = useNavigate();
   return (
     <Layout>
-      <Grid item>
+      <Grid item container xs={12}>
         <Grid
           item
           container
           sx={{
-            height: "40vh",
+            minHeight: "40vh",
             width: "100%",
-            color: theme.palette.primary.main,
+            color: theme.palette.background.default,
           }}
           justifyContent="space-around"
+          xs={12}
         >
-          <Grid item alignSelf="center" width="60%">
+          <Grid item xs={8} alignSelf="center">
             <Autocomplete
               fullWidth
               renderInput={(params) => (
                 <TextField
                   {...params}
                   color="secondary"
-                  placeholder="Search for a city or neighbourhood"
+                  placeholder="Cauta o proprietate in cartierul dorit"
                   fullWidth
                 />
               )}
@@ -54,66 +56,32 @@ export default function LandingPage() {
             />
           </Grid>
         </Grid>
-      </Grid>
-      <Grid
-        item
-        container
-        justifyContent="space-around"
-        alignContent="center"
-        sx={{ height: "60vh" }}
-      >
-        <Grid item xs={5} sx={{ height: "80%" }}>
-          <Link to={"/properties"} style={{ textDecoration: "none" }}>
-            <Paper
-              elevation={5}
-              sx={{
-                height: "100%",
-                ":hover": {
-                  boxShadow: 20,
-                },
-              }}
-            >
-              <Stack
-                spacing={2}
-                alignItems="center"
-                sx={{ height: "100%" }}
-                justifyContent="center"
-              >
-                <ListAlt
-                  color="secondary"
-                  sx={{ height: "50%", width: "50%" }}
-                />
-                <Typography color={theme.palette.secondary.main} variant="h5">
-                  Search Properties
-                </Typography>
-              </Stack>
-            </Paper>
-          </Link>
-        </Grid>
-        <Grid item xs={5} sx={{ height: "80%" }}>
-          <Link to={"/map"} style={{ textDecoration: "none" }}>
-            <Paper
-              elevation={5}
-              sx={{
-                height: "100%",
-                ":hover": {
-                  boxShadow: 20,
-                },
-              }}
-            >
-              <Stack
-                spacing={2}
-                alignItems="center"
-                sx={{ height: "100%" }}
-                justifyContent="center"
-              >
-                <Map color="secondary" sx={{ height: "50%", width: "50%" }} />
-                <Typography color={theme.palette.secondary.main} variant="h5">
-                  Show Map
-                </Typography>
-              </Stack>
-            </Paper>
-          </Link>
+        <Grid
+          item
+          container
+          justifyContent="space-around"
+          alignContent="center"
+          sx={{ height: "60vh" }}
+          xs={12}
+        >
+          <Grid item xs={10} md={5} sx={{ height: "100%" }}>
+            <Link to={"/properties"} style={{ textDecoration: "none" }}>
+              <ImageButtonComponent
+                width="100%"
+                url="https://img.freepik.com/free-photo/aerial-photography-villa-complex-luxury-resort_1205-9756.jpg?w=1060&t=st=1686060551~exp=1686061151~hmac=2fcf0e3387657240ebff5d7d1cd118cb63d92a03fb651d7fcb7c70c6da33660a"
+                title="Cauta proprietati"
+              />
+            </Link>
+          </Grid>
+          <Grid item xs={10} md={5} sx={{ height: "100%" }}>
+            <Link to={"/map"} style={{ textDecoration: "none" }}>
+              <ImageButtonComponent
+                width="100%"
+                url="http://127.0.0.1:8080/local_storage/view_map_image.jpg"
+                title="Vezi harta"
+              />
+            </Link>
+          </Grid>
         </Grid>
       </Grid>
     </Layout>
