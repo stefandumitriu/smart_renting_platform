@@ -4,6 +4,7 @@ import { apartmentsRouter, listingsRouter, usersRouter } from "./routers";
 import cors from "cors";
 import contractsRouter from "./routers/contractsRouter";
 import reviewsRouter from "./routers/reviewsRouter";
+import messagesRouter from "./routers/messagesRouter";
 
 const app = express();
 const port = 3001;
@@ -23,3 +24,4 @@ app.use("/listings", listingsRouter);
 app.use("/apartments", apartmentsRouter);
 app.use("/contracts", contractsRouter);
 app.use("/reviews", reviewsRouter);
+app.use("/messages", messagesRouter);

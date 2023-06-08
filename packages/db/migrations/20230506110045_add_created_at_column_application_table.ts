@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { APPLICATIONS_TABLE_NAME } from "../models/listings/application";
+import { APPLICATIONS_TABLE_NAME } from "../models";
 
 exports.up = (knex: Knex) => {
   return knex.schema.alterTable(APPLICATIONS_TABLE_NAME, (table) => {

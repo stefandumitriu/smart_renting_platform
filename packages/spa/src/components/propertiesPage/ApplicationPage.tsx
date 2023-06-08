@@ -45,7 +45,7 @@ const ApplicationPage: React.FC<{}> = () => {
     GetTenantUserReviewsRequest(application.tenantId).then((reviews) =>
       setTenantReviews(reviews)
     );
-  }, []);
+  }, [application]);
 
   const [contractModalOpen, setContractModalOpen] = useState<boolean>(false);
   const [tenantReviews, setTenantReviews] = useState<UserReview[]>([]);
@@ -97,14 +97,19 @@ const ApplicationPage: React.FC<{}> = () => {
           />
         </Grid>
         <Grid item container xs={12} md={3} alignItems="center">
-          <Button
-            onChange={() => console.log("clicked")}
-            variant="contained"
-            color="secondary"
-            startIcon={<ChatBubble />}
+          <Link
+            to={"/chat"}
+            state={{ initialConversationUserId: application.tenantId }}
           >
-            Raspunde
-          </Button>
+            <Button
+              onChange={() => console.log("clicked")}
+              variant="contained"
+              color="secondary"
+              startIcon={<ChatBubble />}
+            >
+              Raspunde
+            </Button>
+          </Link>
         </Grid>
         <Grid item xs={12}>
           <Divider

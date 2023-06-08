@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { createNewUser, updateUser } from "../services/users/userService";
-import { getUserProfileByCredentialsId } from "@packages/db/services";
+import {
+  getUserProfileByCredentialsId,
+  getUserProfileById,
+} from "@packages/db/services";
+import { convertDbUserProfileToAPIUserProfile } from "../convertors/users/userProfile";
 
 export const signUpUser = async (req: Request, res: Response) => {
   try {
@@ -23,6 +27,22 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(200).send(userInfo);
   } catch (err) {
     console.error(err);
+    res.sendStatus(500);
+  }
+};
+
+export const getUserProfile = async (req: Request, res: Response) => {
+  try {
+    const dbUserProfile = await getUserProfileById(req.params.id as string);
+    if (!dbUserProfile) {
+      throw new Error("User profile not found");
+    }
+    const userProfile = await convertDbUserProfileToAPIUserProfile(
+      dbUserProfile
+    );
+    res.send(userProfile);
+  } catch (e) {
+    console.error(e);
     res.sendStatus(500);
   }
 };

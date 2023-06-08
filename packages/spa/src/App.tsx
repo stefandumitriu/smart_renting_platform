@@ -39,6 +39,7 @@ import {
 import TenantUseReviewsPage from "./components/userSpace/reviews/TenantUserReviewsPage";
 import LandlordUserReviewsPage from "./components/userSpace/reviews/LandlordUserReviewsPage";
 import { Auth0Provider } from "@auth0/auth0-react";
+import ChatPage from "./components/messagesPage/ChatPage";
 
 const router = createBrowserRouter([
   {
@@ -211,6 +212,10 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "chat",
+    element: <ChatPage />,
   },
 ]);
 function App() {

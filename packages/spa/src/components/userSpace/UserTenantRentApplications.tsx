@@ -29,6 +29,7 @@ import {
 import OwnerProfileModal from "../propertiesPage/OwnerProfileModal";
 import { UserReview } from "@packages/api/models";
 import { GetLandlordUserReviewsRequest } from "../../requests/ReviewsRequests";
+import { Link } from "react-router-dom";
 
 interface TenantRentApplicationCardProps {
   application: Application;
@@ -217,9 +218,17 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
             alignContent="center"
           >
             <Grid item>
-              <Button color="info" variant="contained" fullWidth>
-                Mesaj
-              </Button>
+              <Link
+                to={"/chat"}
+                state={{
+                  initialConversationUserId:
+                    application.listing.apartment.ownerId,
+                }}
+              >
+                <Button color="info" variant="contained" fullWidth>
+                  Mesaj
+                </Button>
+              </Link>
             </Grid>
             <Grid item>
               <Button

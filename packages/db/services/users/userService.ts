@@ -19,8 +19,8 @@ export async function getUserProfileById(
   id: string
 ): Promise<DbUserProfile | undefined> {
   return knex<DbUserProfile>(USER_PROFILE_TABLE_NAME)
+    .where({ id })
     .select()
-    .where("id", id)
     .first();
 }
 

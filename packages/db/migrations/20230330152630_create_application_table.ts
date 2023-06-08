@@ -2,9 +2,9 @@ import { Knex } from "knex";
 import {
   APPLICATIONS_TABLE_NAME,
   ApplicationStatus,
-} from "../models/listings/application";
-import { LISTINGS_TABLE_NAME } from "../models/listings/listing";
-import { USER_PROFILE_TABLE_NAME } from "../models";
+  LISTINGS_TABLE_NAME,
+  USER_PROFILE_TABLE_NAME,
+} from "../models";
 
 exports.up = (knex: Knex) => {
   return knex.schema.createTable(APPLICATIONS_TABLE_NAME, (table) => {

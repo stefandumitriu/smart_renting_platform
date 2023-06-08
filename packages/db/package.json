@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@packages/google-maps-service": "1.0.0",
+    "@types/lodash": "^4.14.195",
     "knex": "^2.3.0",
+    "lodash": "^4.17.21",
     "pg": "^8.8.0",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.0"

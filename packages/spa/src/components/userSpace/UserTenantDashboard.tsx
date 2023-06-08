@@ -86,30 +86,32 @@ const UserTenantDashboard: React.FC<{}> = () => {
         </Grid>
         <Grid item container xs={12} justifyContent="space-evenly">
           <Grid item xs={4}>
-            <Paper
-              elevation={5}
-              sx={{
-                height: "100%",
-                ":hover": {
-                  boxShadow: 20,
-                },
-              }}
-            >
-              <Stack
-                spacing={2}
-                alignItems="center"
-                sx={{ height: "100%" }}
-                justifyContent="center"
+            <Link to={"/chat"} style={{ textDecoration: "none" }}>
+              <Paper
+                elevation={5}
+                sx={{
+                  height: "100%",
+                  ":hover": {
+                    boxShadow: 20,
+                  },
+                }}
               >
-                <ChatBubble
-                  color="secondary"
-                  sx={{ height: "50%", width: "50%" }}
-                />
-                <Typography color={theme.palette.secondary.main} variant="h5">
-                  Mesajele Mele
-                </Typography>
-              </Stack>
-            </Paper>
+                <Stack
+                  spacing={2}
+                  alignItems="center"
+                  sx={{ height: "100%" }}
+                  justifyContent="center"
+                >
+                  <ChatBubble
+                    color="secondary"
+                    sx={{ height: "50%", width: "50%" }}
+                  />
+                  <Typography color={theme.palette.secondary.main} variant="h5">
+                    Mesajele mele
+                  </Typography>
+                </Stack>
+              </Paper>
+            </Link>
           </Grid>
           <Grid item xs={4}>
             <Link to={"contract"} style={{ textDecoration: "none" }}>

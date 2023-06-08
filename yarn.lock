@@ -1553,6 +1553,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chatscope/chat-ui-kit-react@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@chatscope/chat-ui-kit-react@npm:1.10.1"
+  dependencies:
+    "@chatscope/chat-ui-kit-styles": ^1.2.0
+    "@fortawesome/fontawesome-free": ^5.12.1
+    "@fortawesome/fontawesome-svg-core": ^1.2.26
+    "@fortawesome/free-solid-svg-icons": ^5.12.0
+    "@fortawesome/react-fontawesome": ^0.1.8
+    classnames: ^2.2.6
+    prop-types: ^15.7.2
+  peerDependencies:
+    prop-types: ^15.7.2
+    react: ^16.12.0 || ^17.0.0 || ^18.2.0
+    react-dom: ^16.12.0 || ^17.0.0 || ^18.2.0
+  checksum: 66bd88819375bedd54015d6fe8efa438c7373ff1f0107f713802fadbb82c4a4916a6e0dae41370083a566e335120f89f731f2da48d1f773becc52b10d60c82b2
+  languageName: node
+  linkType: hard
+
+"@chatscope/chat-ui-kit-styles@npm:^1.2.0, @chatscope/chat-ui-kit-styles@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@chatscope/chat-ui-kit-styles@npm:1.4.0"
+  checksum: f43fc7f07cf1dd457f27fe54c2bd887d31a2fe88a6f5d489d3a8d73e22bced337ae2a02ee2ce9851dd828ac01add5db02b14eca195e4e9d644f7d88398070ce7
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -2017,6 +2043,50 @@ __metadata:
     minimatch: ^3.1.2
     strip-json-comments: ^3.1.1
   checksum: f03e9d6727efd3e0719da2051ea80c0c73d20e28c171121527dbb868cd34232ca9c1d0525a66e517a404afea26624b1e47895b6a92474678418c2f50c9566694
+  languageName: node
+  linkType: hard
+
+"@fortawesome/fontawesome-common-types@npm:^0.2.36":
+  version: 0.2.36
+  resolution: "@fortawesome/fontawesome-common-types@npm:0.2.36"
+  checksum: d604ac51da0b1597127fde70c64157b70ead6af7f2643ab7dfca268ef99d4ed0b4cc823afba206362422a622e389828408bec573df802bf4f02b118d0fa18dc8
+  languageName: node
+  linkType: hard
+
+"@fortawesome/fontawesome-free@npm:^5.12.1":
+  version: 5.15.4
+  resolution: "@fortawesome/fontawesome-free@npm:5.15.4"
+  checksum: 32281c3df4075290d9a96dfc22f72fadb3da7055d4117e48d34046b8c98032a55fa260ae351b0af5d6f6fb57a2f5d79a4abe52af456da35195f7cb7dda27b4a2
+  languageName: node
+  linkType: hard
+
+"@fortawesome/fontawesome-svg-core@npm:^1.2.26":
+  version: 1.2.36
+  resolution: "@fortawesome/fontawesome-svg-core@npm:1.2.36"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": ^0.2.36
+  checksum: 3011d8c1452b5df52a62eaee8b1ec925b9fdfabcc170fd6da5eaac7cfdef56258b9292ddd06c30f03a6a8ed6faa886565211f2e469fee3c9831c32f93e9383d8
+  languageName: node
+  linkType: hard
+
+"@fortawesome/free-solid-svg-icons@npm:^5.12.0":
+  version: 5.15.4
+  resolution: "@fortawesome/free-solid-svg-icons@npm:5.15.4"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": ^0.2.36
+  checksum: eb037b703827ee37af3387a964afc7a190ff42a674ef46f4a6c295b634a38e849741eca78306b6423eaf3062d6ab1e7372aac5be2aec06f0fd9e8bd8110efcf9
+  languageName: node
+  linkType: hard
+
+"@fortawesome/react-fontawesome@npm:^0.1.8":
+  version: 0.1.19
+  resolution: "@fortawesome/react-fontawesome@npm:0.1.19"
+  dependencies:
+    prop-types: ^15.8.1
+  peerDependencies:
+    "@fortawesome/fontawesome-svg-core": ~1 || ~6
+    react: ">=16.x"
+  checksum: 77dbe1d5fa156a2ff4aa069d6c11f0ba1fcf43df72c9f03f1eec353d23798513a1f2773957a2bc3107fb8dc79fa606999ed91bf21659745bcc166abc4072819e
   languageName: node
   linkType: hard
 
@@ -2944,7 +3014,9 @@ __metadata:
   resolution: "@packages/db@workspace:packages/db"
   dependencies:
     "@packages/google-maps-service": 1.0.0
+    "@types/lodash": ^4.14.195
     knex: ^2.3.0
+    lodash: ^4.17.21
     pg: ^8.8.0
     ts-node: ^10.9.1
     uuid: ^9.0.0
@@ -2962,6 +3034,8 @@ __metadata:
   resolution: "@packages/spa@workspace:packages/spa"
   dependencies:
     "@auth0/auth0-react": ^2.1.0
+    "@chatscope/chat-ui-kit-react": ^1.10.1
+    "@chatscope/chat-ui-kit-styles": ^1.4.0
     "@emotion/react": ^11.10.4
     "@emotion/styled": ^11.10.4
     "@googlemaps/markerclusterer": ^2.1.4
@@ -3716,6 +3790,13 @@ __metadata:
   version: 4.14.191
   resolution: "@types/lodash@npm:4.14.191"
   checksum: ba0d5434e10690869f32d5ea49095250157cae502f10d57de0a723fd72229ce6c6a4979576f0f13e0aa9fbe3ce2457bfb9fa7d4ec3d6daba56730a51906d1491
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.195":
+  version: 4.14.195
+  resolution: "@types/lodash@npm:4.14.195"
+  checksum: 39b75ca635b3fa943d17d3d3aabc750babe4c8212485a4df166fe0516e39288e14b0c60afc6e21913cc0e5a84734633c71e617e2bd14eaa1cf51b8d7799c432e
   languageName: node
   linkType: hard
 
@@ -5533,7 +5614,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.3.2":
+"classnames@npm:^2.2.6, classnames@npm:^2.3.2":
   version: 2.3.2
   resolution: "classnames@npm:2.3.2"
   checksum: 2c62199789618d95545c872787137262e741f9db13328e216b093eea91c85ef2bfb152c1f9e63027204e2559a006a92eb74147d46c800a9f96297ae1d9f96f4e

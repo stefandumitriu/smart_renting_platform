@@ -22,6 +22,15 @@ export const UserLoginRequest = async (
     .catch((err) => Promise.resolve(undefined));
 };
 
+export const GetUserProfileRequest = async (
+  id: string
+): Promise<UserProfile> => {
+  const axiosResponse = await axiosBaseInstance.get(
+    `${USERS_PATH}/profile/${id}`
+  );
+  return axiosResponse.data as UserProfile;
+};
+
 export const UpdateUserProfileRequest: (
   id: string,
   userProfile: Partial<Omit<UserProfile, "id">>
