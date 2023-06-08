@@ -66,9 +66,10 @@ const UserInfo: React.FC<{
         </Grid>
         <Grid item xs={12} md="auto">
           <Button
-            color="secondary"
+            color="primary"
             variant="contained"
             onClick={() => handleUserReviewModalOpen()}
+            sx={{ borderRadius: "10px" }}
           >
             Adauga recenzie
           </Button>
@@ -160,7 +161,11 @@ const UserInfo: React.FC<{
                 user.id
               }/reviews`}
             >
-              <Button variant="contained" color="secondary">
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ borderRadius: "10px" }}
+              >
                 Vezi recenziile
               </Button>
             </Link>
@@ -194,8 +199,9 @@ const ContractDetailsSection: React.FC<{
           <Grid item xs={12} md="auto">
             <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               onClick={() => setEditContractModalOpen(true)}
+              sx={{ borderRadius: "10px" }}
             >
               Editeaza contract
             </Button>
@@ -301,8 +307,9 @@ const ApartmentInfo: React.FC<ApartmentInfoProps> = ({
         <Grid item xs={12} md="auto">
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             onClick={() => handleApartmentReviewModalOpen()}
+            sx={{ borderRadius: "10px" }}
           >
             Adauga recenzie
           </Button>
@@ -340,7 +347,11 @@ const ApartmentInfo: React.FC<ApartmentInfoProps> = ({
       </Grid>
       <Grid item xs={12} md="auto" marginTop={1}>
         <Link to={`/apartments/${apartment.id}/reviews`}>
-          <Button variant="contained" color="secondary">
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ borderRadius: "10px" }}
+          >
             Vezi recenziile
           </Button>
         </Link>

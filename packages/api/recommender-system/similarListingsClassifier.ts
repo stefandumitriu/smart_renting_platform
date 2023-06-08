@@ -29,7 +29,7 @@ const similarListingsClassifier = (
     if (listing.id === ref.id) {
       return {
         listingId: listing.id,
-        score: 0,
+        score: Number.MAX_VALUE,
       };
     }
     const deviation =
@@ -47,7 +47,7 @@ const similarListingsClassifier = (
     (a, b) => a.score - b.score
   );
   return sortedDeviationArray
-    .slice(1, Math.min(n + 1, sortedDeviationArray.length))
+    .slice(0, Math.min(n, sortedDeviationArray.length))
     .map((e) => listings.find((l) => l.id === e.listingId) as Listing);
 };
 

@@ -53,8 +53,14 @@ const UserFavouriteListings: React.FC<{}> = () => {
     <Layout pageTitle="Anunturi Favorite">
       <Grid item container xs={12} minHeight={"100vh"}>
         <Grid item container xs={12} justifyContent="center">
-          <Grid item container xs={8} alignContent="flex-start">
-            {listings &&
+          <Grid
+            item
+            container
+            xs={8}
+            alignContent="flex-start"
+            justifyContent="center"
+          >
+            {listings && listings.length > 0 ? (
               listings.map((listing) => (
                 <Grid item container xs={12} justifyContent="center" my={2}>
                   <Grid item xs={12}>
@@ -71,7 +77,12 @@ const UserFavouriteListings: React.FC<{}> = () => {
                           <Grid item xs={4}>
                             <CardMedia
                               component="img"
-                              image="https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg"
+                              image={
+                                listing.photosUrl &&
+                                listing.photosUrl.length > 0
+                                  ? listing.photosUrl[0]
+                                  : "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg"
+                              }
                             />
                           </Grid>
                           <Grid item xs={8} my={4}>
@@ -116,7 +127,12 @@ const UserFavouriteListings: React.FC<{}> = () => {
                     </Card>
                   </Grid>
                 </Grid>
-              ))}
+              ))
+            ) : (
+              <Grid item>
+                <Typography>Nu ai niciun anunt favorit</Typography>
+              </Grid>
+            )}
           </Grid>
         </Grid>
         {pageCount > 1 && (

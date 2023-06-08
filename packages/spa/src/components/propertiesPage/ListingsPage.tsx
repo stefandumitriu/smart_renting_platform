@@ -60,36 +60,6 @@ const ListingsPage: React.FC<{}> = () => {
     SortMethod.ApartmentScore
   );
 
-  const sortFn = useCallback(
-    (listingA: Listing, listingB: Listing) => {
-      switch (sortMethod) {
-        case undefined:
-          return 0;
-        case SortMethod.Price:
-          return listingA.price - listingB.price;
-        case SortMethod.Surface:
-          return listingA.apartment.surface - listingB.apartment.surface;
-        case SortMethod.Rooms:
-          return listingA.apartment.noOfRooms - listingB.apartment.noOfRooms;
-        case SortMethod.OwnerScore:
-          return (
-            getOwnerScore(listingB.apartment.ownerId) -
-            getOwnerScore(listingA.apartment.ownerId)
-          );
-        case SortMethod.ApartmentScore:
-          return (
-            getApartmentScore(listingB.apartmentId) -
-            getApartmentScore(listingA.apartmentId)
-          );
-        default:
-          return 0;
-      }
-    },
-    [sortMethod]
-  );
-
-  const [area, setArea] = useState<string>("");
-
   const getApartmentScore = useCallback(
     (apartmentId: string) => {
       return apartmentReviews
@@ -121,6 +91,36 @@ const ListingsPage: React.FC<{}> = () => {
     },
     [landlordReviews]
   );
+
+  const sortFn = useCallback(
+    (listingA: Listing, listingB: Listing) => {
+      switch (sortMethod) {
+        case undefined:
+          return 0;
+        case SortMethod.Price:
+          return listingA.price - listingB.price;
+        case SortMethod.Surface:
+          return listingA.apartment.surface - listingB.apartment.surface;
+        case SortMethod.Rooms:
+          return listingA.apartment.noOfRooms - listingB.apartment.noOfRooms;
+        case SortMethod.OwnerScore:
+          return (
+            getOwnerScore(listingB.apartment.ownerId) -
+            getOwnerScore(listingA.apartment.ownerId)
+          );
+        case SortMethod.ApartmentScore:
+          return (
+            getApartmentScore(listingB.apartmentId) -
+            getApartmentScore(listingA.apartmentId)
+          );
+        default:
+          return 0;
+      }
+    },
+    [sortMethod, getOwnerScore, getApartmentScore]
+  );
+
+  const [area, setArea] = useState<string>("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -228,7 +228,7 @@ const ListingsPage: React.FC<{}> = () => {
     maxSurface,
     subdivisionType,
     area,
-    sortMethod,
+    sortFn,
   ]);
 
   const displayedListings = useMemo(() => {

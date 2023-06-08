@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Layout from "../Layout";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Application } from "@packages/api/models/listings/application";
@@ -36,10 +42,10 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
   const theme = useTheme();
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
     "& .MuiRating-iconHover": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
   });
   const [ownerProfileOpen, setOwnerProfileOpen] = useState(false);
@@ -47,6 +53,17 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
   const handleOwnerProfileClose = useCallback(() => {
     setOwnerProfileOpen(false);
   }, []);
+
+  const ownerRating = useMemo(() => {
+    return ownerReviews.reduce((acc, review) => {
+      acc +=
+        (review.fairnessRating +
+          review.communicationRating +
+          review.availabilityRating) /
+        (ownerReviews.length * 3);
+      return acc;
+    }, 0);
+  }, [ownerReviews]);
 
   useEffect(() => {
     GetLandlordUserReviewsRequest(application.landlordId).then((res) =>
@@ -141,7 +158,11 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
                   </Grid>
                   <Grid item container xs={12} justifyContent="center">
                     <Grid item>
-                      <Avatar />
+                      <Avatar
+                        src={
+                          application.listing.apartment.owner.profilePhotoUrl
+                        }
+                      />
                     </Grid>
                   </Grid>
                   <Grid
@@ -173,6 +194,7 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
                         <Grid item>
                           <StyledRating
                             defaultValue={2.5}
+                            value={ownerRating}
                             precision={0.5}
                             size="small"
                             readOnly
@@ -257,6 +279,7 @@ const UserTenantRentApplications: React.FC<{}> = () => {
         rowSpacing={4}
         sx={{ minHeight: "100vh" }}
         alignContent="flex-start"
+        my={2}
       >
         {rentApplications?.map((application) => (
           <Grid item xs={12} paddingX={2}>

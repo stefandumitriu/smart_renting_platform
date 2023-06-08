@@ -13,6 +13,8 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  CardMedia,
+  Chip,
   Divider,
   Grid,
   IconButton,
@@ -24,7 +26,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { Listing } from "@packages/api/models/listings/listing";
 import SwipeableViews from "react-swipeable-views";
 import {
@@ -33,6 +35,7 @@ import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
   LocationOn,
+  Star,
 } from "@mui/icons-material";
 import { deepOrange } from "@mui/material/colors";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -71,6 +74,75 @@ const featuresPhotoName: Record<string, string> = {
   TV: "television",
   "Cuptor microunde": "microwave",
   Termopane: "Window",
+};
+
+const SimilarListingCard: React.FC<{ listing: Listing }> = ({ listing }) => {
+  const theme = useTheme();
+  return (
+    <Card
+      sx={{
+        borderRadius: "12px",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <CardActionArea component={Link} to={`${listing.id}`.toString()}>
+        <Grid container spacing={2} flexDirection="column">
+          <Grid item xs={12}>
+            <CardMedia
+              component="img"
+              image={
+                listing.photosUrl && listing.photosUrl.length > 0
+                  ? listing.photosUrl[0]
+                  : "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg"
+              }
+              sx={{ width: "100%" }}
+            />
+          </Grid>
+          <Grid item container xs={12}>
+            <Grid item xs={12} px={1}>
+              <Typography fontWeight="bolder">{listing.title}</Typography>
+            </Grid>
+            <Grid item container xs={12} px={1}>
+              <Grid item>
+                <Chip label={listing.apartment.surface.toString(10) + " m2"} />
+              </Grid>
+              <Grid item>
+                <Chip
+                  label={
+                    listing.apartment.noOfRooms === 1
+                      ? "o camera"
+                      : listing.apartment.noOfRooms.toString() + " camere"
+                  }
+                />
+              </Grid>
+              <Grid item>
+                <Chip label={listing.apartment.subdivision} />
+              </Grid>
+            </Grid>
+            <Grid
+              item
+              container
+              xs={12}
+              alignSelf="flex-end"
+              justifyContent="flex-end"
+              alignItems="flex-end"
+              px={1}
+            >
+              <Grid item>
+                <Typography
+                  fontWeight="bolder"
+                  color={theme.palette.secondary.main}
+                >
+                  {listing.price}€ / luna
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </CardActionArea>
+    </Card>
+  );
 };
 
 const PropertyPage: React.FC<{}> = () => {
@@ -841,6 +913,31 @@ const PropertyPage: React.FC<{}> = () => {
               </Grid>
             </Grid>
           </Grid>
+          {similarListings.length > 0 && (
+            <Grid item xs={12} marginTop={4}>
+              <Grid item container xs={12}>
+                <Grid item>
+                  <Typography variant="h5">Proprietati similare</Typography>
+                </Grid>
+              </Grid>
+              <Grid
+                item
+                container
+                xs={12}
+                marginTop={2}
+                spacing={1}
+                sx={{
+                  height: "fit-content",
+                }}
+              >
+                {similarListings.slice(0, 3).map((similarListing) => (
+                  <Grid item xs={12} md={4}>
+                    <SimilarListingCard listing={similarListing} />
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          )}
         </Grid>
       </Grid>
       <OwnerProfileModal

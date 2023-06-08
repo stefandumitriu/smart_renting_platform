@@ -6,6 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { OnComponentInitContext } from "../contexts/OnComponentInitContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
+  UpdateUserProfileRequest,
   UserLoginRequest,
   UserSignupRequest,
 } from "../requests/UserSignupRequest";
@@ -22,36 +23,46 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
   const navigate = useNavigate();
   const onInit = useContext(OnComponentInitContext);
 
-  const createUserCallback = useCallback(async (user: any) => {
-    const firstName: string | undefined = user.given_name;
-    const lastName: string | undefined = user.family_name;
-    const email =
-      (user.email as string) ??
-      (firstName && lastName
-        ? `${firstName.toLowerCase()}.${lastName.toLowerCase()}@gmail.com`
-        : "default_email@gmail.com");
-    const userProfile = await UserSignupRequest({
-      userId: user.sub,
-      email,
-      firstName,
-      lastName,
-      profilePhotoUrl: user.picture,
-    });
-    setCurrentUser(userProfile);
-  }, []);
+  const createUserCallback = useCallback(
+    async (user: any) => {
+      const firstName: string | undefined = user.given_name;
+      const lastName: string | undefined = user.family_name;
+      const email =
+        (user.email as string) ??
+        (firstName && lastName
+          ? `${firstName.toLowerCase()}.${lastName.toLowerCase()}@gmail.com`
+          : "default_email@gmail.com");
+      const userProfile = await UserSignupRequest({
+        userId: user.sub,
+        email,
+        firstName,
+        lastName,
+        profilePhotoUrl: user.picture,
+      });
+      setCurrentUser(userProfile);
+    },
+    [setCurrentUser]
+  );
 
-  const loginUserCallback = useCallback(async (user: any) => {
-    const userProfile = await UserLoginRequest(user.sub);
-    if (!userProfile) {
-      await createUserCallback(user);
-      return;
-    }
-    setCurrentUser(userProfile);
-  }, []);
+  const loginUserCallback = useCallback(
+    async (user: any) => {
+      let userProfile = await UserLoginRequest(user.sub);
+      if (!userProfile) {
+        await createUserCallback(user);
+        return;
+      }
+      if (user.picture && user.picture !== userProfile.profilePhotoUrl) {
+        userProfile = await UpdateUserProfileRequest(userProfile.id, {
+          profilePhotoUrl: user.picture,
+        });
+      }
+      setCurrentUser(userProfile);
+    },
+    [createUserCallback, setCurrentUser]
+  );
 
   useEffect(() => {
     if (user) {
-      console.log(user);
       loginUserCallback(user);
     }
   }, [user]);
@@ -107,9 +118,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
                     navigate("/user/dashboard");
                   }
                 : () => {
-                    loginWithRedirect().then((_) =>
-                      console.log(isAuthenticated, user)
-                    );
+                    loginWithRedirect();
                   }
             }
             startIcon={
@@ -123,11 +132,13 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
               )
             }
           >
-            {isAuthenticated &&
-              currentUser &&
-              (currentUser.firstName && currentUser.lastName
-                ? `${currentUser.firstName} ${currentUser.lastName}`
-                : currentUser.email.split("@")[0])}
+            <Typography fontWeight="bold">
+              {isAuthenticated && currentUser
+                ? currentUser.firstName && currentUser.lastName
+                  ? `${currentUser.firstName} ${currentUser.lastName}`
+                  : currentUser.email.split("@")[0]
+                : "Log in"}
+            </Typography>
           </Button>
         </Grid>
       </Grid>

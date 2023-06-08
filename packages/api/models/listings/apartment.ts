@@ -2,7 +2,7 @@ import { DbApartment } from "@packages/db/models/listings/apartment";
 import { UserProfile } from "../users/userProfile";
 import { Address, NewAddress } from "./address";
 
-export interface ApartmentRelations {
+interface ApartmentRelations {
   address: Address;
   owner: UserProfile;
 }
