@@ -25,6 +25,7 @@ import { UserProfile } from "@packages/api/models/users/userProfile";
 import {
   GetConversationRequest,
   GetLinkedUsersRequests,
+  PostMessageRequest,
 } from "../../requests/MessagesRequests";
 import { GetUserProfileRequest } from "../../requests/UserSignupRequest";
 import { useLocation } from "react-router-dom";
@@ -76,6 +77,18 @@ const ChatPage: React.FC = () => {
       );
     }
   }, [currentUser]);
+  const sendMessageCallback = useCallback(() => {
+    if (messageInputValue && activeConversationUser && currentUser) {
+      PostMessageRequest(
+        currentUser.id,
+        activeConversationUser.id,
+        messageInputValue
+      ).then((res) => {
+        setMessages([...messages, res]);
+        setMessageInputValue("");
+      });
+    }
+  }, [activeConversationUser, currentUser, messageInputValue, messages]);
   return (
     <Layout pageTitle="Mesajele Mele">
       <Grid item container xs={12}>
@@ -143,11 +156,12 @@ const ChatPage: React.FC = () => {
                   ))}
                 </MessageList>
               )}
-              {activeConversationUser && (
+              {activeConversationUser && currentUser && (
                 <MessageInput
                   placeholder="Type message here"
                   value={messageInputValue}
                   onChange={(val) => setMessageInputValue(val)}
+                  onSend={() => sendMessageCallback()}
                 />
               )}
             </ChatContainer>

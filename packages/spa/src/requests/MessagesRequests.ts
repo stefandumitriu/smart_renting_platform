@@ -17,3 +17,15 @@ export const GetConversationRequest = async (id: string, partnerId: string) => {
   );
   return axiosResponse.data as DbMessage[];
 };
+
+export const PostMessageRequest = async (
+  id: string,
+  partnerId: string,
+  text: string
+) => {
+  const axiosResponse = await axiosBaseInstance.post(
+    `${MESSAGES_PATH}/${id}/conversation/${partnerId}`,
+    { text }
+  );
+  return axiosResponse.data as DbMessage;
+};
