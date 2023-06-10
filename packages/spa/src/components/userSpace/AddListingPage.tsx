@@ -36,6 +36,38 @@ enum ApartmentStatus {
 
 const rentalPeriods = ["1 an", "> 1 an", "6 luni", "3 luni"];
 
+const thumb = {
+  display: "inline-flex",
+  borderRadius: 2,
+  border: "1px solid #eaeaea",
+  marginBottom: 8,
+  marginRight: 8,
+  width: 200,
+  height: 200,
+  padding: 4,
+  boxSizing: "border-box",
+  flexDirection: "column",
+};
+
+const thumbInner = {
+  display: "flex",
+  minWidth: 0,
+  overflow: "hidden",
+};
+
+const deleteButton = {
+  backgroundColor: "red",
+  minHeight: 20,
+  width: "100%",
+  color: "white",
+};
+
+const img = {
+  display: "block",
+  width: "auto",
+  height: "100%",
+};
+
 const NewListingSchema = Yup.object().shape({
   apartmentId: Yup.string().uuid().required(),
   title: Yup.string().required(),
@@ -61,6 +93,7 @@ const AddListingPage: React.FC<{}> = () => {
   const { currentUser } = useContext(AuthContext);
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [previewFiles, setPreviewFiles] = useState<any[]>([]);
   const navigate = useNavigate();
   const handleSubmit = useCallback(
     async (values: NewListing) => {
@@ -73,7 +106,7 @@ const AddListingPage: React.FC<{}> = () => {
       console.log(listing);
       navigate("/user/dashboard/landlord/listings");
     },
-    [uploadedFiles]
+    [uploadedFiles, navigate]
   );
 
   const fetchApartments = useCallback(async () => {
@@ -105,6 +138,32 @@ const AddListingPage: React.FC<{}> = () => {
       value: apartment.id,
     }));
   }, [availableApartments]);
+
+  const thumbs = previewFiles.map((file) => (
+    // @ts-ignore
+    <div style={thumb} key={file.name}>
+      <div style={thumbInner}>
+        <img src={file.preview} style={img} alt={file.name} />
+      </div>
+      <div style={{ width: "100%" }}>
+        <button
+          style={deleteButton}
+          onClick={() =>
+            setPreviewFiles(previewFiles.filter((f) => f.name !== file.name))
+          }
+        >
+          X
+        </button>
+      </div>
+    </div>
+  ));
+
+  useEffect(() => {
+    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+    return () =>
+      previewFiles.forEach((file) => URL.revokeObjectURL(file.preview));
+  }, []);
+
   return (
     <Layout pageTitle="Adauga anunt">
       <Formik
@@ -255,9 +314,17 @@ const AddListingPage: React.FC<{}> = () => {
                   elevation={10}
                 >
                   <Dropzone
-                    onDrop={(acceptedFiles) =>
-                      setUploadedFiles([...uploadedFiles, acceptedFiles[0]])
-                    }
+                    onDrop={(acceptedFiles: File[]) => {
+                      setUploadedFiles([...uploadedFiles, ...acceptedFiles]);
+                      setPreviewFiles([
+                        ...previewFiles,
+                        ...acceptedFiles.map((file) =>
+                          Object.assign(file, {
+                            preview: URL.createObjectURL(file),
+                          })
+                        ),
+                      ]);
+                    }}
                     multiple
                     accept={{ "image/png": [".png"], "image/jpeg": [".jpeg"] }}
                   >
@@ -270,29 +337,28 @@ const AddListingPage: React.FC<{}> = () => {
                             name="addressProof"
                             type="file"
                           />
-                          {uploadedFiles.length > 0 ? (
-                            uploadedFiles.map(
-                              (uploadedFile) => uploadedFile.name
-                            )
-                          ) : (
-                            <>
-                              {" "}
-                              <p>
-                                Incarcati poze sugestive cu diferite zone ale
-                                apartamentului
-                              </p>
-                              <em>
-                                (Doar extensiile *.jpeg si *.png pentru imagini
-                                vor fi acceptate)
-                              </em>
-                            </>
-                          )}
+                          <>
+                            {" "}
+                            <p>
+                              Incarcati poze sugestive cu diferite zone ale
+                              apartamentului
+                            </p>
+                            <em>
+                              (Doar extensiile *.jpeg si *.png pentru imagini
+                              vor fi acceptate)
+                            </em>
+                          </>
                         </div>
                       </section>
                     )}
                   </Dropzone>
                 </Paper>
               </Grid>
+              {previewFiles.length > 0 && (
+                <Grid item xs={12}>
+                  {thumbs}
+                </Grid>
+              )}
               <Grid item container xs={12} justifyContent="end">
                 <Grid item xs={2}>
                   <Button
