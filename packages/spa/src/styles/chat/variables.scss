@@ -52,7 +52,7 @@ $color-text-inverted: invert($color-text);
 $color-white: #fff !default;
 $color-black: #000 !default;
 
-$default-bg-color: $color-white !default;
+$default-bg-color: #FAFAFB !default;
 
 // Element colors
 //
@@ -177,7 +177,7 @@ $button-voicecall-bg-color: $button-bg-color !default;
 
 // Send button
 
-$button-send-color: $button-color !default;
+$button-send-color: #fbad14 !default;
 $button-send-bg-color: $button-bg-color !default;
 
 // Attachment button
@@ -514,7 +514,7 @@ $message-content-incoming-color: $color-text !default;
 $message-content-incoming-bg-color: $message-content-bg-color !default;
 
 $message-content-outgoing-color: $color-text !default;
-$message-content-outgoing-bg-color: $color-primary-dark !default;
+$message-content-outgoing-bg-color: #fbad14 !default;
 
 // Fonts
 $message-font-size: 1em !default;
@@ -620,7 +620,7 @@ $message-input-content-editor-border-left: $message-input-content-editor-border-
 // Colors
 $message-input-bg-color: $default-bg-color !default;
 $message-input-content-editor-color: $color-text !default;
-$message-input-content-editor-wrapper-bg-color: $color-primary !default;
+$message-input-content-editor-wrapper-bg-color: #dfe4e8 !default;
 $message-input-content-editor-container-bg-color: $message-input-content-editor-wrapper-bg-color !default;
 $message-input-content-editor-bg-color: $message-input-content-editor-wrapper-bg-color !default;
 $message-input-content-editor-disabled-color: $color-text-medium !default;

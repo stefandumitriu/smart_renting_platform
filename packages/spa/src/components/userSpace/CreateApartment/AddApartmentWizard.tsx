@@ -96,7 +96,7 @@ const AddApartmentWizard: React.FC<{}> = () => {
                 TV: false,
                 Frigider: false,
                 "Cuptor microunde": false,
-                Termostat: true,
+                Termostat: false,
               },
               finishes: {
                 "Usa metalica exterior": false,
@@ -116,15 +116,15 @@ const AddApartmentWizard: React.FC<{}> = () => {
                 connector={<StepConnector />}
                 sx={{
                   "& .MuiStepLabel-root .Mui-active": {
-                    color: theme.palette.secondary.main,
+                    color: theme.palette.primary.main,
                   },
                   "& .MuiStepLabel-root .Mui-completed": {
-                    color: theme.palette.secondary.main,
+                    color: theme.palette.primary.main,
                   },
                 }}
               >
                 {steps.map((step, index) => (
-                  <Step key={index} color={theme.palette.secondary.main}>
+                  <Step key={index} color={theme.palette.primary.main}>
                     <StepLabel>{step.label}</StepLabel>
                   </Step>
                 ))}
@@ -141,16 +141,18 @@ const AddApartmentWizard: React.FC<{}> = () => {
                 <Button
                   disabled={isFirstStep()}
                   onClick={handlePrev}
-                  color="secondary"
+                  color="primary"
                   variant="contained"
+                  sx={{ borderRadius: "10px" }}
                 >
                   Previous
                 </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  color="secondary"
+                  color="primary"
                   variant="contained"
+                  sx={{ borderRadius: "10px" }}
                 >
                   {isLastStep() ? "Submit" : "Next"}
                 </Button>

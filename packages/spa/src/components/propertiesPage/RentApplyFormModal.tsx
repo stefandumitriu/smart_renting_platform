@@ -46,7 +46,7 @@ const RentApplyFormModal: React.FC<RentApplyFormModalProps> = ({
       setHasAppliedForListing();
       handleClose();
     },
-    [listing, currentUser, handleClose]
+    [listing, currentUser, handleClose, setHasAppliedForListing]
   );
 
   return (
@@ -96,6 +96,7 @@ const RentApplyFormModal: React.FC<RentApplyFormModalProps> = ({
                           fullWidth
                           rows={4}
                           value={values.additionalInfo}
+                          color="secondary"
                         />
                       </Grid>
                     </Grid>
@@ -113,7 +114,7 @@ const RentApplyFormModal: React.FC<RentApplyFormModalProps> = ({
                         <Button
                           type="submit"
                           variant="contained"
-                          color="secondary"
+                          color="primary"
                         >
                           Aplica
                         </Button>

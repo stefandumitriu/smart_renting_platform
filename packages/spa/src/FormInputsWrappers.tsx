@@ -48,6 +48,7 @@ export function FormAutocomplete<T>(
           {...params}
           label={props.label}
           required={props.required}
+          color="secondary"
         />
       )}
     />

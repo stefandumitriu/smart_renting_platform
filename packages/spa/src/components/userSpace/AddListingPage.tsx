@@ -297,9 +297,10 @@ const AddListingPage: React.FC<{}> = () => {
                 <Grid item xs={2}>
                   <Button
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     type="submit"
                     fullWidth
+                    sx={{ borderRadius: "10px" }}
                   >
                     Salveaza anunt
                   </Button>

@@ -1,5 +1,13 @@
 import React, { ReactNode, useCallback, useContext, useEffect } from "react";
-import { Avatar, Button, Grid, Typography, useTheme } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Grid,
+  Theme,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { AuthContext } from "../contexts/AuthContext";
@@ -22,6 +30,10 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const onInit = useContext(OnComponentInitContext);
+
+  const largeScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.up("sm")
+  );
 
   const createUserCallback = useCallback(
     async (user: any) => {
@@ -83,8 +95,11 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
       <Grid
         item
         container
-        justifyContent="space-between"
+        justifyContent={largeScreen ? "space-between" : "center"}
+        flexDirection={largeScreen ? "row" : "column"}
+        rowSpacing={largeScreen ? 0 : 2}
         alignSelf="center"
+        alignItems="center"
         position="sticky"
         top={0}
         zIndex={100}
@@ -94,7 +109,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
         borderBottom={2}
         borderColor={theme.palette.secondary.main}
       >
-        <Grid item my="auto" marginLeft={10}>
+        <Grid item my="auto" marginLeft={largeScreen ? 10 : 0}>
           <Link to={"/"}>
             <img
               src="http://localhost:8080/local_storage/filterentLogo.png"
@@ -110,7 +125,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
             </Typography>
           </Grid>
         )}
-        <Grid item marginRight={10}>
+        <Grid item marginRight={largeScreen ? 10 : 0}>
           <Button
             color="secondary"
             onClick={

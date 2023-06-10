@@ -79,6 +79,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     fullWidth
                     required
                     onChange={handleChange}
+                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -90,6 +91,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     onChange={handleChange}
                     required
                     type="number"
+                    color="secondary"
                   />
                 </Grid>
               </Grid>
@@ -101,6 +103,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     value={values.address?.block}
                     fullWidth
                     onChange={handleChange}
+                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -111,6 +114,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     fullWidth
                     type="number"
                     onChange={handleChange}
+                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -121,6 +125,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     fullWidth
                     type="number"
                     onChange={handleChange}
+                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -131,6 +136,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     fullWidth
                     type="number"
                     onChange={handleChange}
+                    color="secondary"
                   />
                 </Grid>
               </Grid>
@@ -146,6 +152,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                   minRows={2}
                   maxRows={2}
                   onChange={handleChange}
+                  color="secondary"
                 />
               </Grid>
             </Grid>
@@ -183,6 +190,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     onChange={handleChange}
                     required
                     type="number"
+                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -194,6 +202,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     onChange={handleChange}
                     required
                     type="number"
+                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -205,6 +214,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     onChange={handleChange}
                     required
                     type="number"
+                    color="secondary"
                   />
                 </Grid>
               </Grid>
@@ -218,6 +228,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     onChange={handleChange}
                     required
                     type="number"
+                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={3}>

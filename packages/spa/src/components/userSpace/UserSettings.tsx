@@ -174,7 +174,7 @@ const UserSettings: React.FC<{}> = () => {
                           <Grid item>
                             <IconButton
                               onClick={handleEditNameButtonClick}
-                              color="secondary"
+                              color="primary"
                             >
                               <Edit />
                             </IconButton>
@@ -282,10 +282,11 @@ const UserSettings: React.FC<{}> = () => {
                     <Grid item xs={12} sm={4}>
                       <Button
                         variant="contained"
-                        color="secondary"
+                        color="primary"
                         type="submit"
                         fullWidth
                         disabled={_.isEqual(values, initialValues)}
+                        sx={{ borderRadius: "10px" }}
                       >
                         Salveaza schimbarile
                       </Button>

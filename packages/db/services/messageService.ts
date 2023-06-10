@@ -33,15 +33,13 @@ export async function getMessagesForUserChat(
 export async function getLinkedUsersIdForUser(
   userId: string
 ): Promise<string[]> {
-  const senders: string[] = (
-    await knex<DbMessage>(MESSAGES_TABLE_NAME)
-      .where({ receiverId: userId })
-      .select(["senderId"])
-  ).map((e) => e.senderId);
-  const receivers: string[] = (
-    await knex<DbMessage>(MESSAGES_TABLE_NAME)
-      .where({ senderId: userId })
-      .select(["receiverId"])
-  ).map((e) => e.receiverId);
-  return _.union(senders, receivers);
+  const query = await knex<DbMessage>(MESSAGES_TABLE_NAME)
+    .where({ receiverId: userId })
+    .orWhere({ senderId: userId })
+    .orderBy("created_at", "desc")
+    .select(["receiverId", "senderId"]);
+  const ids = query.map((e) =>
+    e.receiverId === userId ? e.senderId : e.receiverId
+  );
+  return _.uniq(ids);
 }

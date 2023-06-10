@@ -78,6 +78,12 @@ const featuresPhotoName: Record<string, string> = {
 
 const SimilarListingCard: React.FC<{ listing: Listing }> = ({ listing }) => {
   const theme = useTheme();
+  const images = [
+    "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg",
+    "https://www.franklinsapartments.com/img/Apt5a.jpg",
+    "https://www.franklinsapartments.com/img/Apt6c.jpg",
+    "https://riceandroman.azureedge.net/prop-1464/1464-1.jpg",
+  ];
   return (
     <Card
       sx={{
@@ -94,7 +100,7 @@ const SimilarListingCard: React.FC<{ listing: Listing }> = ({ listing }) => {
               image={
                 listing.photosUrl && listing.photosUrl.length > 0
                   ? listing.photosUrl[0]
-                  : "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg"
+                  : images[Math.floor(Math.random() * 3.99)]
               }
               sx={{ width: "100%" }}
             />

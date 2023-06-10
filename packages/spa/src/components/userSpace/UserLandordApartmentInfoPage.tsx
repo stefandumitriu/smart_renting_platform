@@ -103,6 +103,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               fullWidth
                               required
                               onChange={handleChange}
+                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
@@ -114,6 +115,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               onChange={handleChange}
                               required
                               type="number"
+                              color="secondary"
                             />
                           </Grid>
                         </Grid>
@@ -125,6 +127,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               value={values.address.block}
                               fullWidth
                               onChange={handleChange}
+                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
@@ -135,6 +138,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               fullWidth
                               type="number"
                               onChange={handleChange}
+                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
@@ -145,6 +149,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               fullWidth
                               type="number"
                               onChange={handleChange}
+                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
@@ -155,6 +160,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               fullWidth
                               type="number"
                               onChange={handleChange}
+                              color="secondary"
                             />
                           </Grid>
                         </Grid>
@@ -170,6 +176,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                             minRows={2}
                             maxRows={2}
                             onChange={handleChange}
+                            color="secondary"
                           />
                         </Grid>
                       </Grid>
@@ -213,6 +220,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               onChange={handleChange}
                               required
                               type="number"
+                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
@@ -224,6 +232,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               onChange={handleChange}
                               required
                               type="number"
+                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
@@ -235,6 +244,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               onChange={handleChange}
                               required
                               type="number"
+                              color="secondary"
                             />
                           </Grid>
                         </Grid>
@@ -248,6 +258,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               onChange={handleChange}
                               required
                               type="number"
+                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={3}>
@@ -752,10 +763,11 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                   <Grid item xs={2}>
                     <Button
                       variant="contained"
-                      color="secondary"
+                      color="primary"
                       type="submit"
                       fullWidth
                       disabled={_.isEqual(initialValues, values)}
+                      sx={{ borderRadius: "10px" }}
                     >
                       Salveaza schimbarile
                     </Button>

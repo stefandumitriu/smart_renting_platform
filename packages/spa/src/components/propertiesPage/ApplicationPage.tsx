@@ -34,10 +34,10 @@ const ApplicationPage: React.FC<{}> = () => {
   const navigate = useNavigate();
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
     "& .MuiRating-iconHover": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
   });
 
@@ -102,10 +102,10 @@ const ApplicationPage: React.FC<{}> = () => {
             state={{ initialConversationUserId: application.tenantId }}
           >
             <Button
-              onChange={() => console.log("clicked")}
               variant="contained"
-              color="secondary"
+              color="primary"
               startIcon={<ChatBubble />}
+              sx={{ borderRadius: "10px" }}
             >
               Raspunde
             </Button>
@@ -268,7 +268,11 @@ const ApplicationPage: React.FC<{}> = () => {
           </Grid>
           <Grid item container xs={12} justifyContent="flex-start">
             <Link to={`/user/dashboard/tenant/${application.tenantId}/reviews`}>
-              <Button color="secondary" variant="contained">
+              <Button
+                color="primary"
+                variant="contained"
+                sx={{ borderRadius: "10px" }}
+              >
                 Vezi recenziile
               </Button>
             </Link>

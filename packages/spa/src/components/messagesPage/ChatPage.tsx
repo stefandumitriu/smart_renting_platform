@@ -162,6 +162,7 @@ const ChatPage: React.FC = () => {
                   value={messageInputValue}
                   onChange={(val) => setMessageInputValue(val)}
                   onSend={() => sendMessageCallback()}
+                  attachButton={false}
                 />
               )}
             </ChatContainer>
