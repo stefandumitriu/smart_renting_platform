@@ -97,8 +97,9 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
         <Grid item my="auto" marginLeft={10}>
           <Link to={"/"}>
             <img
-              src="https://s.zillowstatic.com/pfs/static/z-logo-default.svg"
+              src="http://localhost:8080/local_storage/filterentLogo.png"
               alt="logo-app"
+              style={{ height: "32px" }}
             />
           </Link>
         </Grid>
