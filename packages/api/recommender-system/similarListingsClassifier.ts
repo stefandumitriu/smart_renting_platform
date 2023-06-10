@@ -5,17 +5,6 @@ interface DeviationScore {
   score: number;
 }
 
-const getPriceDelta = (listings: Listing[]): number => {
-  const trimmedListings = listings.slice(1, listings.length - 1);
-  const sortedByPriceListings = trimmedListings.sort(
-    (a, b) => a.price - b.price
-  );
-  return (
-    sortedByPriceListings[sortedByPriceListings.length - 1].price -
-    sortedByPriceListings[0].price
-  );
-};
-
 const ROOMS_SCALE_DOWN_FACTOR = 4;
 const SURFACE_SCALE_DOWN_FACTOR = 200;
 const PRICE_SCALE_DOWN_FACTOR = 500;

@@ -181,6 +181,13 @@ const ListingsPage: React.FC<{}> = () => {
     [setArea]
   );
 
+  const images: string[] = [
+    "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg",
+    "https://www.franklinsapartments.com/img/Apt5a.jpg",
+    "https://www.franklinsapartments.com/img/Apt6c.jpg",
+    "https://riceandroman.azureedge.net/prop-1464/1464-1.jpg",
+  ];
+
   const filteredListing = useMemo(() => {
     return listings
       .filter(
@@ -273,7 +280,7 @@ const ListingsPage: React.FC<{}> = () => {
                                 listing.photosUrl &&
                                 listing.photosUrl.length > 0
                                   ? listing.photosUrl[0]
-                                  : "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg"
+                                  : images[Math.floor(Math.random() * 3.99)]
                               }
                               sx={{ height: "100%" }}
                             />
