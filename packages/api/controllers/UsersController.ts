@@ -53,5 +53,6 @@ export const patchUserProfile = async (req: Request, res: Response) => {
     res.send(updatedUserProfile);
   } catch (e) {
     console.error(e);
+    res.sendStatus(500);
   }
 };

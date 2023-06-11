@@ -9,9 +9,11 @@ import messagesRouter from "./routers/messagesRouter";
 const app = express();
 const port = 3001;
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+  });
+}
 
 app.use(
   cors({
@@ -25,3 +27,5 @@ app.use("/apartments", apartmentsRouter);
 app.use("/contracts", contractsRouter);
 app.use("/reviews", reviewsRouter);
 app.use("/messages", messagesRouter);
+
+export default app;

@@ -4,8 +4,3 @@ export interface UserSignUpInfo {
   firstName?: string;
   lastName?: string;
 }
-
-export interface UserLoginInfo {
-  email: string;
-  password: string;
-}

@@ -31,8 +31,11 @@
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "start": "concurrently -n API,Storage \"nodemon app.js\" \"http-server ../../\"",
+    "start": "cross-env NODE_ENV=dev concurrently -n API,Storage \"nodemon app.js\" \"http-server ../../\"",
     "seed": "node seeds.js"
   },
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
 }

@@ -18,9 +18,6 @@ describe("Similar Listings Classifier Test Suite", () => {
     apartmentId: "71eb72c0-51d1-47ba-abb1-16a9a416bac4",
     title: "Test singlefile download",
     price: 250,
-    rentalPeriod: null,
-    availability: null,
-    about: null,
     photosUrl: [
       "https://stedumprojlicenta.s3.eu-central-1.amazonaws.com/2023-06-05T22%3A58%3A22.259Z-listing-photo-42442.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAUX6FF3SZUYDBM2K4%2F20230610%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20230610T131818Z&X-Amz-Expires=900&X-Amz-Signature=2a3f6d409150f5cc7c7191aa6bd3659b133ed3d08d300865c68a3267eac05055&X-Amz-SignedHeaders=host",
     ],
@@ -56,7 +53,6 @@ describe("Similar Listings Classifier Test Suite", () => {
         "Izolatie termica": false,
         "Instalatie sanitara premium": false,
       },
-      areaInfo: null,
       addressProof: "2023-06-05T22:57:03.928Z-address-proof-download.png",
       status: ApartmentStatus.Rented,
       address: {
@@ -64,10 +60,6 @@ describe("Similar Listings Classifier Test Suite", () => {
         streetType: StreetTypeEnum.Splai,
         streetName: "Independentei",
         streetNumber: 291,
-        block: null,
-        blockEntrance: null,
-        floor: null,
-        flatNumber: null,
         lat: 44.4435026,
         long: 26.0559506,
       },
@@ -95,7 +87,6 @@ describe("Similar Listings Classifier Test Suite", () => {
     price: 350,
     rentalPeriod: "> 1 an",
     availability: "la finalul lunii",
-    about: null,
     apartment: {
       id: "add00598-af18-45a1-88fc-fa1092a99a3f",
       addressId: "3cbf9a4e-43a3-4299-bed7-4d0d3d35c09b",
@@ -135,7 +126,6 @@ describe("Similar Listings Classifier Test Suite", () => {
       },
       areaInfo:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non velit vitae augue tristique euismod. Aenean a nulla ipsum. Etiam pharetra id metus luctus dapibus. Sed lobortis varius urna a.",
-      addressProof: null,
       status: ApartmentStatus.Listed,
       address: {
         id: "3cbf9a4e-43a3-4299-bed7-4d0d3d35c09b",
