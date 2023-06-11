@@ -45,10 +45,10 @@ const CreateUserReviewModal: React.FC<CreateUserReviewModalProps> = ({
   );
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
     "& .MuiRating-iconHover": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
   });
   return currentUser ? (
@@ -131,7 +131,7 @@ const CreateUserReviewModal: React.FC<CreateUserReviewModalProps> = ({
                           title="Corectitudinea in respectarea termenilor contractului/Prezentare reala a informatiilor despre apartament"
                           sx={{ marginLeft: "8px" }}
                         >
-                          <Info color="secondary" />
+                          <Info color="primary" />
                         </Tooltip>
                       </Grid>
                     </Grid>
@@ -156,7 +156,7 @@ const CreateUserReviewModal: React.FC<CreateUserReviewModalProps> = ({
                           title="Comunicare facila si rapida"
                           sx={{ marginLeft: "8px" }}
                         >
-                          <Info color="secondary" />
+                          <Info color="primary" />
                         </Tooltip>
                       </Grid>
                     </Grid>
@@ -181,7 +181,7 @@ const CreateUserReviewModal: React.FC<CreateUserReviewModalProps> = ({
                           title="Disponibilitatea acestuia de a repara anumite defecte ale imobilului, amabilitate, intelegere"
                           sx={{ marginLeft: "8px" }}
                         >
-                          <Info color="secondary" />
+                          <Info color="primary" />
                         </Tooltip>
                       </Grid>
                     </Grid>
@@ -211,7 +211,8 @@ const CreateUserReviewModal: React.FC<CreateUserReviewModalProps> = ({
                         <Button
                           type="submit"
                           variant="contained"
-                          color="secondary"
+                          color="primary"
+                          sx={{ borderRadius: "10px" }}
                         >
                           Adauga recenzie
                         </Button>

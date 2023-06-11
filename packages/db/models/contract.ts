@@ -12,6 +12,7 @@ export interface DbContract {
   depositValue: number;
   additionalClauses?: string;
   status: ContractStatus;
+  price: number;
 }
 
 export enum ContractStatus {

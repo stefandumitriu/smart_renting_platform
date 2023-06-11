@@ -56,7 +56,9 @@ const Map: React.FC<{ listings: Listing[] }> = ({ listings }) => {
                   listing.apartment.surface
                 } m<sup>2</sup></span>
             </div>
-            <a class="btn" href="/properties/${listing.id}">
+            <a class="btn" style="color: white;" href="/properties/${
+              listing.id
+            }">
                 Vezi anunt
             </a>
         </div>
@@ -146,7 +148,7 @@ const Map: React.FC<{ listings: Listing[] }> = ({ listings }) => {
 export default function MapPage() {
   const listings = useLoaderData() as Listing[];
   return (
-    <Layout>
+    <Layout pageTitle="Harta interactiva">
       <Grid item>
         <Wrapper
           apiKey="AIzaSyDK8p89yd-Pr9WsdklJySETO5QKFCE8FVk"

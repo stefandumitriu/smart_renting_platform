@@ -148,9 +148,10 @@ const AddListingPage: React.FC<{}> = () => {
       <div style={{ width: "100%" }}>
         <button
           style={deleteButton}
-          onClick={() =>
-            setPreviewFiles(previewFiles.filter((f) => f.name !== file.name))
-          }
+          onClick={() => {
+            setPreviewFiles(previewFiles.filter((f) => f.name !== file.name));
+            setUploadedFiles(uploadedFiles.filter((f) => f.name !== file.name));
+          }}
         >
           X
         </button>
@@ -248,6 +249,7 @@ const AddListingPage: React.FC<{}> = () => {
                           onChange={handleChange}
                           fullWidth
                           required
+                          color="secondary"
                         />
                       </Grid>
                       <Grid item xs={3}>
@@ -259,6 +261,7 @@ const AddListingPage: React.FC<{}> = () => {
                           type="number"
                           fullWidth
                           required
+                          color="secondary"
                         />
                       </Grid>
                     </Grid>
@@ -272,6 +275,7 @@ const AddListingPage: React.FC<{}> = () => {
                           multiline
                           minRows={3}
                           fullWidth
+                          color="secondary"
                         />
                       </Grid>
                     </Grid>
@@ -299,6 +303,7 @@ const AddListingPage: React.FC<{}> = () => {
                           value={values.availability}
                           onChange={handleChange}
                           fullWidth
+                          color="secondary"
                         />
                       </Grid>
                     </Grid>

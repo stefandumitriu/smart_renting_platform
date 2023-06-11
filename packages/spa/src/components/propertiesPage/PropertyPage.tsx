@@ -327,7 +327,7 @@ const PropertyPage: React.FC<{}> = () => {
   }, [params]);
 
   return (
-    <Layout>
+    <Layout pageTitle="Pagina proprietate">
       <Grid item sx={{ width: "100%" }}>
         <Grid item container xs={8} marginX="auto">
           <Grid

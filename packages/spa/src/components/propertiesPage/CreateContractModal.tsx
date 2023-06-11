@@ -69,6 +69,7 @@ const CreateContractModal: React.FC<CreateContractModelProps> = ({
                 apartmentId: application.listing.apartmentId,
                 tenantId: application.tenantId,
                 landlordId: application.landlordId,
+                price: application.listing.price,
               } as NewContact
             }
             onSubmit={submitCallback}
@@ -144,6 +145,7 @@ const CreateContractModal: React.FC<CreateContractModelProps> = ({
                           onChange={handleChange}
                           required
                           type="number"
+                          color="secondary"
                         />
                       </Grid>
                     </Grid>
@@ -161,6 +163,7 @@ const CreateContractModal: React.FC<CreateContractModelProps> = ({
                           fullWidth
                           onChange={handleChange}
                           required
+                          color="secondary"
                         />
                       </Grid>
                       <Grid item xs={12} md={9}>
@@ -171,6 +174,7 @@ const CreateContractModal: React.FC<CreateContractModelProps> = ({
                           value={values.paymentInfo}
                           fullWidth
                           onChange={handleChange}
+                          color="secondary"
                         />
                       </Grid>
                     </Grid>
@@ -185,6 +189,7 @@ const CreateContractModal: React.FC<CreateContractModelProps> = ({
                           multiline
                           maxRows={4}
                           minRows={2}
+                          color="secondary"
                         />
                       </Grid>
                     </Grid>
@@ -199,7 +204,8 @@ const CreateContractModal: React.FC<CreateContractModelProps> = ({
                         <Button
                           type="submit"
                           variant="contained"
-                          color="secondary"
+                          color="primary"
+                          sx={{ borderRadius: "10px" }}
                         >
                           Creeaza draft contract
                         </Button>

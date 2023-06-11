@@ -255,7 +255,7 @@ const ListingsPage: React.FC<{}> = () => {
   );
 
   return (
-    <Layout>
+    <Layout pageTitle="Lista proprietati">
       <Grid item container xs={12} sx={{ minHeight: "100vh" }}>
         <Grid item container xs={12} marginTop={2}>
           <Grid item container xs={8} alignContent="flex-start">
@@ -435,6 +435,7 @@ const ListingsPage: React.FC<{}> = () => {
                         </IconButton>
                       }
                       sx={{ "& fieldset": { borderRadius: "10px" } }}
+                      color="secondary"
                     >
                       {Object.values(SortMethod).map((v) => (
                         <MenuItem value={v}>{v}</MenuItem>
@@ -488,6 +489,7 @@ const ListingsPage: React.FC<{}> = () => {
                         </IconButton>
                       }
                       sx={{ "& fieldset": { borderRadius: "10px" } }}
+                      color="secondary"
                     >
                       <MenuItem value={0}>Oricate</MenuItem>
                       <MenuItem value={1}>O camera</MenuItem>
@@ -515,6 +517,7 @@ const ListingsPage: React.FC<{}> = () => {
                         },
                         "& fieldset": { borderRadius: "10px" },
                       }}
+                      color="secondary"
                       endAdornment={
                         <IconButton
                           sx={{ display: minPrice ? "" : "none" }}
@@ -551,6 +554,7 @@ const ListingsPage: React.FC<{}> = () => {
                         </IconButton>
                       }
                       sx={{ "& fieldset": { borderRadius: "10px" } }}
+                      color="secondary"
                     >
                       <MenuItem value={0}>Oricat</MenuItem>
                       <MenuItem value={400}>400€</MenuItem>
@@ -583,6 +587,7 @@ const ListingsPage: React.FC<{}> = () => {
                         </IconButton>
                       }
                       sx={{ "& fieldset": { borderRadius: "10px" } }}
+                      color="secondary"
                     >
                       <MenuItem value={0}>Oricat</MenuItem>
                       <MenuItem value={30}>30mp</MenuItem>
@@ -609,6 +614,7 @@ const ListingsPage: React.FC<{}> = () => {
                         </IconButton>
                       }
                       sx={{ "& fieldset": { borderRadius: "10px" } }}
+                      color="secondary"
                     >
                       <MenuItem value={0}>Oricat</MenuItem>
                       <MenuItem value={50}>50mp</MenuItem>
@@ -641,6 +647,7 @@ const ListingsPage: React.FC<{}> = () => {
                         </IconButton>
                       }
                       sx={{ "& fieldset": { borderRadius: "10px" } }}
+                      color="secondary"
                     >
                       <MenuItem value={SubdivisonTypeEnum.Decomandat}>
                         {SubdivisonTypeEnum.Decomandat}
@@ -682,6 +689,7 @@ const ListingsPage: React.FC<{}> = () => {
                         },
                       }}
                       sx={{ "& fieldset": { borderRadius: "10px" } }}
+                      color="secondary"
                     >
                       {neighbourhoods.map((n) => (
                         <MenuItem value={n.neighbourhood}>

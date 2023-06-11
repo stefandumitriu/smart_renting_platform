@@ -73,7 +73,7 @@ const ApplicationPage: React.FC<{}> = () => {
   }, []);
 
   return (
-    <Layout>
+    <Layout pageTitle="Detalii cerere de inchiriere">
       <Grid
         item
         container
@@ -305,6 +305,7 @@ const ApplicationPage: React.FC<{}> = () => {
                 }}
                 variant="contained"
                 startIcon={<Clear />}
+                sx={{ borderRadius: "10px" }}
               >
                 Refuza cerere
               </Button>
@@ -315,6 +316,7 @@ const ApplicationPage: React.FC<{}> = () => {
                 onClick={approveRequestCallback}
                 variant="contained"
                 startIcon={<Done />}
+                sx={{ borderRadius: "10px" }}
               >
                 Aproba cerere
               </Button>

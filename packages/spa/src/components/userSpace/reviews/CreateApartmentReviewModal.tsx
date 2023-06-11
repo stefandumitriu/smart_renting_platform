@@ -43,10 +43,10 @@ const CreateApartmentReviewModal: React.FC<CreateApartmentReviewModalProps> = ({
   );
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
     "& .MuiRating-iconHover": {
-      color: `${theme.palette.secondary.main}`,
+      color: `${theme.palette.primary.main}`,
     },
   });
   return currentUser ? (
@@ -126,7 +126,7 @@ const CreateApartmentReviewModal: React.FC<CreateApartmentReviewModalProps> = ({
                           title="Comfortul general oferit de apartament in functie de dotari, finisaje etc."
                           sx={{ marginLeft: "8px" }}
                         >
-                          <Info color="secondary" />
+                          <Info color="primary" />
                         </Tooltip>
                       </Grid>
                     </Grid>
@@ -151,7 +151,7 @@ const CreateApartmentReviewModal: React.FC<CreateApartmentReviewModalProps> = ({
                           title="Infrastructura din zona imobilului + Comportamentul vecinilor"
                           sx={{ marginLeft: "8px" }}
                         >
-                          <Info color="secondary" />
+                          <Info color="primary" />
                         </Tooltip>
                       </Grid>
                     </Grid>
@@ -176,7 +176,7 @@ const CreateApartmentReviewModal: React.FC<CreateApartmentReviewModalProps> = ({
                           title="Calitatea dotarilor si finisajelor apartamentului"
                           sx={{ marginLeft: "8px" }}
                         >
-                          <Info color="secondary" />
+                          <Info color="primary" />
                         </Tooltip>
                       </Grid>
                     </Grid>
@@ -206,7 +206,8 @@ const CreateApartmentReviewModal: React.FC<CreateApartmentReviewModalProps> = ({
                         <Button
                           type="submit"
                           variant="contained"
-                          color="secondary"
+                          color="primary"
+                          sx={{ borderRadius: "10px" }}
                         >
                           Adauga recenzie
                         </Button>

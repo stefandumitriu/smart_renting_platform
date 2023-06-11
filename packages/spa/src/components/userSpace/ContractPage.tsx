@@ -249,6 +249,16 @@ const ContractDetailsSection: React.FC<{
       <Grid item container xs={12} columnSpacing={2} marginTop={1}>
         <Grid item xs={12} md="auto">
           <Typography fontWeight="bold" color={theme.palette.secondary.main}>
+            Chirie lunara
+          </Typography>
+        </Grid>
+        <Grid item container xs={12} md="auto">
+          <Typography>{contract.price} euro</Typography>
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} columnSpacing={2} marginTop={1}>
+        <Grid item xs={12} md="auto">
+          <Typography fontWeight="bold" color={theme.palette.secondary.main}>
             Garantie
           </Typography>
         </Grid>
