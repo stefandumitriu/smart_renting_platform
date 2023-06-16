@@ -5,15 +5,25 @@ interface DeviationScore {
   score: number;
 }
 
+type Point = {
+  x: number;
+  y: number;
+  z: number;
+};
 const ROOMS_SCALE_DOWN_FACTOR = 4;
-const SURFACE_SCALE_DOWN_FACTOR = 200;
-const PRICE_SCALE_DOWN_FACTOR = 500;
+const SURFACE_SCALE_DOWN_FACTOR = 400;
+const PRICE_SCALE_DOWN_FACTOR = 1000;
 
 const similarListingsClassifier = (
   ref: Listing,
   listings: Listing[],
   n: number
 ): Listing[] => {
+  const refPoint: Point = {
+    x: ref.apartment.noOfRooms / ROOMS_SCALE_DOWN_FACTOR,
+    y: ref.price / PRICE_SCALE_DOWN_FACTOR,
+    z: ref.apartment.surface / SURFACE_SCALE_DOWN_FACTOR,
+  };
   const deviationScores: DeviationScore[] = listings.map((listing) => {
     if (listing.id === ref.id) {
       return {
@@ -21,12 +31,16 @@ const similarListingsClassifier = (
         score: Number.MAX_VALUE,
       };
     }
-    const deviation =
-      Math.abs(listing.price - ref.price) / PRICE_SCALE_DOWN_FACTOR +
-      Math.abs(listing.apartment.noOfRooms - ref.apartment.noOfRooms) /
-        ROOMS_SCALE_DOWN_FACTOR +
-      Math.abs(listing.apartment.surface - ref.apartment.surface) /
-        SURFACE_SCALE_DOWN_FACTOR;
+    const listingPoint: Point = {
+      x: listing.apartment.noOfRooms / ROOMS_SCALE_DOWN_FACTOR,
+      y: listing.price / PRICE_SCALE_DOWN_FACTOR,
+      z: listing.apartment.surface / SURFACE_SCALE_DOWN_FACTOR,
+    };
+    const deviation = Math.sqrt(
+      Math.pow(listingPoint.x - refPoint.x, 2) +
+        Math.pow(listingPoint.y - refPoint.y, 2) +
+        Math.pow(listingPoint.z - refPoint.z, 2)
+    );
     return {
       listingId: listing.id,
       score: deviation,
