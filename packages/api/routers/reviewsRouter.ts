@@ -2,6 +2,7 @@ import express from "express";
 import {
   fetchAllApartmentReviews,
   fetchAllLandlordReviews,
+  fetchUserReviewByReviewerId,
   getApartmentReviewsById,
   getUserLandlordReviews,
   getUserTenantReviews,
@@ -17,6 +18,10 @@ reviewsRouter.get("/apartment-review", fetchAllApartmentReviews);
 reviewsRouter.post("/apartment-review", postApartmentReview);
 reviewsRouter.get("/user-review/:id/landlord", getUserLandlordReviews);
 reviewsRouter.get("/user-review/:id/tenant", getUserTenantReviews);
+reviewsRouter.get(
+  "/user-review/:id/reviewer/:reviewerId",
+  fetchUserReviewByReviewerId
+);
 reviewsRouter.get("/apartment-review/:id", getApartmentReviewsById);
 
 export default reviewsRouter;

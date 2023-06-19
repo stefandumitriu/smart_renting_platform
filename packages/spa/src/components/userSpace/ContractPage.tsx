@@ -28,6 +28,11 @@ import { Link, useLocation } from "react-router-dom";
 import EditContractModal from "./EditContractModal";
 import CreateUserReviewModal from "./reviews/CreateUserReviewModal";
 import CreateApartmentReviewModal from "./reviews/CreateApartmentReviewModal";
+import { flatten } from "lodash";
+import {
+  GetLandlordReviewByReviewerId,
+  GetTenantReviewByReviewerId,
+} from "../../requests/ReviewsRequests";
 
 enum ContractStatus {
   Draft = "Draft",
@@ -56,6 +61,29 @@ const UserInfo: React.FC<{
   handleUserReviewModalOpen: () => void;
   userIsTenant?: boolean;
 }> = ({ user, theme, handleUserReviewModalOpen, userIsTenant }) => {
+  const [alreadyReviewed, setAlreadyReviewed] = useState<boolean>(false);
+  const { currentUser } = useContext(AuthContext);
+  useEffect(() => {
+    if (currentUser) {
+      if (userIsTenant) {
+        GetLandlordReviewByReviewerId(user.id, currentUser.id).then((res) => {
+          if (res) {
+            setAlreadyReviewed(true);
+          } else {
+            setAlreadyReviewed(false);
+          }
+        });
+      } else {
+        GetTenantReviewByReviewerId(user.id, currentUser.id).then((res) => {
+          if (res) {
+            setAlreadyReviewed(true);
+          } else {
+            setAlreadyReviewed(false);
+          }
+        });
+      }
+    }
+  }, [setAlreadyReviewed, currentUser]);
   return (
     <>
       <Grid item container xs={12} marginTop={2} justifyContent="space-between">

@@ -28,10 +28,11 @@ export async function getTenantReviews(
 
 export async function getReviewByReviewerAndUserIds(
   reviewerId: string,
-  userId: string
+  userId: string,
+  type: ReviewType
 ): Promise<DbUserReview | undefined> {
   return knex<DbUserReview>(USER_REVIEWS_TABLE_NAME)
-    .where({ reviewerId, userId })
+    .where({ reviewerId, userId, type })
     .select()
     .first();
 }

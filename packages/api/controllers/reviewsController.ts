@@ -3,6 +3,7 @@ import {
   createUserReview,
   getAllLandlordReviews,
   getLandlordReviews,
+  getReviewByReviewerAndUserIds,
   getTenantReviews,
 } from "@packages/db/services/userReviewService";
 import {
@@ -19,6 +20,7 @@ import {
   convertDbApartmentReviewToApartmentReview,
   convertNewApartmentReviewToDbApartmentReview,
 } from "../convertors/apartmentReview";
+import { ReviewType } from "@packages/db/models";
 
 export const postUserReview = async (req: Request, res: Response) => {
   try {
@@ -88,6 +90,28 @@ export const getApartmentReviewsById = async (req: Request, res: Response) => {
   } catch (e) {
     res.sendStatus(500);
     console.error(e);
+  }
+};
+
+export const fetchUserReviewByReviewerId = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const dbUserReview = await getReviewByReviewerAndUserIds(
+      req.params.reviewerId as string,
+      req.params.id as string,
+      req.query.type as ReviewType
+    );
+    if (!dbUserReview) {
+      res.sendStatus(404);
+      return;
+    }
+    const userReview = await convertDbUserReviewToUserReview(dbUserReview);
+    res.status(200).send(userReview);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
   }
 };
 

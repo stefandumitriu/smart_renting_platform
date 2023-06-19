@@ -64,3 +64,29 @@ export async function GetAllApartmentReviewsRequest(): Promise<
   const response = await axiosBaseInstance.get(APARTMENT_REVIEWS_PATH);
   return response.data as ApartmentReview[];
 }
+
+export async function GetLandlordReviewByReviewerId(
+  id: string,
+  reviewerId: string
+): Promise<UserReview | undefined> {
+  const response = await axiosBaseInstance.get(
+    `${USER_REVIEWS_PATH}/${id}/reviewer/${reviewerId}?type=LANDLORD`
+  );
+  if (response.status !== 200) {
+    return undefined;
+  }
+  return response.data as UserReview;
+}
+
+export async function GetTenantReviewByReviewerId(
+  id: string,
+  reviewerId: string
+): Promise<UserReview | undefined> {
+  const response = await axiosBaseInstance.get(
+    `${USER_REVIEWS_PATH}/${id}/reviewer/${reviewerId}?type=TENANT`
+  );
+  if (response.status !== 200) {
+    return undefined;
+  }
+  return response.data as UserReview;
+}
