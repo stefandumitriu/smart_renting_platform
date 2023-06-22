@@ -28,8 +28,8 @@ import { Link, useLocation } from "react-router-dom";
 import EditContractModal from "./EditContractModal";
 import CreateUserReviewModal from "./reviews/CreateUserReviewModal";
 import CreateApartmentReviewModal from "./reviews/CreateApartmentReviewModal";
-import { flatten } from "lodash";
 import {
+  GetApartmentReviewByReviewerId,
   GetLandlordReviewByReviewerId,
   GetTenantReviewByReviewerId,
 } from "../../requests/ReviewsRequests";
@@ -60,36 +60,21 @@ const UserInfo: React.FC<{
   theme: Theme;
   handleUserReviewModalOpen: () => void;
   userIsTenant?: boolean;
-}> = ({ user, theme, handleUserReviewModalOpen, userIsTenant }) => {
-  const [alreadyReviewed, setAlreadyReviewed] = useState<boolean>(false);
-  const { currentUser } = useContext(AuthContext);
-  useEffect(() => {
-    if (currentUser) {
-      if (userIsTenant) {
-        GetLandlordReviewByReviewerId(user.id, currentUser.id).then((res) => {
-          if (res) {
-            setAlreadyReviewed(true);
-          } else {
-            setAlreadyReviewed(false);
-          }
-        });
-      } else {
-        GetTenantReviewByReviewerId(user.id, currentUser.id).then((res) => {
-          if (res) {
-            setAlreadyReviewed(true);
-          } else {
-            setAlreadyReviewed(false);
-          }
-        });
-      }
-    }
-  }, [setAlreadyReviewed, currentUser]);
+  alreadyReviewed: boolean;
+}> = ({
+  user,
+  theme,
+  handleUserReviewModalOpen,
+  userIsTenant,
+  alreadyReviewed,
+}) => {
   return (
     <>
       <Grid item container xs={12} marginTop={2} justifyContent="space-between">
         <Grid item xs={12} md="auto">
           <Typography variant="h4" color={theme.palette.secondary.main}>
-            Detalii chirias - {user.firstName} {user.lastName}
+            Detalii {userIsTenant ? "proprietar" : "chirias"} - {user.firstName}{" "}
+            {user.lastName}
           </Typography>
         </Grid>
         <Grid item xs={12} md="auto">
@@ -98,6 +83,7 @@ const UserInfo: React.FC<{
             variant="contained"
             onClick={() => handleUserReviewModalOpen()}
             sx={{ borderRadius: "10px" }}
+            disabled={alreadyReviewed}
           >
             Adauga recenzie
           </Button>
@@ -320,12 +306,14 @@ interface ApartmentInfoProps {
   apartment: Apartment;
   theme: Theme;
   handleApartmentReviewModalOpen: () => void;
+  alreadyReviewed: boolean;
 }
 
 const ApartmentInfo: React.FC<ApartmentInfoProps> = ({
   apartment,
   theme,
   handleApartmentReviewModalOpen,
+  alreadyReviewed,
 }: ApartmentInfoProps) => {
   return (
     <>
@@ -348,6 +336,7 @@ const ApartmentInfo: React.FC<ApartmentInfoProps> = ({
             color="primary"
             onClick={() => handleApartmentReviewModalOpen()}
             sx={{ borderRadius: "10px" }}
+            disabled={alreadyReviewed}
           >
             Adauga recenzie
           </Button>
@@ -413,6 +402,46 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
   const theme = useTheme();
 
   const [contract, setContract] = useState<Contract | undefined>(undefined);
+  const [userReviewed, setUserReviewed] = useState(false);
+  const [apartmentReviewed, setApartmentReviewed] = useState(false);
+  useEffect(() => {
+    if (currentUser && contract) {
+      GetApartmentReviewByReviewerId(contract.apartmentId, currentUser.id).then(
+        (res) => {
+          if (res) {
+            setApartmentReviewed(true);
+          } else {
+            setApartmentReviewed(false);
+          }
+        }
+      );
+    }
+  }, [currentUser, contract, setApartmentReviewed]);
+  useEffect(() => {
+    if (currentUser && contract) {
+      if (userIsTenant) {
+        GetLandlordReviewByReviewerId(contract.landlordId, currentUser.id).then(
+          (res) => {
+            if (res) {
+              setUserReviewed(true);
+            } else {
+              setUserReviewed(false);
+            }
+          }
+        );
+      } else {
+        GetTenantReviewByReviewerId(contract.tenantId, currentUser.id).then(
+          (res) => {
+            if (res) {
+              setUserReviewed(true);
+            } else {
+              setUserReviewed(false);
+            }
+          }
+        );
+      }
+    }
+  }, [setUserReviewed, currentUser, contract, userIsTenant]);
   const [userReviewModalOpen, setUserReviewModalOpen] =
     useState<boolean>(false);
   const [apartmentReviewModalOpen, setApartmentReviewModalOpen] =
@@ -436,6 +465,16 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
   const handleUserReviewModalOpen = useCallback(
     () => setUserReviewModalOpen(true),
     [setUserReviewModalOpen]
+  );
+
+  const handleUserReviewModalSubmit = useCallback(
+    () => setUserReviewed(true),
+    [setUserReviewed]
+  );
+
+  const handleApartmentReviewModalSubmit = useCallback(
+    () => setApartmentReviewed(true),
+    [setApartmentReviewed]
   );
 
   const updateContractCallback = useCallback(
@@ -527,6 +566,7 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
               apartment={contract.apartment}
               theme={theme}
               handleApartmentReviewModalOpen={handleApartmentReviewModalOpen}
+              alreadyReviewed={apartmentReviewed}
             />
           )}
           <UserInfo
@@ -534,17 +574,20 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
             theme={theme}
             handleUserReviewModalOpen={handleUserReviewModalOpen}
             userIsTenant={userIsTenant}
+            alreadyReviewed={userReviewed}
           />
           <CreateUserReviewModal
             open={userReviewModalOpen}
             handleClose={handleUserReviewModalClose}
             contract={contract}
             type={userIsTenant ? "LANDLORD" : "TENANT"}
+            handleSubmit={handleUserReviewModalSubmit}
           />
           <CreateApartmentReviewModal
             open={apartmentReviewModalOpen}
             handleClose={handleApartmentReviewModalClose}
             contract={contract}
+            handleSubmit={handleApartmentReviewModalSubmit}
           />
         </Grid>
       )}

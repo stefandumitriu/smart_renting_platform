@@ -90,3 +90,16 @@ export async function GetTenantReviewByReviewerId(
   }
   return response.data as UserReview;
 }
+
+export async function GetApartmentReviewByReviewerId(
+  id: string,
+  reviewerId: string
+): Promise<ApartmentReview | undefined> {
+  const response = await axiosBaseInstance.get(
+    `${APARTMENT_REVIEWS_PATH}/${id}/reviewer/${reviewerId}`
+  );
+  if (response.status !== 200) {
+    return undefined;
+  }
+  return response.data as ApartmentReview;
+}

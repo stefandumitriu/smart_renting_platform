@@ -14,6 +14,7 @@ import { NewApartmentReview, NewUserReview } from "../models";
 import {
   createApartmentReview,
   getAllApartmentReviews,
+  getApartmentReviewByReviewer,
   getApartmentReviews,
 } from "@packages/db/services/apartmentReviewService";
 import {
@@ -136,5 +137,28 @@ export const fetchAllApartmentReviews = async (req: Request, res: Response) => {
     res.status(200).send(apartmentReviews);
   } catch (e) {
     console.error(e);
+  }
+};
+
+export const fetchApartmentReviewByReviewerId = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const dbApartmentReview = await getApartmentReviewByReviewer(
+      req.params.reviewerId,
+      req.params.id
+    );
+    if (!dbApartmentReview) {
+      res.sendStatus(404);
+      return;
+    }
+    const apartmentReview = await convertDbApartmentReviewToApartmentReview(
+      dbApartmentReview
+    );
+    res.status(200).send(apartmentReview);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
   }
 };

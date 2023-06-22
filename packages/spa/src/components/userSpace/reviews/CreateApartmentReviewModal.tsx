@@ -24,12 +24,14 @@ interface CreateApartmentReviewModalProps {
   open: boolean;
   handleClose: () => void;
   contract: Contract;
+  handleSubmit: () => void;
 }
 
 const CreateApartmentReviewModal: React.FC<CreateApartmentReviewModalProps> = ({
   open,
   handleClose,
   contract,
+  handleSubmit,
 }) => {
   const theme = useTheme();
   const { currentUser } = useContext(AuthContext);
@@ -37,6 +39,7 @@ const CreateApartmentReviewModal: React.FC<CreateApartmentReviewModalProps> = ({
     async (values: NewApartmentReview) => {
       const apartmentReview = await CreateApartmentReviewRequest(values);
       console.log(apartmentReview);
+      handleSubmit();
       handleClose();
     },
     [handleClose]

@@ -23,6 +23,7 @@ import { Info } from "@mui/icons-material";
 interface CreateUserReviewModalProps {
   open: boolean;
   handleClose: () => void;
+  handleSubmit: () => void;
   contract: Contract;
   type: "LANDLORD" | "TENANT";
 }
@@ -30,6 +31,7 @@ interface CreateUserReviewModalProps {
 const CreateUserReviewModal: React.FC<CreateUserReviewModalProps> = ({
   open,
   handleClose,
+  handleSubmit,
   contract,
   type,
 }) => {
@@ -37,11 +39,11 @@ const CreateUserReviewModal: React.FC<CreateUserReviewModalProps> = ({
   const { currentUser } = useContext(AuthContext);
   const submitCallback = useCallback(
     async (values: NewUserReview) => {
-      const userReview = await CreateUserReviewRequest(values);
-      console.log(userReview);
+      await CreateUserReviewRequest(values);
+      handleSubmit();
       handleClose();
     },
-    [handleClose]
+    [handleClose, handleSubmit]
   );
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
