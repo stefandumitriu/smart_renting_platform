@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { Listing } from "@packages/api/models/listings/listing";
-import { FormAutocomplete } from "../../FormInputsWrappers";
+import { FormAutocomplete, FormTextInput } from "../../FormInputsWrappers";
 import { StyledTextField } from "../landingPage/SignupForm";
 import * as Yup from "yup";
 import { useLoaderData, useNavigate } from "react-router-dom";
@@ -35,11 +35,10 @@ const EditListingPage: React.FC<{}> = () => {
 
   const handleSubmit = useCallback(
     async (values: Listing) => {
-      await EditListingRequest(
+      EditListingRequest(
         listing.id,
         _.omit(values, ["id", "apartment", "apartmentId", "photosUrl"])
-      );
-      navigate("/user/dashboard/landlord/listings");
+      ).then(() => navigate("/user/dashboard/landlord/listings"));
     },
     [listing, navigate]
   );
@@ -121,21 +120,17 @@ const EditListingPage: React.FC<{}> = () => {
                       justifyContent="space-between"
                     >
                       <Grid item xs={6}>
-                        <StyledTextField
+                        <FormTextInput<string>
                           name="title"
                           label="Titlu"
-                          value={values.title}
-                          onChange={handleChange}
                           fullWidth
                           required
                         />
                       </Grid>
                       <Grid item xs={3}>
-                        <StyledTextField
+                        <FormTextInput<number>
                           name="price"
                           label="Pret (euro/luna)"
-                          value={values.price}
-                          onChange={handleChange}
                           type="number"
                           fullWidth
                           required
@@ -144,11 +139,9 @@ const EditListingPage: React.FC<{}> = () => {
                     </Grid>
                     <Grid item container xs={12} marginTop={2}>
                       <Grid item xs={12}>
-                        <StyledTextField
+                        <FormTextInput<string>
                           name="about"
                           label="Descriere"
-                          value={values.about}
-                          onChange={handleChange}
                           multiline
                           minRows={3}
                           fullWidth
@@ -173,11 +166,9 @@ const EditListingPage: React.FC<{}> = () => {
                         />
                       </Grid>
                       <Grid item xs={3}>
-                        <StyledTextField
+                        <FormTextInput<string>
                           name="availability"
                           label="Disponibilitate"
-                          value={values.availability}
-                          onChange={handleChange}
                           fullWidth
                         />
                       </Grid>
@@ -189,10 +180,11 @@ const EditListingPage: React.FC<{}> = () => {
                 <Grid item xs={2}>
                   <Button
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     type="submit"
                     fullWidth
                     disabled={_.isEqual(values, initialValues)}
+                    sx={{ borderRadius: "10px" }}
                   >
                     Salveaza schimbarile
                   </Button>

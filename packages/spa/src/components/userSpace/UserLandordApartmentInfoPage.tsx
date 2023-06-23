@@ -13,10 +13,10 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { useLoaderData } from "react-router-dom";
-import { FormAutocomplete } from "../../FormInputsWrappers";
-import { StyledTextField } from "../landingPage/SignupForm";
+import { FormAutocomplete, FormTextInput } from "../../FormInputsWrappers";
 import _ from "lodash";
 import { PatchApartmentRequest } from "../../requests/ApartmentsRequests";
+import { NewApartmentValidationSchema } from "../../validators/apartment";
 
 enum StreetTypeEnum {
   Alee = "Aleea",
@@ -43,8 +43,9 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
   const loaderData = useLoaderData() as Apartment;
   const [apartment, setApartment] = useState<Apartment>(loaderData);
   const handleSubmit = useCallback(async (values: Apartment) => {
-    const updatedApartment = await PatchApartmentRequest(values.id, values);
-    setApartment(updatedApartment);
+    PatchApartmentRequest(values.id, values).then((updatedApartment) =>
+      setApartment(updatedApartment)
+    );
   }, []);
   return (
     <Layout pageTitle="Informatii Apartament">
@@ -52,6 +53,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
         initialValues={apartment}
         onSubmit={handleSubmit}
         enableReinitialize
+        validationSchema={NewApartmentValidationSchema}
       >
         {({ values, handleChange, initialValues, setFieldValue }) => {
           return (
@@ -96,87 +98,66 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                             />
                           </Grid>
                           <Grid item xs={4}>
-                            <StyledTextField
+                            <FormTextInput<string>
                               name="address.streetName"
                               label="Nume strada"
-                              value={values.address.streetName}
                               fullWidth
                               required
-                              onChange={handleChange}
-                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
-                            <StyledTextField
+                            <FormTextInput<number>
                               name="address.streetNumber"
                               label="Numar"
-                              value={values.address.streetNumber}
                               fullWidth
-                              onChange={handleChange}
                               required
                               type="number"
-                              color="secondary"
                             />
                           </Grid>
                         </Grid>
                         <Grid item container xs={12} spacing={2}>
                           <Grid item xs={2}>
-                            <StyledTextField
+                            <FormTextInput<string>
                               name="address.block"
                               label="Nume bloc"
-                              value={values.address.block}
                               fullWidth
-                              onChange={handleChange}
-                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
-                            <StyledTextField
+                            <FormTextInput<number>
                               name="address.blockEntrance"
                               label="Scara"
-                              value={values.address.blockEntrance}
                               fullWidth
                               type="number"
-                              onChange={handleChange}
-                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
-                            <StyledTextField
+                            <FormTextInput<number>
                               name="address.floor"
                               label="Etaj"
-                              value={values.address.floor}
                               fullWidth
                               type="number"
-                              onChange={handleChange}
-                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
-                            <StyledTextField
+                            <FormTextInput<number>
                               name="address.flatNumber"
                               label="Numar apartament"
-                              value={values.address.flatNumber}
                               fullWidth
                               type="number"
-                              onChange={handleChange}
-                              color="secondary"
                             />
                           </Grid>
                         </Grid>
                         <Grid item xs={12}>
-                          <StyledTextField
+                          <FormTextInput<string>
                             name="areaInfo"
                             label="Informatii zona"
                             placeholder="Scrie aici orice despre zona in care se situeaza apartamentul tau (supermarket-uri,
                 transport, scoli, infrastructura etc.)"
-                            value={values.areaInfo}
                             fullWidth
                             multiline
                             minRows={2}
                             maxRows={2}
-                            onChange={handleChange}
-                            color="secondary"
                           />
                         </Grid>
                       </Grid>
@@ -212,53 +193,41 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                             />
                           </Grid>
                           <Grid item xs={2}>
-                            <StyledTextField
+                            <FormTextInput<number>
                               name="noOfRooms"
                               label="Numar camere"
-                              value={values.noOfRooms}
                               fullWidth
-                              onChange={handleChange}
                               required
                               type="number"
-                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
-                            <StyledTextField
+                            <FormTextInput<number>
                               name="noOfBathrooms"
                               label="Numar bai"
-                              value={values.noOfBathrooms}
                               fullWidth
-                              onChange={handleChange}
                               required
                               type="number"
-                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={2}>
-                            <StyledTextField
+                            <FormTextInput<number>
                               name="noOfBalconies"
                               label="Numar balcoane"
-                              value={values.noOfBalconies}
                               fullWidth
-                              onChange={handleChange}
                               required
                               type="number"
-                              color="secondary"
                             />
                           </Grid>
                         </Grid>
                         <Grid item container xs={12} spacing={2}>
                           <Grid item xs={2}>
-                            <StyledTextField
+                            <FormTextInput<number>
                               name="surface"
                               label="Suprafata (mp.)"
-                              value={values.surface}
                               fullWidth
-                              onChange={handleChange}
                               required
                               type="number"
-                              color="secondary"
                             />
                           </Grid>
                           <Grid item xs={3}>

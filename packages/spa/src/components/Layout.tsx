@@ -131,7 +131,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
             onClick={
               isAuthenticated
                 ? () => {
-                    navigate("/user/dashboard");
+                    navigate("/user/dashboard/settings");
                   }
                 : () => {
                     loginWithRedirect();
