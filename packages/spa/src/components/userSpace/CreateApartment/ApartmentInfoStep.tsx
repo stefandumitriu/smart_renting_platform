@@ -1,5 +1,4 @@
 import React from "react";
-import * as Yup from "yup";
 import {
   Divider,
   FormControlLabel,
@@ -9,10 +8,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { FormAutocomplete } from "../../../FormInputsWrappers";
-import { StyledTextField } from "../../landingPage/SignupForm";
+import { FormAutocomplete, FormTextInput } from "../../../FormInputsWrappers";
 import { useFormikContext } from "formik";
 import { NewApartment } from "@packages/api/models/listings/apartment";
+import { NewApartmentValidationSchema } from "../../../validators/apartment";
 
 enum StreetTypeEnum {
   Alee = "Aleea",
@@ -36,8 +35,7 @@ enum SubdivisonTypeEnum {
 
 const ApartmentInfoStepComponent: React.FC = () => {
   const theme = useTheme();
-  const { values, handleChange, setFieldValue } =
-    useFormikContext<NewApartment>();
+  const { values, setFieldValue } = useFormikContext<NewApartment>();
   return (
     <Grid
       item
@@ -67,92 +65,70 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     name="address.streetType"
                     label="Tip strada"
                     options={Object.values(StreetTypeEnum)}
-                    value={values.address?.streetType}
                     required
                   />
                 </Grid>
                 <Grid item xs={4}>
-                  <StyledTextField
+                  <FormTextInput<string>
                     name="address.streetName"
                     label="Nume strada"
-                    value={values.address?.streetName}
                     fullWidth
                     required
-                    onChange={handleChange}
-                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
-                  <StyledTextField
+                  <FormTextInput<number>
                     name="address.streetNumber"
                     label="Numar"
-                    value={values.address?.streetNumber}
                     fullWidth
-                    onChange={handleChange}
                     required
                     type="number"
-                    color="secondary"
                   />
                 </Grid>
               </Grid>
               <Grid item container xs={12} spacing={2}>
                 <Grid item xs={2}>
-                  <StyledTextField
+                  <FormTextInput<string>
                     name="address.block"
                     label="Nume bloc"
-                    value={values.address?.block}
                     fullWidth
-                    onChange={handleChange}
-                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
-                  <StyledTextField
+                  <FormTextInput<number>
                     name="address.blockEntrance"
                     label="Scara"
-                    value={values.address?.blockEntrance}
                     fullWidth
                     type="number"
-                    onChange={handleChange}
-                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
-                  <StyledTextField
+                  <FormTextInput<number>
                     name="address.floor"
                     label="Etaj"
-                    value={values.address?.floor}
                     fullWidth
                     type="number"
-                    onChange={handleChange}
-                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
-                  <StyledTextField
+                  <FormTextInput<number>
                     name="address.flatNumber"
                     label="Numar apartament"
-                    value={values.address?.flatNumber}
                     fullWidth
                     type="number"
-                    onChange={handleChange}
-                    color="secondary"
                   />
                 </Grid>
               </Grid>
               <Grid item xs={12}>
-                <StyledTextField
+                <FormTextInput<string>
                   name="areaInfo"
                   label="Informatii zona"
                   placeholder="Scrie aici orice despre zona in care se situeaza apartamentul tau (supermarket-uri,
                 transport, scoli, infrastructura etc.)"
-                  value={values.areaInfo}
                   fullWidth
                   multiline
                   minRows={2}
                   maxRows={2}
-                  onChange={handleChange}
-                  color="secondary"
                 />
               </Grid>
             </Grid>
@@ -182,53 +158,41 @@ const ApartmentInfoStepComponent: React.FC = () => {
                   />
                 </Grid>
                 <Grid item xs={2}>
-                  <StyledTextField
+                  <FormTextInput<number>
                     name="noOfRooms"
                     label="Numar camere"
-                    value={values.noOfRooms}
                     fullWidth
-                    onChange={handleChange}
                     required
                     type="number"
-                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
-                  <StyledTextField
+                  <FormTextInput<number>
                     name="noOfBathrooms"
                     label="Numar bai"
-                    value={values.noOfBathrooms}
                     fullWidth
-                    onChange={handleChange}
                     required
                     type="number"
-                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={2}>
-                  <StyledTextField
+                  <FormTextInput<number>
                     name="noOfBalconies"
                     label="Numar balcoane"
-                    value={values.noOfBalconies}
                     fullWidth
-                    onChange={handleChange}
                     required
                     type="number"
-                    color="secondary"
                   />
                 </Grid>
               </Grid>
               <Grid item container xs={12} spacing={2}>
                 <Grid item xs={2}>
-                  <StyledTextField
+                  <FormTextInput<number>
                     name="surface"
                     label="Suprafata (mp.)"
-                    value={values.surface}
                     fullWidth
-                    onChange={handleChange}
                     required
                     type="number"
-                    color="secondary"
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -674,32 +638,6 @@ const ApartmentInfoStepComponent: React.FC = () => {
     </Grid>
   );
 };
-
-const NewAddressValidationSchema = Yup.object().shape({
-  streetType: Yup.string().oneOf(Object.values(StreetTypeEnum)).required(),
-  streetName: Yup.string().required(),
-  streetNumber: Yup.number().min(1).required(),
-  block: Yup.string(),
-  blockEntrance: Yup.number(),
-  floor: Yup.number(),
-  flatNumber: Yup.number(),
-});
-
-const NewApartmentValidationSchema = Yup.object().shape({
-  ownerId: Yup.string().uuid().required(),
-  surface: Yup.number().min(1).required(),
-  noOfRooms: Yup.number().min(1).required(),
-  noOfBathrooms: Yup.number().min(0).required(),
-  noOfBalconies: Yup.number().min(0).required(),
-  subdivision: Yup.string().oneOf(Object.values(SubdivisonTypeEnum)).required(),
-  cooling: Yup.boolean(),
-  heating: Yup.string().oneOf(Object.values(HeatingTypeEnum)).required(),
-  utilities: Yup.object(),
-  appliances: Yup.object(),
-  finishes: Yup.object(),
-  areaInfo: Yup.string(),
-  address: NewAddressValidationSchema.required(),
-});
 
 const ApartmentInfoStep = {
   component: ApartmentInfoStepComponent,

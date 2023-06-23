@@ -107,8 +107,9 @@ const AddApartmentWizard: React.FC<{}> = () => {
             } as unknown as NewApartment
           }
           onSubmit={handleSubmit}
+          validationSchema={steps[activeStep].validationSchema}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, errors }) => (
             <Form>
               <Stepper
                 activeStep={activeStep}

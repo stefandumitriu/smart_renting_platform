@@ -1,12 +1,15 @@
 import { useField } from "formik";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Autocomplete, AutocompleteProps } from "@mui/material";
 import { StyledTextField } from "./components/landingPage/SignupForm";
 import { Moment } from "moment";
+import { TextFieldProps } from "@mui/material/TextField/TextField";
 
 export const FormDatePicker = ({ ...props }) => {
-  const [field, , { setValue }] = useField(props.name);
+  const [field, { touched, error }, { setValue, setTouched }] = useField(
+    props.name
+  );
   const onChange = useCallback(
     (value: Moment | null) => {
       setValue(value);
@@ -30,7 +33,9 @@ export function FormAutocomplete<T>(
   props: FormAutocompleteProps<T> &
     Partial<AutocompleteProps<T, boolean, undefined, undefined>>
 ) {
-  const [field, , { setValue }] = useField<T>(props.name);
+  const [field, { touched, error }, { setValue, setTouched }] = useField<T>(
+    props.name
+  );
   const onChange = useCallback(
     (event: React.SyntheticEvent, value: T | T[] | null) => {
       setValue(value as T);
@@ -49,8 +54,32 @@ export function FormAutocomplete<T>(
           label={props.label}
           required={props.required}
           color="secondary"
+          onBlur={() => setTouched(true)}
+          error={touched && !!error}
+          helperText={touched && error}
         />
       )}
+    />
+  );
+}
+
+interface FormTextInputProps<T = string | number> {
+  label: string;
+  name: string;
+}
+
+export function FormTextInput<T>(
+  props: FormTextInputProps<T> & Partial<TextFieldProps>
+) {
+  const [field, { touched, error }, { setTouched }] = useField<T>(props.name);
+  return (
+    <StyledTextField
+      {...props}
+      {...field}
+      color="secondary"
+      onBlur={() => setTouched(true)}
+      error={touched && !!error}
+      helperText={touched && error}
     />
   );
 }

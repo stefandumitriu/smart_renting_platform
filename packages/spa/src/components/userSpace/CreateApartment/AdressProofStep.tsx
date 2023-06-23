@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Grid, Paper, useTheme } from "@mui/material";
+import { Grid, Paper, Typography, useTheme } from "@mui/material";
 import Dropzone from "react-dropzone";
 import * as Yup from "yup";
 import { useFormikContext } from "formik";
+import { NewApartment } from "@packages/api/models/listings/apartment";
 
 const thumb = {
   display: "inline-flex",
@@ -42,9 +43,11 @@ const AddressProofStepComponent: React.FC = () => {
   const [previewFile, setPreviewFile] = useState<
     (File & { preview: string }) | undefined
   >(undefined);
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, errors, touched, setTouched } =
+    useFormikContext<NewApartment>();
   useEffect(() => {
     setFieldValue("addressProof", uploadedFile);
+    setTouched({ addressProof: true });
   }, [uploadedFile]);
   const dropzoneStyle = {
     alignItems: "center",
@@ -137,6 +140,11 @@ const AddressProofStepComponent: React.FC = () => {
       <Grid item xs={12}>
         {preview}
       </Grid>
+      {touched && !!errors.addressProof && (
+        <Grid item xs={12}>
+          <Typography color="red">{errors.addressProof}</Typography>
+        </Grid>
+      )}
     </Grid>
   );
 };
