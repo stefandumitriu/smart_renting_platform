@@ -177,6 +177,7 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
                 variant="contained"
                 fullWidth
                 onClick={() => handleDelete(apartment.id)}
+                disabled={apartment.status !== ApartmentStatus.Available}
               >
                 Sterge
               </Button>

@@ -26,7 +26,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { Link, useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { Listing } from "@packages/api/models/listings/listing";
 import SwipeableViews from "react-swipeable-views";
 import {
@@ -35,7 +35,6 @@ import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
   LocationOn,
-  Star,
 } from "@mui/icons-material";
 import { deepOrange } from "@mui/material/colors";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -78,6 +77,7 @@ const featuresPhotoName: Record<string, string> = {
 
 const SimilarListingCard: React.FC<{ listing: Listing }> = ({ listing }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const images = [
     "https://i.pinimg.com/originals/30/45/12/304512deb5caefbf2857c01acb5d5e56.jpg",
     "https://www.franklinsapartments.com/img/Apt5a.jpg",
@@ -92,7 +92,12 @@ const SimilarListingCard: React.FC<{ listing: Listing }> = ({ listing }) => {
         height: "100%",
       }}
     >
-      <CardActionArea component={Link} to={`${listing.id}`.toString()}>
+      <CardActionArea
+        onClick={() => {
+          navigate(`/properties/${listing.id}`);
+          window.scrollTo(0, 0);
+        }}
+      >
         <Grid container spacing={2} flexDirection="column">
           <Grid item xs={12}>
             <CardMedia

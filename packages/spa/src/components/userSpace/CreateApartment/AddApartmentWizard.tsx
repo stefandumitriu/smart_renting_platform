@@ -70,9 +70,9 @@ const AddApartmentWizard: React.FC<{}> = () => {
           values[key as keyof NewApartment]?.toString() ?? ""
         )
       );
-      const addedApartment = await PostApartmentRequest(formData);
-      console.log(addedApartment);
-      navigate("/user/dashboard/landlord");
+      PostApartmentRequest(formData)
+        .then((res) => console.log(res))
+        .then(() => navigate("/user/dashboard/landlord"));
     },
     [activeStep, isLastStep, navigate]
   );
@@ -109,7 +109,7 @@ const AddApartmentWizard: React.FC<{}> = () => {
           onSubmit={handleSubmit}
           validationSchema={steps[activeStep].validationSchema}
         >
-          {({ isSubmitting, errors }) => (
+          {({ isSubmitting }) => (
             <Form>
               <Stepper
                 activeStep={activeStep}

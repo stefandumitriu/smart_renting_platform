@@ -1,5 +1,5 @@
 import { useField } from "formik";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Autocomplete, AutocompleteProps } from "@mui/material";
 import { StyledTextField } from "./components/landingPage/SignupForm";
@@ -7,9 +7,7 @@ import { Moment } from "moment";
 import { TextFieldProps } from "@mui/material/TextField/TextField";
 
 export const FormDatePicker = ({ ...props }) => {
-  const [field, { touched, error }, { setValue, setTouched }] = useField(
-    props.name
-  );
+  const [field, , { setValue }] = useField(props.name);
   const onChange = useCallback(
     (value: Moment | null) => {
       setValue(value);
@@ -63,13 +61,13 @@ export function FormAutocomplete<T>(
   );
 }
 
-interface FormTextInputProps<T = string | number> {
+interface FormTextInputProps {
   label: string;
   name: string;
 }
 
 export function FormTextInput<T>(
-  props: FormTextInputProps<T> & Partial<TextFieldProps>
+  props: FormTextInputProps & Partial<TextFieldProps>
 ) {
   const [field, { touched, error }, { setTouched }] = useField<T>(props.name);
   return (

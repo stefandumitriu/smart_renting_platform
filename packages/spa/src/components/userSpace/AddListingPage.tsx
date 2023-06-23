@@ -17,15 +17,14 @@ import {
 import { Form, Formik } from "formik";
 import { NewListing } from "@packages/api/models/listings/listing";
 import { CreateListingRequest } from "../../requests/ListingsRequests";
-import { FormAutocomplete } from "../../FormInputsWrappers";
+import { FormAutocomplete, FormTextInput } from "../../FormInputsWrappers";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Apartment } from "@packages/api/models/listings/apartment";
 import { GetApartmentsByOwnerIdRequest } from "../../requests/ApartmentsRequests";
-import { StyledTextField } from "../landingPage/SignupForm";
 import Dropzone from "react-dropzone";
-import * as Yup from "yup";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
+import { NewListingSchema } from "../../validators/listing";
 
 enum ApartmentStatus {
   UnderReview = "Under Review",
@@ -68,15 +67,6 @@ const img = {
   height: "100%",
 };
 
-const NewListingSchema = Yup.object().shape({
-  apartmentId: Yup.string().uuid().required(),
-  title: Yup.string().required(),
-  price: Yup.number().min(1).required(),
-  about: Yup.string(),
-  rentalPeriod: Yup.string(),
-  availability: Yup.string(),
-});
-
 const AddListingPage: React.FC<{}> = () => {
   const theme = useTheme();
   const dropzoneStyle = {
@@ -102,9 +92,9 @@ const AddListingPage: React.FC<{}> = () => {
       Object.keys(_.omit(values, "photos")).forEach((key) =>
         formData.append(key, values[key as keyof NewListing]?.toString() ?? "")
       );
-      const listing = await CreateListingRequest(formData);
-      console.log(listing);
-      navigate("/user/dashboard/landlord/listings");
+      CreateListingRequest(formData)
+        .then((res) => console.log(res))
+        .then(() => navigate("/user/dashboard/landlord/listings"));
     },
     [uploadedFiles, navigate]
   );
@@ -242,40 +232,31 @@ const AddListingPage: React.FC<{}> = () => {
                       justifyContent="space-between"
                     >
                       <Grid item xs={6}>
-                        <StyledTextField
+                        <FormTextInput<string>
                           name="title"
                           label="Titlu"
-                          value={values.title}
-                          onChange={handleChange}
                           fullWidth
                           required
-                          color="secondary"
                         />
                       </Grid>
                       <Grid item xs={3}>
-                        <StyledTextField
+                        <FormTextInput<number>
                           name="price"
                           label="Pret (euro/luna)"
-                          value={values.price}
-                          onChange={handleChange}
                           type="number"
                           fullWidth
                           required
-                          color="secondary"
                         />
                       </Grid>
                     </Grid>
                     <Grid item container xs={12} marginTop={2}>
                       <Grid item xs={12}>
-                        <StyledTextField
+                        <FormTextInput<string>
                           name="about"
                           label="Descriere"
-                          value={values.about}
-                          onChange={handleChange}
                           multiline
                           minRows={3}
                           fullWidth
-                          color="secondary"
                         />
                       </Grid>
                     </Grid>
@@ -297,13 +278,10 @@ const AddListingPage: React.FC<{}> = () => {
                         />
                       </Grid>
                       <Grid item xs={3}>
-                        <StyledTextField
+                        <FormTextInput<string>
                           name="availability"
                           label="Disponibilitate"
-                          value={values.availability}
-                          onChange={handleChange}
                           fullWidth
-                          color="secondary"
                         />
                       </Grid>
                     </Grid>
