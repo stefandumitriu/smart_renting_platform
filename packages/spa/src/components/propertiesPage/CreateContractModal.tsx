@@ -13,10 +13,10 @@ import { Application } from "@packages/api/models/listings/application";
 import { NewContact } from "@packages/api/models/contract";
 import { CreateContractRequest } from "../../requests/ContractsRequest";
 import { useNavigate } from "react-router-dom";
-import { FormDatePicker } from "../../FormInputsWrappers";
-import { StyledTextField } from "../landingPage/SignupForm";
+import { FormDatePicker, FormTextInput } from "../../FormInputsWrappers";
 import { PatchApplicationRequest } from "../../requests/ListingsRequests";
 import { PatchApartmentRequest } from "../../requests/ApartmentsRequests";
+import { ContractSchema } from "../../validators/contract";
 
 enum ApplicationStatus {
   Waiting = "Waiting",
@@ -73,6 +73,7 @@ const CreateContractModal: React.FC<CreateContractModelProps> = ({
               } as NewContact
             }
             onSubmit={submitCallback}
+            validationSchema={ContractSchema}
           >
             {({ values, handleChange }) => {
               return (
@@ -137,15 +138,12 @@ const CreateContractModal: React.FC<CreateContractModelProps> = ({
                     </Grid>
                     <Grid item container xs={12}>
                       <Grid item xs={12} md={6}>
-                        <StyledTextField
+                        <FormTextInput<number>
                           name="depositValue"
                           label="Garantie"
-                          value={values.depositValue}
                           fullWidth
-                          onChange={handleChange}
                           required
                           type="number"
-                          color="secondary"
                         />
                       </Grid>
                     </Grid>
@@ -156,40 +154,31 @@ const CreateContractModal: React.FC<CreateContractModelProps> = ({
                       justifyContent={"space-between"}
                     >
                       <Grid item xs={12} md={2}>
-                        <StyledTextField
+                        <FormTextInput<string>
                           name="rentPayday"
                           label="Zi plata chirie"
-                          value={values.rentPayday}
                           fullWidth
-                          onChange={handleChange}
                           required
-                          color="secondary"
                         />
                       </Grid>
                       <Grid item xs={12} md={9}>
-                        <StyledTextField
+                        <FormTextInput<string>
                           name="paymentInfo"
                           label="Informatii plata"
                           placeholder="IBAN/Cash etc."
-                          value={values.paymentInfo}
                           fullWidth
-                          onChange={handleChange}
-                          color="secondary"
                         />
                       </Grid>
                     </Grid>
                     <Grid item container xs={12} spacing={2}>
                       <Grid item xs={12} md={6}>
-                        <StyledTextField
+                        <FormTextInput<string>
                           name="additionalClauses"
                           label="Clauze aditionale"
-                          value={values.additionalClauses}
                           fullWidth
-                          onChange={handleChange}
                           multiline
                           maxRows={4}
                           minRows={2}
-                          color="secondary"
                         />
                       </Grid>
                     </Grid>

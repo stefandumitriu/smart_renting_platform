@@ -21,27 +21,32 @@ import { UpdateUserProfileRequest } from "../../requests/UserSignupRequest";
 import {
   AddCircleOutline,
   Apartment,
+  Business,
+  ChatBubble,
   ContentPaste,
   Edit,
-  List as ListIcon,
   ExpandLess,
   ExpandMore,
   Favorite,
   FormatListBulleted,
+  List as ListIcon,
+  Logout,
   Person,
   PlaylistAdd,
-  Business,
-  ChatBubble,
-  Logout,
 } from "@mui/icons-material";
 import { StyledTextField } from "../landingPage/SignupForm";
 import { Form, Formik } from "formik";
 import { UserProfile } from "@packages/api/models/users/userProfile";
-import { FormAutocomplete, FormDatePicker } from "../../FormInputsWrappers";
+import {
+  FormAutocomplete,
+  FormDatePicker,
+  FormTextInput,
+} from "../../FormInputsWrappers";
 import _ from "lodash";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { UserProfileSchema } from "../../validators/profile";
 
 const employmentStatus = [
   "Angajat",
@@ -107,7 +112,7 @@ const MenuList: React.FC = () => {
     logout();
     setCurrentUser(undefined);
     naviagte("/");
-  }, [setCurrentUser]);
+  }, [setCurrentUser, logout, naviagte]);
   return (
     <Paper
       elevation={10}
@@ -263,20 +268,25 @@ const UserSettings: React.FC<{}> = () => {
       );
       console.log(updatedUserProfile);
       setCurrentUser(updatedUserProfile);
-      navigate("/user/dashboard");
     },
-    [setCurrentUser, navigate]
+    [setCurrentUser]
   );
 
   return currentUser ? (
     <Layout pageTitle="Setari Profil">
-      <Grid item container xs={12} my={4}>
-        <Grid item xs={12} md={3} paddingLeft={4}>
+      <Grid item container xs={12} rowSpacing={{ xs: 4, md: 0 }}>
+        <Grid
+          item
+          xs={12}
+          md={3}
+          sx={{ paddingLeft: { xs: 0, md: 4 } }}
+          marginTop={2}
+        >
           <Grid item container xs={12}>
             <MenuList />
           </Grid>
         </Grid>
-        <Grid item xs={12} md={8} mx={4}>
+        <Grid item xs={12} md={8} mx={4} marginTop={2}>
           <Formik
             initialValues={{
               ...currentUser,
@@ -285,6 +295,7 @@ const UserSettings: React.FC<{}> = () => {
                 : undefined,
             }}
             onSubmit={handleSubmit}
+            validationSchema={UserProfileSchema}
           >
             {({ values, handleChange, initialValues }) => {
               return (
@@ -296,7 +307,7 @@ const UserSettings: React.FC<{}> = () => {
                     sx={{ minHeight: "100vh" }}
                     alignContent="start"
                   >
-                    <Grid item container xs={8} rowSpacing={2}>
+                    <Grid item container xs={12} md={8} rowSpacing={2}>
                       <Grid item container xs={12} spacing={2}>
                         <Grid item>
                           {values.profilePhotoUrl ? (
@@ -369,14 +380,11 @@ const UserSettings: React.FC<{}> = () => {
                       </Grid>
                       <Grid item container xs={12}>
                         <Grid item xs={12} sm={8}>
-                          <StyledTextField
+                          <FormTextInput<string>
                             fullWidth
                             name="phoneNumber"
                             label="Numar telefon"
                             placeholder="Numar telefon"
-                            onChange={handleChange}
-                            value={values.phoneNumber}
-                            color="secondary"
                           />
                         </Grid>
                       </Grid>
