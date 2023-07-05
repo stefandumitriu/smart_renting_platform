@@ -50,6 +50,7 @@ export const getApartment = async (req: Request, res: Response) => {
 export const patchApartment = async (req: Request, res: Response) => {
   try {
     const body = req.body as Apartment;
+    console.log(body);
     let latLong: GoogleGeocodingLatLong | undefined = await geocode(
       body.address.streetType,
       body.address.streetName,
@@ -67,8 +68,8 @@ export const patchApartment = async (req: Request, res: Response) => {
     const apartment = await convertDbApartmentToApartment(updatedDbApartment);
     res.send(apartment);
   } catch (e) {
-    res.send(e).sendStatus(500);
     console.error(e);
+    res.sendStatus(500);
   }
 };
 

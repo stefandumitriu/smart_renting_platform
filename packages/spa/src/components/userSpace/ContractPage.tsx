@@ -33,6 +33,8 @@ import {
   GetLandlordReviewByReviewerId,
   GetTenantReviewByReviewerId,
 } from "../../requests/ReviewsRequests";
+import { ApartmentReview } from "@packages/api/models";
+import UpdateApartmentReviewModal from "./reviews/UpdateApartmentReviewModal";
 
 enum ContractStatus {
   Draft = "Draft",
@@ -78,15 +80,25 @@ const UserInfo: React.FC<{
           </Typography>
         </Grid>
         <Grid item xs={12} md="auto">
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => handleUserReviewModalOpen()}
-            sx={{ borderRadius: "10px" }}
-            disabled={alreadyReviewed}
-          >
-            Adauga recenzie
-          </Button>
+          {alreadyReviewed ? (
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => handleUserReviewModalOpen()}
+              sx={{ borderRadius: "10px" }}
+            >
+              Editeaza recenzie
+            </Button>
+          ) : (
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => handleUserReviewModalOpen()}
+              sx={{ borderRadius: "10px" }}
+            >
+              Adauga recenzie
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Grid item xs={12} my={2}>
@@ -306,14 +318,16 @@ interface ApartmentInfoProps {
   apartment: Apartment;
   theme: Theme;
   handleApartmentReviewModalOpen: () => void;
-  alreadyReviewed: boolean;
+  handleUpdateApartmentReviewModalOpen: () => void;
+  apartmentReview?: ApartmentReview;
 }
 
 const ApartmentInfo: React.FC<ApartmentInfoProps> = ({
   apartment,
   theme,
   handleApartmentReviewModalOpen,
-  alreadyReviewed,
+  handleUpdateApartmentReviewModalOpen,
+  apartmentReview,
 }: ApartmentInfoProps) => {
   return (
     <>
@@ -331,15 +345,25 @@ const ApartmentInfo: React.FC<ApartmentInfoProps> = ({
           </Typography>
         </Grid>
         <Grid item xs={12} md="auto">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleApartmentReviewModalOpen()}
-            sx={{ borderRadius: "10px" }}
-            disabled={alreadyReviewed}
-          >
-            Adauga recenzie
-          </Button>
+          {!!apartmentReview ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleUpdateApartmentReviewModalOpen()}
+              sx={{ borderRadius: "10px" }}
+            >
+              Editeaza recenzie
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleApartmentReviewModalOpen()}
+              sx={{ borderRadius: "10px" }}
+            >
+              Adauga recenzie
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Grid item container xs={12} columnSpacing={2} marginTop={2}>
@@ -403,20 +427,20 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
 
   const [contract, setContract] = useState<Contract | undefined>(undefined);
   const [userReviewed, setUserReviewed] = useState(false);
-  const [apartmentReviewed, setApartmentReviewed] = useState(false);
+  const [apartmentReview, setApartmentReview] = useState<
+    ApartmentReview | undefined
+  >(undefined);
   useEffect(() => {
     if (currentUser && contract) {
       GetApartmentReviewByReviewerId(contract.apartmentId, currentUser.id).then(
         (res) => {
           if (res) {
-            setApartmentReviewed(true);
-          } else {
-            setApartmentReviewed(false);
+            setApartmentReview(res);
           }
         }
       );
     }
-  }, [currentUser, contract, setApartmentReviewed]);
+  }, [currentUser, contract, setApartmentReview]);
   useEffect(() => {
     if (currentUser && contract) {
       if (userIsTenant) {
@@ -446,7 +470,17 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
     useState<boolean>(false);
   const [apartmentReviewModalOpen, setApartmentReviewModalOpen] =
     useState<boolean>(false);
+  const [updateApartmentReviewModalOpen, setUpdateApartmentReviewModalOpen] =
+    useState(false);
 
+  const handleUpdateApartmentReviewModalOpen = useCallback(
+    () => setUpdateApartmentReviewModalOpen(true),
+    [setUpdateApartmentReviewModalOpen]
+  );
+  const handleUpdateApartmentReviewModalClose = useCallback(
+    () => setUpdateApartmentReviewModalOpen(false),
+    [setUpdateApartmentReviewModalOpen]
+  );
   const handleApartmentReviewModalOpen = useCallback(
     () => setApartmentReviewModalOpen(true),
     [setApartmentReviewModalOpen]
@@ -473,8 +507,8 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
   );
 
   const handleApartmentReviewModalSubmit = useCallback(
-    () => setApartmentReviewed(true),
-    [setApartmentReviewed]
+    (apartmentReview: ApartmentReview) => setApartmentReview(apartmentReview),
+    [setApartmentReview]
   );
 
   const updateContractCallback = useCallback(
@@ -516,81 +550,100 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
 
   return (
     <Layout pageTitle="Contract inchiriere">
-      {contract && (
-        <Grid
-          item
-          container
-          sx={{ minHeight: "100vh" }}
-          xs={10}
-          alignContent="flex-start"
-          marginX="auto"
-          marginY={2}
-        >
-          <Grid item container xs={12}>
+      <Grid
+        item
+        container
+        sx={{ minHeight: "100vh" }}
+        xs={10}
+        alignContent="flex-start"
+        marginX="auto"
+        marginY={2}
+      >
+        {contract ? (
+          <>
+            <Grid item container xs={12}>
+              {userIsTenant && (
+                <Collapse in={open} sx={{ width: "100%" }}>
+                  <Alert
+                    severity="warning"
+                    action={
+                      <Button
+                        color="inherit"
+                        size="small"
+                        onClick={() => changeContractStatus()}
+                      >
+                        Confirma Contract
+                      </Button>
+                    }
+                    sx={{ width: "100%" }}
+                  >
+                    <AlertTitle>Acest contract este un draft!</AlertTitle>
+                    Citeste informatiile contractuale apoi confirma aici
+                  </Alert>
+                </Collapse>
+              )}
+            </Grid>
+            <ContractDetailsSection
+              contract={contract}
+              updateContractCallback={updateContractCallback}
+              userIsTenant={userIsTenant}
+            />
+            <Grid item xs={12} marginTop={2}>
+              <Divider
+                sx={{
+                  backgroundColor: `${theme.palette.secondary.main}`,
+                  borderBottomWidth: 2,
+                }}
+              />
+            </Grid>
             {userIsTenant && (
-              <Collapse in={open} sx={{ width: "100%" }}>
-                <Alert
-                  severity="warning"
-                  action={
-                    <Button
-                      color="inherit"
-                      size="small"
-                      onClick={() => changeContractStatus()}
-                    >
-                      Confirma Contract
-                    </Button>
-                  }
-                  sx={{ width: "100%" }}
-                >
-                  <AlertTitle>Acest contract este un draft!</AlertTitle>
-                  Citeste informatiile contractuale apoi confirma aici
-                </Alert>
-              </Collapse>
+              <ApartmentInfo
+                apartment={contract.apartment}
+                theme={theme}
+                handleApartmentReviewModalOpen={handleApartmentReviewModalOpen}
+                handleUpdateApartmentReviewModalOpen={
+                  handleUpdateApartmentReviewModalOpen
+                }
+                apartmentReview={apartmentReview}
+              />
             )}
-          </Grid>
-          <ContractDetailsSection
-            contract={contract}
-            updateContractCallback={updateContractCallback}
-            userIsTenant={userIsTenant}
-          />
-          <Grid item xs={12} marginTop={2}>
-            <Divider
-              sx={{
-                backgroundColor: `${theme.palette.secondary.main}`,
-                borderBottomWidth: 2,
-              }}
-            />
-          </Grid>
-          {userIsTenant && (
-            <ApartmentInfo
-              apartment={contract.apartment}
+            <UserInfo
+              user={userIsTenant ? contract.landlord : contract.tenant}
               theme={theme}
-              handleApartmentReviewModalOpen={handleApartmentReviewModalOpen}
-              alreadyReviewed={apartmentReviewed}
+              handleUserReviewModalOpen={handleUserReviewModalOpen}
+              userIsTenant={userIsTenant}
+              alreadyReviewed={userReviewed}
             />
-          )}
-          <UserInfo
-            user={userIsTenant ? contract.landlord : contract.tenant}
-            theme={theme}
-            handleUserReviewModalOpen={handleUserReviewModalOpen}
-            userIsTenant={userIsTenant}
-            alreadyReviewed={userReviewed}
-          />
-          <CreateUserReviewModal
-            open={userReviewModalOpen}
-            handleClose={handleUserReviewModalClose}
-            contract={contract}
-            type={userIsTenant ? "LANDLORD" : "TENANT"}
-            handleSubmit={handleUserReviewModalSubmit}
-          />
-          <CreateApartmentReviewModal
-            open={apartmentReviewModalOpen}
-            handleClose={handleApartmentReviewModalClose}
-            contract={contract}
-            handleSubmit={handleApartmentReviewModalSubmit}
-          />
-        </Grid>
-      )}
+            <CreateUserReviewModal
+              open={userReviewModalOpen}
+              handleClose={handleUserReviewModalClose}
+              contract={contract}
+              type={userIsTenant ? "LANDLORD" : "TENANT"}
+              handleSubmit={handleUserReviewModalSubmit}
+            />
+            <CreateApartmentReviewModal
+              open={apartmentReviewModalOpen}
+              handleClose={handleApartmentReviewModalClose}
+              contract={contract}
+              handleSubmit={handleApartmentReviewModalSubmit}
+            />
+            {apartmentReview && (
+              <UpdateApartmentReviewModal
+                open={updateApartmentReviewModalOpen}
+                handleClose={handleUpdateApartmentReviewModalClose}
+                apartmentReview={apartmentReview}
+                handleSubmit={handleApartmentReviewModalSubmit}
+              />
+            )}
+          </>
+        ) : (
+          <Grid item container justifyContent="center">
+            <Grid item>
+              <Typography>Nu exista niciun contract activ</Typography>
+            </Grid>
+          </Grid>
+        )}
+      </Grid>
     </Layout>
   );
 };

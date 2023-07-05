@@ -103,3 +103,25 @@ export async function GetApartmentReviewByReviewerId(
   }
   return response.data as ApartmentReview;
 }
+
+export async function PatchApartmentReviewRequest(
+  id: string,
+  apartmentReview: Partial<ApartmentReview>
+): Promise<ApartmentReview> {
+  const response = await axiosBaseInstance.patch(
+    `${APARTMENT_REVIEWS_PATH}/${id}`,
+    apartmentReview
+  );
+  return response.data as ApartmentReview;
+}
+
+export async function PatchUserReviewRequest(
+  id: string,
+  userReview: Partial<UserReview>
+): Promise<UserReview> {
+  const response = await axiosBaseInstance.patch(
+    `${USER_REVIEWS_PATH}/${id}`,
+    userReview
+  );
+  return response.data as UserReview;
+}

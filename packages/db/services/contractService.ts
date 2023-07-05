@@ -23,6 +23,7 @@ export async function getContractForLandlordByApartmentId(
 ): Promise<DbContract | undefined> {
   return knex<DbContract>(CONTRACTS_TABLE_NAME)
     .where({ apartmentId, landlordId })
+    .whereNot({ status: ContractStatus.Closed })
     .select()
     .first();
 }

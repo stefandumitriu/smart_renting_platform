@@ -5,6 +5,7 @@ import {
   getLandlordReviews,
   getReviewByReviewerAndUserIds,
   getTenantReviews,
+  updateUserReview,
 } from "@packages/db/services/userReviewService";
 import {
   convertDbUserReviewToUserReview,
@@ -16,6 +17,7 @@ import {
   getAllApartmentReviews,
   getApartmentReviewByReviewer,
   getApartmentReviews,
+  updateApartmentReview,
 } from "@packages/db/services/apartmentReviewService";
 import {
   convertDbApartmentReviewToApartmentReview,
@@ -157,6 +159,36 @@ export const fetchApartmentReviewByReviewerId = async (
       dbApartmentReview
     );
     res.status(200).send(apartmentReview);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+};
+
+export const patchApartmentReview = async (req: Request, res: Response) => {
+  try {
+    const dbApartmentReview = await updateApartmentReview(
+      req.params.id as string,
+      req.body
+    );
+    const apartmentReview = await convertDbApartmentReviewToApartmentReview(
+      dbApartmentReview
+    );
+    res.status(200).send(apartmentReview);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+};
+
+export const patchUserReview = async (req: Request, res: Response) => {
+  try {
+    const dbUserReview = await updateUserReview(
+      req.params.id as string,
+      req.body
+    );
+    const userReview = await convertDbUserReviewToUserReview(dbUserReview);
+    res.status(200).send(userReview);
   } catch (e) {
     console.error(e);
     res.sendStatus(500);

@@ -1,5 +1,6 @@
 import { DbUserReview, ReviewType, USER_REVIEWS_TABLE_NAME } from "../models";
 import knex from "../knex";
+import { update } from "lodash";
 
 export async function getUserReviewById(
   id: string
@@ -52,4 +53,18 @@ export async function getAllLandlordReviews(): Promise<DbUserReview[]> {
   return knex<DbUserReview>(USER_REVIEWS_TABLE_NAME)
     .where({ type: ReviewType.Landlord })
     .select();
+}
+
+export async function updateUserReview(
+  id: string,
+  userReview: Partial<DbUserReview>
+): Promise<DbUserReview> {
+  await knex<DbUserReview>(USER_REVIEWS_TABLE_NAME)
+    .where({ id })
+    .update(userReview);
+  const updatedUserReview = await getUserReviewById(id);
+  if (!updatedUserReview) {
+    throw new Error("Error on user review update");
+  }
+  return updatedUserReview;
 }

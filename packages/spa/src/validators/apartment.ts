@@ -29,10 +29,10 @@ const NewAddressValidationSchema = Yup.object().shape({
   streetNumber: Yup.number()
     .min(1, minimumValueErrorMessage(1))
     .required(requiredFieldErrorMessage),
-  block: Yup.string(),
-  blockEntrance: Yup.number().min(1, minimumValueErrorMessage(1)),
-  floor: Yup.number().min(0, minimumValueErrorMessage(0)),
-  flatNumber: Yup.number().min(1, minimumValueErrorMessage(1)),
+  block: Yup.string().nullable(),
+  blockEntrance: Yup.number().min(1, minimumValueErrorMessage(1)).nullable(),
+  floor: Yup.number().min(0, minimumValueErrorMessage(0)).nullable(),
+  flatNumber: Yup.number().min(1, minimumValueErrorMessage(1)).nullable(),
 });
 
 export const NewApartmentValidationSchema = Yup.object().shape({
@@ -52,13 +52,13 @@ export const NewApartmentValidationSchema = Yup.object().shape({
   subdivision: Yup.string()
     .oneOf(Object.values(SubdivisonTypeEnum))
     .required(requiredFieldErrorMessage),
-  cooling: Yup.boolean(),
+  cooling: Yup.boolean().nullable(),
   heating: Yup.string()
     .oneOf(Object.values(HeatingTypeEnum))
     .required(requiredFieldErrorMessage),
-  utilities: Yup.object(),
-  appliances: Yup.object(),
-  finishes: Yup.object(),
-  areaInfo: Yup.string(),
+  utilities: Yup.object().nullable(),
+  appliances: Yup.object().nullable(),
+  finishes: Yup.object().nullable(),
+  areaInfo: Yup.string().nullable(),
   address: NewAddressValidationSchema.required(requiredFieldErrorMessage),
 });

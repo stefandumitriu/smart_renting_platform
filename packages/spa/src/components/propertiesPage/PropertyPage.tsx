@@ -681,19 +681,20 @@ const PropertyPage: React.FC<{}> = () => {
             </Grid>
             <Grid item xs={8} marginTop={2}>
               <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-                sagittis lacus ex, vestibulum fringilla lorem fermentum
-                convallis. Ut sollicitudin auctor neque ut molestie. Vestibulum
-                dictum dignissim arcu dapibus hendrerit. Cras facilisis
-                consequat eros. Nulla eu venenatis nulla. Fusce imperdiet odio
-                at turpis pulvinar, ut tincidunt quam imperdiet. Vestibulum
-                pharetra sem nec metus facilisis, in gravida est gravida. Cras a
-                magna non dui finibus aliquam. Ut maximus bibendum odio, id
-                auctor sapien vestibulum in. Class aptent taciti sociosqu ad
-                litora torquent per conubia nostra, per inceptos himenaeos.
-                Integer ut ullamcorper nisl. Curabitur sem sem, ultricies vel
-                arcu sit amet, aliquam pretium lectus. Cras commodo sit amet
-                risus ac finibus.
+                {params.about ||
+                  "                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin\n" +
+                    "                sagittis lacus ex, vestibulum fringilla lorem fermentum\n" +
+                    "                convallis. Ut sollicitudin auctor neque ut molestie. Vestibulum\n" +
+                    "                dictum dignissim arcu dapibus hendrerit. Cras facilisis\n" +
+                    "                consequat eros. Nulla eu venenatis nulla. Fusce imperdiet odio\n" +
+                    "                at turpis pulvinar, ut tincidunt quam imperdiet. Vestibulum\n" +
+                    "                pharetra sem nec metus facilisis, in gravida est gravida. Cras a\n" +
+                    "                magna non dui finibus aliquam. Ut maximus bibendum odio, id\n" +
+                    "                auctor sapien vestibulum in. Class aptent taciti sociosqu ad\n" +
+                    "                litora torquent per conubia nostra, per inceptos himenaeos.\n" +
+                    "                Integer ut ullamcorper nisl. Curabitur sem sem, ultricies vel\n" +
+                    "                arcu sit amet, aliquam pretium lectus. Cras commodo sit amet\n" +
+                    "                risus ac finibus."}
               </Typography>
             </Grid>
           </Grid>

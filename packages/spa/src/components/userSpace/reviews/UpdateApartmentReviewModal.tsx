@@ -14,32 +14,36 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { ApartmentReview, NewApartmentReview } from "@packages/api/models";
-import { CreateApartmentReviewRequest } from "../../../requests/ReviewsRequests";
-import { Contract } from "@packages/api/models/contract";
+import { ApartmentReview } from "@packages/api/models";
 import { StyledTextField } from "../../landingPage/SignupForm";
 import { Info } from "@mui/icons-material";
+import { omit } from "lodash";
+import { PatchApartmentReviewRequest } from "../../../requests/ReviewsRequests";
 
-interface CreateApartmentReviewModalProps {
+interface UpdateApartmentReviewModalProps {
   open: boolean;
   handleClose: () => void;
-  contract: Contract;
+  apartmentReview: ApartmentReview;
   handleSubmit: (apartmentReview: ApartmentReview) => void;
 }
 
-const CreateApartmentReviewModal: React.FC<CreateApartmentReviewModalProps> = ({
+const UpdateApartmentReviewModal: React.FC<UpdateApartmentReviewModalProps> = ({
   open,
   handleClose,
-  contract,
+  apartmentReview,
   handleSubmit,
 }) => {
   const theme = useTheme();
   const { currentUser } = useContext(AuthContext);
   const submitCallback = useCallback(
-    async (values: NewApartmentReview) => {
-      const apartmentReview = await CreateApartmentReviewRequest(values);
-      handleSubmit(apartmentReview);
+    async (values: ApartmentReview) => {
+      const apartmentReview = await PatchApartmentReviewRequest(
+        values.id,
+        omit(values, ["id", "reviewer", "apartment", "created_at"])
+      );
+      console.log(apartmentReview);
       handleClose();
+      handleSubmit(apartmentReview);
     },
     [handleClose]
   );
@@ -55,18 +59,7 @@ const CreateApartmentReviewModal: React.FC<CreateApartmentReviewModalProps> = ({
     <Modal open={open} onClose={handleClose}>
       <Fade in={open}>
         <Paper elevation={24}>
-          <Formik
-            initialValues={
-              {
-                reviewerId: currentUser.id,
-                apartmentId: contract.apartmentId,
-                comfortRating: 0,
-                locationRating: 0,
-                qualityRating: 0,
-              } as NewApartmentReview
-            }
-            onSubmit={submitCallback}
-          >
+          <Formik initialValues={apartmentReview} onSubmit={submitCallback}>
             {({ values, handleChange, setFieldValue }) => {
               return (
                 <Form>
@@ -228,4 +221,4 @@ const CreateApartmentReviewModal: React.FC<CreateApartmentReviewModalProps> = ({
   );
 };
 
-export default CreateApartmentReviewModal;
+export default UpdateApartmentReviewModal;
