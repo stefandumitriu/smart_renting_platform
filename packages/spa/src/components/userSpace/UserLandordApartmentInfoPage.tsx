@@ -88,7 +88,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                       </Grid>
                       <Grid item container xs={12} marginTop={2} rowSpacing={2}>
                         <Grid item container xs={12} spacing={2}>
-                          <Grid item xs={4}>
+                          <Grid item xs={12} md={4}>
                             <FormAutocomplete<StreetTypeEnum>
                               name="address.streetType"
                               label="Tip strada"
@@ -97,7 +97,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               required
                             />
                           </Grid>
-                          <Grid item xs={4}>
+                          <Grid item xs={12} md={4}>
                             <FormTextInput<string>
                               name="address.streetName"
                               label="Nume strada"
@@ -105,7 +105,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               required
                             />
                           </Grid>
-                          <Grid item xs={2}>
+                          <Grid item xs={12} md={2}>
                             <FormTextInput<number>
                               name="address.streetNumber"
                               label="Numar"
@@ -116,14 +116,14 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                           </Grid>
                         </Grid>
                         <Grid item container xs={12} spacing={2}>
-                          <Grid item xs={2}>
+                          <Grid item xs={12} md={2}>
                             <FormTextInput<string>
                               name="address.block"
                               label="Nume bloc"
                               fullWidth
                             />
                           </Grid>
-                          <Grid item xs={2}>
+                          <Grid item xs={12} md={2}>
                             <FormTextInput<number>
                               name="address.blockEntrance"
                               label="Scara"
@@ -131,7 +131,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               type="number"
                             />
                           </Grid>
-                          <Grid item xs={2}>
+                          <Grid item xs={12} md={2}>
                             <FormTextInput<number>
                               name="address.floor"
                               label="Etaj"
@@ -139,7 +139,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               type="number"
                             />
                           </Grid>
-                          <Grid item xs={2}>
+                          <Grid item xs={12} md={2}>
                             <FormTextInput<number>
                               name="address.flatNumber"
                               label="Numar apartament"
@@ -183,7 +183,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                       </Grid>
                       <Grid item container xs={12} marginTop={2} rowSpacing={2}>
                         <Grid item container xs={12} spacing={2}>
-                          <Grid item xs={4}>
+                          <Grid item xs={12} md={4}>
                             <FormAutocomplete<SubdivisonTypeEnum>
                               name="subdivision"
                               label="Compartimentare"
@@ -192,7 +192,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               required
                             />
                           </Grid>
-                          <Grid item xs={2}>
+                          <Grid item xs={12} md={2}>
                             <FormTextInput<number>
                               name="noOfRooms"
                               label="Numar camere"
@@ -201,7 +201,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               type="number"
                             />
                           </Grid>
-                          <Grid item xs={2}>
+                          <Grid item xs={12} md={2}>
                             <FormTextInput<number>
                               name="noOfBathrooms"
                               label="Numar bai"
@@ -210,7 +210,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               type="number"
                             />
                           </Grid>
-                          <Grid item xs={2}>
+                          <Grid item xs={12} md={2}>
                             <FormTextInput<number>
                               name="noOfBalconies"
                               label="Numar balcoane"
@@ -221,7 +221,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                           </Grid>
                         </Grid>
                         <Grid item container xs={12} spacing={2}>
-                          <Grid item xs={2}>
+                          <Grid item xs={12} md={2}>
                             <FormTextInput<number>
                               name="surface"
                               label="Suprafata (mp.)"
@@ -230,7 +230,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                               type="number"
                             />
                           </Grid>
-                          <Grid item xs={3}>
+                          <Grid item xs={12} md={3}>
                             <FormAutocomplete<HeatingTypeEnum>
                               name="heating"
                               label="Tip incalzire"
@@ -729,7 +729,7 @@ const UserLandlordApartmentInfoPage: React.FC<{}> = () => {
                   </Paper>
                 </Grid>
                 <Grid item container xs={12} justifyContent="end">
-                  <Grid item xs={2}>
+                  <Grid item xs={6} md={2}>
                     <Button
                       variant="contained"
                       color="primary"

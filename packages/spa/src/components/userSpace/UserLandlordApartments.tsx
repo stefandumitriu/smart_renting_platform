@@ -73,8 +73,11 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
   };
   return (
     <Paper sx={{ width: "100%", borderRadius: "20px" }} elevation={4}>
-      <Grid container>
-        <Grid item xs={10}>
+      <Grid
+        container
+        sx={{ [theme.breakpoints.down("md")]: { flexDirection: "column" } }}
+      >
+        <Grid item xs={12} md={10}>
           <Card
             sx={{
               borderTopRightRadius: "20px",
@@ -129,11 +132,21 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
                       </Typography>
                     </Grid>
                   </Grid>
-                  <Grid item container xs={12} marginBottom={2}>
-                    <Grid item xs={2}>
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    marginBottom={2}
+                    sx={{
+                      [theme.breakpoints.down("md")]: {
+                        justifyContent: "space-between",
+                      },
+                    }}
+                  >
+                    <Grid item xs="auto" md={2}>
                       <Chip label={apartment.surface.toString(10) + " m2"} />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs="auto" md={2}>
                       <Chip
                         label={
                           apartment.noOfRooms === 1
@@ -142,7 +155,7 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
                         }
                       />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs="auto" md={2}>
                       <Chip label={apartment.subdivision} />
                     </Grid>
                   </Grid>
@@ -151,12 +164,17 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
             </CardActionArea>
           </Card>
         </Grid>
-        <Grid item xs={2} sx={{ minHeight: "100%" }}>
+        <Grid item xs={12} md={2} sx={{ minHeight: "100%" }}>
           <Grid
             container
             direction="column"
             justifyContent="space-evenly"
-            sx={{ height: "100%", width: "100%" }}
+            sx={{
+              [theme.breakpoints.down("md")]: { flexDirection: "row", p: 2 },
+              [theme.breakpoints.up("md")]: { flexDirection: "column" },
+              height: "100%",
+              width: "100%",
+            }}
             alignContent="center"
           >
             {apartment.status === ApartmentStatus.Rented && (
@@ -178,6 +196,7 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({
                 fullWidth
                 onClick={() => handleDelete(apartment.id)}
                 disabled={apartment.status !== ApartmentStatus.Available}
+                sx={{ borderRadius: "10px" }}
               >
                 Sterge
               </Button>

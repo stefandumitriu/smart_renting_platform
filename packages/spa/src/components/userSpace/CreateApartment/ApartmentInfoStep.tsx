@@ -60,7 +60,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
             </Grid>
             <Grid item container xs={12} marginTop={2} rowSpacing={2}>
               <Grid item container xs={12} spacing={2}>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <FormAutocomplete<StreetTypeEnum>
                     name="address.streetType"
                     label="Tip strada"
@@ -68,7 +68,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     required
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <FormTextInput<string>
                     name="address.streetName"
                     label="Nume strada"
@@ -76,7 +76,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     required
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} md={2}>
                   <FormTextInput<number>
                     name="address.streetNumber"
                     label="Numar"
@@ -87,14 +87,14 @@ const ApartmentInfoStepComponent: React.FC = () => {
                 </Grid>
               </Grid>
               <Grid item container xs={12} spacing={2}>
-                <Grid item xs={2}>
+                <Grid item xs={12} md={2}>
                   <FormTextInput<string>
                     name="address.block"
                     label="Nume bloc"
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} md={2}>
                   <FormTextInput<number>
                     name="address.blockEntrance"
                     label="Scara"
@@ -102,7 +102,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     type="number"
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} md={2}>
                   <FormTextInput<number>
                     name="address.floor"
                     label="Etaj"
@@ -110,7 +110,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     type="number"
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} md={2}>
                   <FormTextInput<number>
                     name="address.flatNumber"
                     label="Numar apartament"
@@ -148,7 +148,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
             </Grid>
             <Grid item container xs={12} marginTop={2} rowSpacing={2}>
               <Grid item container xs={12} spacing={2}>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <FormAutocomplete<SubdivisonTypeEnum>
                     name="subdivision"
                     label="Compartimentare"
@@ -157,7 +157,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     required
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} md={2}>
                   <FormTextInput<number>
                     name="noOfRooms"
                     label="Numar camere"
@@ -166,7 +166,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     type="number"
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} md={2}>
                   <FormTextInput<number>
                     name="noOfBathrooms"
                     label="Numar bai"
@@ -175,7 +175,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     type="number"
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} md={2}>
                   <FormTextInput<number>
                     name="noOfBalconies"
                     label="Numar balcoane"
@@ -186,7 +186,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                 </Grid>
               </Grid>
               <Grid item container xs={12} spacing={2}>
-                <Grid item xs={2}>
+                <Grid item xs={12} md={2}>
                   <FormTextInput<number>
                     name="surface"
                     label="Suprafata (mp.)"
@@ -195,7 +195,7 @@ const ApartmentInfoStepComponent: React.FC = () => {
                     type="number"
                   />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={12} md={3}>
                   <FormAutocomplete<HeatingTypeEnum>
                     name="heating"
                     label="Tip incalzire"

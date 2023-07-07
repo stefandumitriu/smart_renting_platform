@@ -161,7 +161,7 @@ const ListingApplicationsPage: React.FC = () => {
               </Grid>
             </Grid>
             {applications.map((application) => (
-              <Grid item xs={8}>
+              <Grid item xs={12} md={8}>
                 <ApplicationCard application={application} />
               </Grid>
             ))}

@@ -86,7 +86,7 @@ const AddressProofStepComponent: React.FC = () => {
     return <></>;
   }, [previewFile]);
   return (
-    <Grid item container xs={6} marginX="auto" marginTop={4}>
+    <Grid item container xs={10} md={6} marginX="auto" marginTop={4}>
       <Grid item xs={12}>
         <Paper
           sx={{

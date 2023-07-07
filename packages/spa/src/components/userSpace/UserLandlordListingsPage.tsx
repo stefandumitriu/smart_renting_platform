@@ -38,8 +38,11 @@ const LandlordListingCard: React.FC<LandlordListingCardProps> = ({
   const theme = useTheme();
   return (
     <Paper sx={{ width: "100%", borderRadius: "20px" }} elevation={4}>
-      <Grid container>
-        <Grid item xs={5}>
+      <Grid
+        container
+        sx={{ [theme.breakpoints.down("md")]: { flexDirection: "column" } }}
+      >
+        <Grid item xs={12} md={5}>
           <Card
             sx={{
               borderTopLeftRadius: "20px",
@@ -83,7 +86,7 @@ const LandlordListingCard: React.FC<LandlordListingCardProps> = ({
             </CardActionArea>
           </Card>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={12} md={5}>
           <Card
             sx={{
               borderTopRightRadius: "20px",
@@ -117,13 +120,22 @@ const LandlordListingCard: React.FC<LandlordListingCardProps> = ({
                       </Typography>
                     </Grid>
                   </Grid>
-                  <Grid item container xs={12}>
-                    <Grid item xs={2}>
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    sx={{
+                      [theme.breakpoints.down("md")]: {
+                        justifyContent: "space-between",
+                      },
+                    }}
+                  >
+                    <Grid item xs="auto" md={2}>
                       <Chip
                         label={listing.apartment.surface.toString(10) + " m2"}
                       />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs="auto" md={2}>
                       <Chip
                         label={
                           listing.apartment.noOfRooms === 1
@@ -132,7 +144,7 @@ const LandlordListingCard: React.FC<LandlordListingCardProps> = ({
                         }
                       />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs="auto" md={2}>
                       <Chip label={listing.apartment.subdivision} />
                     </Grid>
                   </Grid>
@@ -141,17 +153,27 @@ const LandlordListingCard: React.FC<LandlordListingCardProps> = ({
             </CardActionArea>
           </Card>
         </Grid>
-        <Grid item xs={2} sx={{ minHeight: "100%" }}>
+        <Grid item xs={12} md={2} sx={{ minHeight: "100%" }}>
           <Grid
             container
             direction="column"
             justifyContent="space-evenly"
-            sx={{ height: "100%", width: "100%" }}
+            sx={{
+              [theme.breakpoints.down("md")]: { flexDirection: "row", p: 2 },
+              [theme.breakpoints.up("md")]: { flexDirection: "column" },
+              height: "100%",
+              width: "100%",
+            }}
             alignContent="center"
           >
             <Grid item>
               <Link to={`/properties/${listing.id}/applications`}>
-                <Button color="info" variant="contained" fullWidth>
+                <Button
+                  color="info"
+                  variant="contained"
+                  sx={{ borderRadius: "10px" }}
+                  fullWidth
+                >
                   Vezi cereri
                 </Button>
               </Link>
@@ -161,7 +183,12 @@ const LandlordListingCard: React.FC<LandlordListingCardProps> = ({
                 to={`/properties/${listing.id}/edit`}
                 style={{ textDecoration: "none" }}
               >
-                <Button color="primary" variant="contained" fullWidth>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  sx={{ borderRadius: "10px" }}
+                  fullWidth
+                >
                   Editeaza
                 </Button>
               </Link>
@@ -172,6 +199,7 @@ const LandlordListingCard: React.FC<LandlordListingCardProps> = ({
                 variant="contained"
                 fullWidth
                 onClick={() => handleDelete(listing.id)}
+                sx={{ borderRadius: "10px" }}
               >
                 Sterge
               </Button>

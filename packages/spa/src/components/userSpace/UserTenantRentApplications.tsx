@@ -74,8 +74,11 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
 
   return (
     <Paper sx={{ width: "100%", borderRadius: "20px" }} elevation={4}>
-      <Grid container>
-        <Grid item xs={6}>
+      <Grid
+        container
+        sx={{ [theme.breakpoints.down("md")]: { flexDirection: "column" } }}
+      >
+        <Grid item xs={12} md={6}>
           <Card
             sx={{
               borderTopLeftRadius: "20px",
@@ -104,8 +107,17 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
                       <Typography>{application.listing.title}</Typography>
                     </Grid>
                   </Grid>
-                  <Grid item container xs={12}>
-                    <Grid item xs={2}>
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    sx={{
+                      [theme.breakpoints.down("md")]: {
+                        justifyContent: "space-between",
+                      },
+                    }}
+                  >
+                    <Grid item xs="auto" md={2}>
                       <Chip
                         label={
                           application.listing.apartment.surface.toString(10) +
@@ -113,7 +125,7 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
                         }
                       />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs="auto" md={2}>
                       <Chip
                         label={
                           application.listing.apartment.noOfRooms === 1
@@ -123,7 +135,7 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
                         }
                       />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs="auto" md={2}>
                       <Chip label={application.listing.apartment.subdivision} />
                     </Grid>
                   </Grid>
@@ -142,7 +154,7 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
             </CardActionArea>
           </Card>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           <Card sx={{ minHeight: "100%" }}>
             <CardActionArea onClick={() => setOwnerProfileOpen(true)}>
               <CardContent>
@@ -209,12 +221,16 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
             </CardActionArea>
           </Card>
         </Grid>
-        <Grid item xs={2} sx={{ minHeight: "100%" }}>
+        <Grid item xs={12} md={2} sx={{ minHeight: "100%" }}>
           <Grid
             container
-            direction="column"
+            sx={{
+              [theme.breakpoints.down("md")]: { flexDirection: "row", p: 2 },
+              [theme.breakpoints.up("md")]: { flexDirection: "column" },
+              height: "100%",
+              width: "100%",
+            }}
             justifyContent="space-evenly"
-            sx={{ height: "100%", width: "100%" }}
             alignContent="center"
           >
             <Grid item>

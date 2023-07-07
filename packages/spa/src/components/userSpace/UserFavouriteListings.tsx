@@ -8,6 +8,7 @@ import {
   Grid,
   Pagination,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { userListingsLoader } from "../../loaders/UserListingsLoader";
 import React, {
@@ -22,6 +23,7 @@ import { UserProfile } from "@packages/api/models/users/userProfile";
 import { Link } from "react-router-dom";
 
 const UserFavouriteListings: React.FC<{}> = () => {
+  const theme = useTheme();
   const { currentUser } = useContext(AuthContext);
   const [listings, setListings] = useState<Listing[] | undefined>(undefined);
   const [page, setPage] = useState(1);
@@ -56,7 +58,8 @@ const UserFavouriteListings: React.FC<{}> = () => {
           <Grid
             item
             container
-            xs={8}
+            xs={11}
+            md={8}
             alignContent="flex-start"
             justifyContent="center"
           >
@@ -73,8 +76,19 @@ const UserFavouriteListings: React.FC<{}> = () => {
                         component={Link}
                         to={`/properties/${listing.id}`.toString()}
                       >
-                        <Grid container spacing={2}>
-                          <Grid item xs={4}>
+                        <Grid
+                          container
+                          spacing={2}
+                          sx={{
+                            [theme.breakpoints.down("md")]: {
+                              flexDirection: "column",
+                            },
+                            [theme.breakpoints.up("md")]: {
+                              flexDirection: "row",
+                            },
+                          }}
+                        >
+                          <Grid item xs={12} md={4}>
                             <CardMedia
                               component="img"
                               image={
@@ -85,15 +99,38 @@ const UserFavouriteListings: React.FC<{}> = () => {
                               }
                             />
                           </Grid>
-                          <Grid item xs={8} my={4}>
+                          <Grid
+                            item
+                            xs={12}
+                            md={8}
+                            sx={{
+                              [theme.breakpoints.down("md")]: {
+                                my: 0,
+                                mx: 2,
+                              },
+                              [theme.breakpoints.up("md")]: {
+                                my: 4,
+                                mx: 0,
+                              },
+                            }}
+                          >
                             <Grid item container sx={{ height: "100%" }}>
                               <Grid item xs={12}>
                                 <Typography fontWeight="bolder">
                                   {listing.title}
                                 </Typography>
                               </Grid>
-                              <Grid item container xs={12}>
-                                <Grid item xs={2}>
+                              <Grid
+                                item
+                                container
+                                xs={12}
+                                sx={{
+                                  [theme.breakpoints.down("md")]: {
+                                    justifyContent: "space-between",
+                                  },
+                                }}
+                              >
+                                <Grid item xs="auto" md={2}>
                                   <Chip
                                     label={
                                       listing.apartment.surface.toString(10) +
@@ -101,7 +138,7 @@ const UserFavouriteListings: React.FC<{}> = () => {
                                     }
                                   />
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs="auto" md={2}>
                                   <Chip
                                     label={
                                       listing.apartment.noOfRooms === 1
@@ -111,12 +148,15 @@ const UserFavouriteListings: React.FC<{}> = () => {
                                     }
                                   />
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs="auto" md={2}>
                                   <Chip label={listing.apartment.subdivision} />
                                 </Grid>
                               </Grid>
                               <Grid item xs={12} alignSelf="flex-end">
-                                <Typography fontWeight="bolder">
+                                <Typography
+                                  fontWeight="bolder"
+                                  color={theme.palette.secondary.main}
+                                >
                                   {listing.price}€ / luna
                                 </Typography>
                               </Grid>

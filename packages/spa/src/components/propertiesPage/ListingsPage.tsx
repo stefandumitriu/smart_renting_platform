@@ -287,8 +287,19 @@ const ListingsPage: React.FC<{}> = () => {
                         component={Link}
                         to={`${listing.id}`.toString()}
                       >
-                        <Grid container spacing={2}>
-                          <Grid item xs={4}>
+                        <Grid
+                          container
+                          spacing={2}
+                          sx={{
+                            [theme.breakpoints.down("md")]: {
+                              flexDirection: "column",
+                            },
+                            [theme.breakpoints.up("md")]: {
+                              flexDirection: "row",
+                            },
+                          }}
+                        >
+                          <Grid item xs={12} md={4}>
                             <CardMedia
                               component="img"
                               image={
@@ -300,15 +311,43 @@ const ListingsPage: React.FC<{}> = () => {
                               sx={{ height: "100%" }}
                             />
                           </Grid>
-                          <Grid item xs={8} my={4}>
-                            <Grid item container sx={{ height: "100%" }}>
+                          <Grid
+                            item
+                            xs={12}
+                            md={8}
+                            sx={{
+                              [theme.breakpoints.down("md")]: {
+                                my: 0,
+                                mx: 2,
+                              },
+                              [theme.breakpoints.up("md")]: {
+                                my: 4,
+                                mx: 0,
+                              },
+                            }}
+                          >
+                            <Grid
+                              item
+                              container
+                              sx={{ height: "100%" }}
+                              xs={12}
+                            >
                               <Grid item xs={12}>
                                 <Typography fontWeight="bolder">
                                   {listing.title}
                                 </Typography>
                               </Grid>
-                              <Grid item container xs={12}>
-                                <Grid item xs={2}>
+                              <Grid
+                                item
+                                container
+                                xs={12}
+                                sx={{
+                                  [theme.breakpoints.down("md")]: {
+                                    justifyContent: "space-between",
+                                  },
+                                }}
+                              >
+                                <Grid item xs="auto" md={2}>
                                   <Chip
                                     label={
                                       listing.apartment.surface.toString(10) +
@@ -316,7 +355,7 @@ const ListingsPage: React.FC<{}> = () => {
                                     }
                                   />
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs="auto" md={2}>
                                   <Chip
                                     label={
                                       listing.apartment.noOfRooms === 1
@@ -326,7 +365,7 @@ const ListingsPage: React.FC<{}> = () => {
                                     }
                                   />
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs="auto" md={2}>
                                   <Chip label={listing.apartment.subdivision} />
                                 </Grid>
                               </Grid>
@@ -337,6 +376,13 @@ const ListingsPage: React.FC<{}> = () => {
                                 alignSelf="flex-end"
                                 justifyContent="space-between"
                                 alignItems="flex-end"
+                                sx={{
+                                  [theme.breakpoints.down("md")]: {
+                                    justifyContent: "flex-start",
+                                    alignItems: "flex-start",
+                                    flexDirection: "column",
+                                  },
+                                }}
                               >
                                 <Grid item>
                                   <Typography
@@ -349,7 +395,8 @@ const ListingsPage: React.FC<{}> = () => {
                                 <Grid
                                   item
                                   container
-                                  xs={4}
+                                  xs={12}
+                                  md={4}
                                   flexDirection="column"
                                 >
                                   <Grid item container alignContent="center">

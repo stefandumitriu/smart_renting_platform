@@ -75,7 +75,7 @@ const EditListingPage: React.FC<{}> = () => {
                       <Divider flexItem />
                     </Grid>
                     <Grid item container xs={12} marginTop={2}>
-                      <Grid item xs={4}>
+                      <Grid item xs={12} md={4}>
                         <StyledTextField
                           label="Apartament"
                           name="apartmentId"
@@ -119,7 +119,7 @@ const EditListingPage: React.FC<{}> = () => {
                       columnSpacing={2}
                       justifyContent="space-between"
                     >
-                      <Grid item xs={6}>
+                      <Grid item xs={12} md={6}>
                         <FormTextInput<string>
                           name="title"
                           label="Titlu"
@@ -127,7 +127,16 @@ const EditListingPage: React.FC<{}> = () => {
                           required
                         />
                       </Grid>
-                      <Grid item xs={3}>
+                      <Grid
+                        item
+                        xs={12}
+                        md={3}
+                        sx={{
+                          [theme.breakpoints.down("md")]: {
+                            mt: 2,
+                          },
+                        }}
+                      >
                         <FormTextInput<number>
                           name="price"
                           label="Pret (euro/luna)"
@@ -155,7 +164,7 @@ const EditListingPage: React.FC<{}> = () => {
                       marginTop={2}
                       columnSpacing={2}
                     >
-                      <Grid item xs={3}>
+                      <Grid item xs={12} md={3}>
                         <FormAutocomplete<string>
                           name="rentalPeriod"
                           label="Perioada de inchirere"
@@ -165,7 +174,16 @@ const EditListingPage: React.FC<{}> = () => {
                           fullWidth
                         />
                       </Grid>
-                      <Grid item xs={3}>
+                      <Grid
+                        item
+                        xs={12}
+                        md={3}
+                        sx={{
+                          [theme.breakpoints.down("md")]: {
+                            mt: 2,
+                          },
+                        }}
+                      >
                         <FormTextInput<string>
                           name="availability"
                           label="Disponibilitate"
@@ -177,7 +195,7 @@ const EditListingPage: React.FC<{}> = () => {
                 </Paper>
               </Grid>
               <Grid item container xs={12} justifyContent="end">
-                <Grid item xs={2}>
+                <Grid item xs={6} md={2}>
                   <Button
                     variant="contained"
                     color="primary"
