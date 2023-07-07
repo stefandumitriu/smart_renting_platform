@@ -23,9 +23,9 @@ const NewListingSchema = Yup.object().shape({
   apartmentId: Yup.string().uuid().required(),
   title: Yup.string().required(),
   price: Yup.number().min(1).required(),
-  about: Yup.string(),
-  rentalPeriod: Yup.string(),
-  availability: Yup.string(),
+  about: Yup.string().nullable(),
+  rentalPeriod: Yup.string().nullable(),
+  availability: Yup.string().nullable(),
 });
 
 const EditListingPage: React.FC<{}> = () => {

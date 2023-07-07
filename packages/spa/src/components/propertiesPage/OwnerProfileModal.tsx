@@ -78,10 +78,15 @@ const OwnerProfileModal: React.FC<OwnerProfileModalProps> = ({
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              maxWidth: "50%",
               height: "fit-content",
               minHeight: "80%",
               borderRadius: "30px",
+              [theme.breakpoints.down("md")]: {
+                maxWidth: "80%",
+              },
+              [theme.breakpoints.up("md")]: {
+                maxWidth: "50%",
+              },
             }}
           >
             <Grid

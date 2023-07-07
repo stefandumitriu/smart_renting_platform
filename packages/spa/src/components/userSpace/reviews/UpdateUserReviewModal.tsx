@@ -14,38 +14,37 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { ApartmentReview } from "@packages/api/models";
+import { UserReview } from "@packages/api/models";
+import { PatchUserReviewRequest } from "../../../requests/ReviewsRequests";
 import { StyledTextField } from "../../landingPage/SignupForm";
 import { Info } from "@mui/icons-material";
 import { omit } from "lodash";
-import { PatchApartmentReviewRequest } from "../../../requests/ReviewsRequests";
 
-interface UpdateApartmentReviewModalProps {
+interface UpdateUserReviewModalProps {
   open: boolean;
   handleClose: () => void;
-  apartmentReview: ApartmentReview;
-  handleSubmit: (apartmentReview: ApartmentReview) => void;
+  handleSubmit: (userReview: UserReview) => void;
+  userReview: UserReview;
 }
 
-const UpdateApartmentReviewModal: React.FC<UpdateApartmentReviewModalProps> = ({
+const UpdateUserReviewModal: React.FC<UpdateUserReviewModalProps> = ({
   open,
   handleClose,
-  apartmentReview,
   handleSubmit,
+  userReview,
 }) => {
   const theme = useTheme();
   const { currentUser } = useContext(AuthContext);
   const submitCallback = useCallback(
-    async (values: ApartmentReview) => {
-      const apartmentReview = await PatchApartmentReviewRequest(
+    async (values: UserReview) => {
+      const updatedUserReview = await PatchUserReviewRequest(
         values.id,
-        omit(values, ["id", "reviewer", "apartment", "created_at"])
+        omit(values, ["id", "reviewer", "user", "created_at"])
       );
-      console.log(apartmentReview);
+      handleSubmit(updatedUserReview);
       handleClose();
-      handleSubmit(apartmentReview);
     },
-    [handleClose]
+    [handleClose, handleSubmit]
   );
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
@@ -59,7 +58,7 @@ const UpdateApartmentReviewModal: React.FC<UpdateApartmentReviewModalProps> = ({
     <Modal open={open} onClose={handleClose}>
       <Fade in={open}>
         <Paper elevation={24}>
-          <Formik initialValues={apartmentReview} onSubmit={submitCallback}>
+          <Formik initialValues={userReview} onSubmit={submitCallback}>
             {({ values, handleChange, setFieldValue }) => {
               return (
                 <Form>
@@ -87,7 +86,10 @@ const UpdateApartmentReviewModal: React.FC<UpdateApartmentReviewModalProps> = ({
                           color={theme.palette.secondary.main}
                           variant="h4"
                         >
-                          Recenzie - Apartament
+                          Recenzie -{" "}
+                          {userReview.type === "LANDLORD"
+                            ? "Proprietar"
+                            : "Chirias"}
                         </Typography>
                       </Grid>
                     </Grid>
@@ -101,49 +103,24 @@ const UpdateApartmentReviewModal: React.FC<UpdateApartmentReviewModalProps> = ({
                       />
                     </Grid>
                     <Grid item container xs={12} spacing={2}>
-                      <Grid item xs={12} md="auto">
-                        <Typography
-                          fontWeight="bold"
-                          color={theme.palette.secondary.main}
-                        >
-                          Scor comfort
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} md="auto">
-                        <StyledRating
-                          name="comfortRating"
-                          value={values.comfortRating}
-                          onChange={(event, value) =>
-                            setFieldValue("comfortRating", value)
-                          }
-                        />
-                        <Tooltip
-                          title="Comfortul general oferit de apartament in functie de dotari, finisaje etc."
-                          sx={{ marginLeft: "8px" }}
-                        >
-                          <Info color="primary" />
-                        </Tooltip>
-                      </Grid>
-                    </Grid>
-                    <Grid item container xs={12} spacing={2}>
                       <Grid item xs={10} md="auto">
                         <Typography
                           fontWeight="bold"
                           color={theme.palette.secondary.main}
                         >
-                          Scor locatie
+                          Scor corectitudine
                         </Typography>
                       </Grid>
-                      <Grid item xs={12} md="auto" spacing={2}>
+                      <Grid item xs={12} md="auto">
                         <StyledRating
-                          name="locationRating"
-                          value={values.locationRating}
+                          name="fairnessRating"
+                          value={values.fairnessRating}
                           onChange={(event, value) =>
-                            setFieldValue("locationRating", value)
+                            setFieldValue("fairnessRating", value)
                           }
                         />
                         <Tooltip
-                          title="Infrastructura din zona imobilului + Comportamentul vecinilor"
+                          title="Corectitudinea in respectarea termenilor contractului/Prezentare reala a informatiilor despre apartament"
                           sx={{ marginLeft: "8px" }}
                         >
                           <Info color="primary" />
@@ -156,19 +133,44 @@ const UpdateApartmentReviewModal: React.FC<UpdateApartmentReviewModalProps> = ({
                           fontWeight="bold"
                           color={theme.palette.secondary.main}
                         >
-                          Scor calitate
+                          Scor comunicare
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} md="auto" spacing={2}>
+                        <StyledRating
+                          name="communicationRating"
+                          value={values.communicationRating}
+                          onChange={(event, value) =>
+                            setFieldValue("communicationRating", value)
+                          }
+                        />
+                        <Tooltip
+                          title="Comunicare facila si rapida"
+                          sx={{ marginLeft: "8px" }}
+                        >
+                          <Info color="primary" />
+                        </Tooltip>
+                      </Grid>
+                    </Grid>
+                    <Grid item container xs={12} spacing={2}>
+                      <Grid item xs={12} md="auto">
+                        <Typography
+                          fontWeight="bold"
+                          color={theme.palette.secondary.main}
+                        >
+                          Scor disponibilitate
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md="auto">
                         <StyledRating
-                          name="qualityRating"
-                          value={values.qualityRating}
+                          name="availabilityRating"
+                          value={values.availabilityRating}
                           onChange={(event, value) =>
-                            setFieldValue("qualityRating", value)
+                            setFieldValue("availabilityRating", value)
                           }
                         />
                         <Tooltip
-                          title="Calitatea dotarilor si finisajelor apartamentului"
+                          title="Disponibilitatea acestuia de a repara anumite defecte ale imobilului, amabilitate, intelegere"
                           sx={{ marginLeft: "8px" }}
                         >
                           <Info color="primary" />
@@ -221,4 +223,4 @@ const UpdateApartmentReviewModal: React.FC<UpdateApartmentReviewModalProps> = ({
   );
 };
 
-export default UpdateApartmentReviewModal;
+export default UpdateUserReviewModal;

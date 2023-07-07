@@ -64,9 +64,14 @@ const ApartmentModal: React.FC<ApartmentModalProps> = ({
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              maxWidth: "50%",
               height: "fit-content",
               borderRadius: "30px",
+              [theme.breakpoints.down("md")]: {
+                maxWidth: "80%",
+              },
+              [theme.breakpoints.up("md")]: {
+                maxWidth: "50%",
+              },
             }}
           >
             <Grid item container xs={12} rowSpacing={1}>

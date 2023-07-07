@@ -7,7 +7,7 @@ export const NewListingSchema = Yup.object().shape({
   price: Yup.number()
     .min(1, minimumValueErrorMessage(1))
     .required(requiredFieldErrorMessage),
-  about: Yup.string(),
-  rentalPeriod: Yup.string(),
-  availability: Yup.string(),
+  about: Yup.string().nullable(),
+  rentalPeriod: Yup.string().nullable(),
+  availability: Yup.string().nullable(),
 });

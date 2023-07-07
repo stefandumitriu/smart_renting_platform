@@ -33,8 +33,9 @@ import {
   GetLandlordReviewByReviewerId,
   GetTenantReviewByReviewerId,
 } from "../../requests/ReviewsRequests";
-import { ApartmentReview } from "@packages/api/models";
+import { ApartmentReview, UserReview } from "@packages/api/models";
 import UpdateApartmentReviewModal from "./reviews/UpdateApartmentReviewModal";
+import UpdateUserReviewModal from "./reviews/UpdateUserReviewModal";
 
 enum ContractStatus {
   Draft = "Draft",
@@ -61,14 +62,16 @@ const UserInfo: React.FC<{
   user: UserProfile;
   theme: Theme;
   handleUserReviewModalOpen: () => void;
+  handleUpdateUserReviewModalOpen: () => void;
   userIsTenant?: boolean;
-  alreadyReviewed: boolean;
+  userReview?: UserReview;
 }> = ({
   user,
   theme,
   handleUserReviewModalOpen,
+  handleUpdateUserReviewModalOpen,
   userIsTenant,
-  alreadyReviewed,
+  userReview,
 }) => {
   return (
     <>
@@ -80,11 +83,11 @@ const UserInfo: React.FC<{
           </Typography>
         </Grid>
         <Grid item xs={12} md="auto">
-          {alreadyReviewed ? (
+          {!!userReview ? (
             <Button
               color="primary"
               variant="contained"
-              onClick={() => handleUserReviewModalOpen()}
+              onClick={() => handleUpdateUserReviewModalOpen()}
               sx={{ borderRadius: "10px" }}
             >
               Editeaza recenzie
@@ -426,10 +429,12 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
   const theme = useTheme();
 
   const [contract, setContract] = useState<Contract | undefined>(undefined);
-  const [userReviewed, setUserReviewed] = useState(false);
   const [apartmentReview, setApartmentReview] = useState<
     ApartmentReview | undefined
   >(undefined);
+  const [userReview, setUserReview] = useState<UserReview | undefined>(
+    undefined
+  );
   useEffect(() => {
     if (currentUser && contract) {
       GetApartmentReviewByReviewerId(contract.apartmentId, currentUser.id).then(
@@ -447,9 +452,7 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
         GetLandlordReviewByReviewerId(contract.landlordId, currentUser.id).then(
           (res) => {
             if (res) {
-              setUserReviewed(true);
-            } else {
-              setUserReviewed(false);
+              setUserReview(res);
             }
           }
         );
@@ -457,22 +460,30 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
         GetTenantReviewByReviewerId(contract.tenantId, currentUser.id).then(
           (res) => {
             if (res) {
-              setUserReviewed(true);
-            } else {
-              setUserReviewed(false);
+              setUserReview(res);
             }
           }
         );
       }
     }
-  }, [setUserReviewed, currentUser, contract, userIsTenant]);
+  }, [setUserReview, currentUser, contract, userIsTenant]);
   const [userReviewModalOpen, setUserReviewModalOpen] =
     useState<boolean>(false);
   const [apartmentReviewModalOpen, setApartmentReviewModalOpen] =
     useState<boolean>(false);
   const [updateApartmentReviewModalOpen, setUpdateApartmentReviewModalOpen] =
     useState(false);
+  const [updateUserReviewModalOpen, setUpdateUserReviewModalOpen] =
+    useState(false);
 
+  const handleUpdateUserReviewModalOpen = useCallback(
+    () => setUpdateUserReviewModalOpen(true),
+    [setUpdateUserReviewModalOpen]
+  );
+  const handleUpdateUserReviewModalClose = useCallback(
+    () => setUpdateUserReviewModalOpen(false),
+    [setUpdateUserReviewModalOpen]
+  );
   const handleUpdateApartmentReviewModalOpen = useCallback(
     () => setUpdateApartmentReviewModalOpen(true),
     [setUpdateApartmentReviewModalOpen]
@@ -502,8 +513,8 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
   );
 
   const handleUserReviewModalSubmit = useCallback(
-    () => setUserReviewed(true),
-    [setUserReviewed]
+    (userReview: UserReview) => setUserReview(userReview),
+    [setUserReview]
   );
 
   const handleApartmentReviewModalSubmit = useCallback(
@@ -611,8 +622,9 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
               user={userIsTenant ? contract.landlord : contract.tenant}
               theme={theme}
               handleUserReviewModalOpen={handleUserReviewModalOpen}
+              handleUpdateUserReviewModalOpen={handleUpdateUserReviewModalOpen}
               userIsTenant={userIsTenant}
-              alreadyReviewed={userReviewed}
+              userReview={userReview}
             />
             <CreateUserReviewModal
               open={userReviewModalOpen}
@@ -633,6 +645,14 @@ const ContractPage: React.FC<ContractPageProps> = ({ userIsTenant }) => {
                 handleClose={handleUpdateApartmentReviewModalClose}
                 apartmentReview={apartmentReview}
                 handleSubmit={handleApartmentReviewModalSubmit}
+              />
+            )}
+            {userReview && (
+              <UpdateUserReviewModal
+                open={updateUserReviewModalOpen}
+                handleClose={handleUpdateUserReviewModalClose}
+                handleSubmit={handleUserReviewModalSubmit}
+                userReview={userReview}
               />
             )}
           </>

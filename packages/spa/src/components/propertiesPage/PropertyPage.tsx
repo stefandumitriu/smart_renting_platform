@@ -334,7 +334,7 @@ const PropertyPage: React.FC<{}> = () => {
   return (
     <Layout pageTitle="Pagina proprietate">
       <Grid item sx={{ width: "100%" }}>
-        <Grid item container xs={8} marginX="auto">
+        <Grid item container xs={11} md={8} marginX="auto">
           <Grid
             item
             container
@@ -372,7 +372,7 @@ const PropertyPage: React.FC<{}> = () => {
               Bucuresti, {address.streetType} {address.streetName}
             </Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={12} md={8}>
             <SwipeableViews
               index={activeImage}
               onChangeIndex={handleStepChange}
@@ -431,7 +431,8 @@ const PropertyPage: React.FC<{}> = () => {
           <Grid
             item
             container
-            xs={3}
+            xs={12}
+            md={3}
             marginX="auto"
             alignContent="start"
             rowSpacing={4}
@@ -679,7 +680,7 @@ const PropertyPage: React.FC<{}> = () => {
                 <Typography variant="h5">Descriere</Typography>
               </Grid>
             </Grid>
-            <Grid item xs={8} marginTop={2}>
+            <Grid item xs={12} md={8} marginTop={2}>
               <Typography>
                 {params.about ||
                   "                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin\n" +
@@ -707,11 +708,19 @@ const PropertyPage: React.FC<{}> = () => {
             <Grid
               item
               container
-              xs={8}
+              xs={12}
+              md={8}
               marginTop={2}
               justifyContent="space-between"
             >
-              <Grid item container xs={5} spacing={2} alignContent="flex-start">
+              <Grid
+                item
+                container
+                xs={12}
+                md={5}
+                spacing={2}
+                alignContent="flex-start"
+              >
                 <Grid item container xs={12} justifyContent="space-between">
                   <Grid item xs={4}>
                     <Typography>Nr. camere</Typography>
@@ -785,7 +794,19 @@ const PropertyPage: React.FC<{}> = () => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item container xs={5} spacing={2} alignContent="flex-start">
+              <Grid
+                item
+                container
+                xs={12}
+                md={5}
+                spacing={2}
+                alignContent="flex-start"
+                sx={{
+                  [theme.breakpoints.down("md")]: {
+                    marginTop: 1,
+                  },
+                }}
+              >
                 <Grid item container xs={12} justifyContent="space-between">
                   <Grid item xs={4}>
                     <Typography>Nr. balcoane</Typography>
@@ -867,7 +888,7 @@ const PropertyPage: React.FC<{}> = () => {
                 <Typography variant="h5">Dotari</Typography>
               </Grid>
             </Grid>
-            <Grid item container xs={8} marginTop={2}>
+            <Grid item container xs={12} md={8} marginTop={2}>
               <Paper sx={{ width: "100%", borderRadius: "10px" }} elevation={4}>
                 <Grid
                   container
@@ -915,12 +936,12 @@ const PropertyPage: React.FC<{}> = () => {
           </Grid>
           <Grid item xs={12} marginTop={4}>
             <Grid item container xs={12}>
-              <Grid item xs={4}>
+              <Grid item xs={8} md={4}>
                 <Typography variant="h5">Informatii Zona</Typography>
               </Grid>
             </Grid>
             <Grid item container xs={12} marginTop={2}>
-              <Grid item xs={8}>
+              <Grid item xs={12} md={8}>
                 <Typography>{params.apartment.areaInfo}</Typography>
               </Grid>
             </Grid>

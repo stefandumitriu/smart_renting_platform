@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { NewUserReview } from "@packages/api/models";
+import { NewUserReview, UserReview } from "@packages/api/models";
 import { CreateUserReviewRequest } from "../../../requests/ReviewsRequests";
 import { Contract } from "@packages/api/models/contract";
 import { StyledTextField } from "../../landingPage/SignupForm";
@@ -23,7 +23,7 @@ import { Info } from "@mui/icons-material";
 interface CreateUserReviewModalProps {
   open: boolean;
   handleClose: () => void;
-  handleSubmit: () => void;
+  handleSubmit: (userReview: UserReview) => void;
   contract: Contract;
   type: "LANDLORD" | "TENANT";
 }
@@ -39,8 +39,8 @@ const CreateUserReviewModal: React.FC<CreateUserReviewModalProps> = ({
   const { currentUser } = useContext(AuthContext);
   const submitCallback = useCallback(
     async (values: NewUserReview) => {
-      await CreateUserReviewRequest(values);
-      handleSubmit();
+      const createdUserReview = await CreateUserReviewRequest(values);
+      handleSubmit(createdUserReview);
       handleClose();
     },
     [handleClose, handleSubmit]

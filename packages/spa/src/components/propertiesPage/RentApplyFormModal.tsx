@@ -115,6 +115,7 @@ const RentApplyFormModal: React.FC<RentApplyFormModalProps> = ({
                           type="submit"
                           variant="contained"
                           color="primary"
+                          sx={{ borderRadius: "10px" }}
                         >
                           Aplica
                         </Button>

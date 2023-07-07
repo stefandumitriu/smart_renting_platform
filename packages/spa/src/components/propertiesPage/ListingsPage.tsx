@@ -56,6 +56,7 @@ const ListingsPage: React.FC<{}> = () => {
   const [apartmentReviews, setApartmentReviews] = useState<ApartmentReview[]>(
     []
   );
+
   const [sortMethod, setSortMethod] = useState<string>(
     SortMethod.ApartmentScore
   );
@@ -258,7 +259,21 @@ const ListingsPage: React.FC<{}> = () => {
     <Layout pageTitle="Lista proprietati">
       <Grid item container xs={12} sx={{ minHeight: "100vh" }}>
         <Grid item container xs={12} marginTop={2}>
-          <Grid item container xs={8} alignContent="flex-start">
+          <Grid
+            item
+            container
+            xs={12}
+            md={8}
+            alignContent="flex-start"
+            sx={{
+              [theme.breakpoints.down("md")]: {
+                order: 2,
+              },
+              [theme.breakpoints.up("md")]: {
+                order: 1,
+              },
+            }}
+          >
             {displayedListings.map((listing) => {
               return (
                 <Grid item container xs={12} justifyContent="center" my={2}>
@@ -388,13 +403,22 @@ const ListingsPage: React.FC<{}> = () => {
           <Grid
             item
             container
-            xs={4}
+            xs={12}
+            md={4}
             justifyContent="center"
             marginTop={2}
             alignContent="flex-start"
             rowSpacing={2}
+            sx={{
+              [theme.breakpoints.down("md")]: {
+                order: 1,
+              },
+              [theme.breakpoints.up("md")]: {
+                order: 2,
+              },
+            }}
           >
-            <Grid item xs={8}>
+            <Grid item xs={12} md={8}>
               <Paper sx={{ width: "100%", borderRadius: "10px" }} elevation={4}>
                 <Grid
                   item
@@ -445,7 +469,7 @@ const ListingsPage: React.FC<{}> = () => {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={8} marginTop={2}>
+            <Grid item xs={12} md={8} marginTop={2}>
               <Paper sx={{ width: "100%", borderRadius: "10px" }} elevation={4}>
                 <Grid
                   item
@@ -504,7 +528,7 @@ const ListingsPage: React.FC<{}> = () => {
                   <Grid item xs={10}>
                     <Typography>Pret</Typography>
                   </Grid>
-                  <Grid item sm={10} md={5} marginTop={-1}>
+                  <Grid item xs={10} md={5} marginTop={-1}>
                     <Select
                       fullWidth
                       onChange={handleMinPriceFilterChange}
@@ -536,7 +560,7 @@ const ListingsPage: React.FC<{}> = () => {
                       <MenuItem value={450}>450€</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item sm={10} md={5} marginTop={-1}>
+                  <Grid item xs={10} md={5} marginTop={-1}>
                     <Select
                       fullWidth
                       onChange={handleMaxPriceFilterChange}
@@ -569,7 +593,7 @@ const ListingsPage: React.FC<{}> = () => {
                   <Grid item xs={10}>
                     <Typography>Suprafata</Typography>
                   </Grid>
-                  <Grid item sm={10} md={5} marginTop={-1}>
+                  <Grid item xs={10} md={5} marginTop={-1}>
                     <Select
                       fullWidth
                       onChange={handleMinSurfaceFilterChange}
@@ -596,7 +620,7 @@ const ListingsPage: React.FC<{}> = () => {
                       <MenuItem value={100}>100mp</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item sm={10} md={5} marginTop={-1}>
+                  <Grid item xs={10} md={5} marginTop={-1}>
                     <Select
                       fullWidth
                       onChange={handleMaxSurfaceFilterChange}

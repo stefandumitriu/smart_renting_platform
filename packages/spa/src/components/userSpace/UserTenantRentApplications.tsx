@@ -225,7 +225,12 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
                     application.listing.apartment.ownerId,
                 }}
               >
-                <Button color="info" variant="contained" fullWidth>
+                <Button
+                  color="info"
+                  variant="contained"
+                  sx={{ borderRadius: "10px" }}
+                  fullWidth
+                >
                   Mesaj
                 </Button>
               </Link>
@@ -234,6 +239,7 @@ const RentApplicationCard: React.FC<TenantRentApplicationCardProps> = ({
               <Button
                 color="error"
                 variant="contained"
+                sx={{ borderRadius: "10px" }}
                 fullWidth
                 onClick={() => handleDelete(application.id)}
               >
